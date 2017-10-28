@@ -1,1 +1,1 @@
-# gcfriend
+# ...Ready for Gachon friends!
