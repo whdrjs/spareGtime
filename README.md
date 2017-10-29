@@ -1,1 +1,0 @@
-# ...Ready for Gachon friends!
