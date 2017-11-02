@@ -1,3 +1,5 @@
+package spareTime;
+
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -11,11 +13,9 @@ public class LoginWindow extends JFrame {
 	private JPanel contentPane;
 	private JTextField idField;
 	private JTextField txtID;
-	private JTextField pwField;
-	private JPasswordField pw;
+	private JTextField nameField;
+	private JTextField txtName;
 	private JButton btnNewButton;
-	private JButton btnJoin;
-	private JButton btnIdPwFind;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -46,38 +46,31 @@ public class LoginWindow extends JFrame {
 		idField = new JTextField();
 		//idField.setEnabled(false);
 		idField.setEditable(false);
-		idField.setText("  ID :");
-		idField.setBounds(85, 100, 50, 24);
+		idField.setText("Student ID :");
+		idField.setBounds(70, 100, 80, 24);
 		panel.add(idField);
 		idField.setColumns(10);
 
 		txtID = new JTextField();
-		txtID.setBounds(150, 100, 100, 24);
+		txtID.setBounds(160, 100, 120, 24);
 		panel.add(txtID);
 		txtID.setColumns(10);
 		//PW
-		pwField = new JTextField();
-		pwField.setText("  PW :");
-		pwField.setEditable(false);
-		pwField.setColumns(10);
-		pwField.setBounds(85, 150, 50, 24);
-		panel.add(pwField);
+		nameField = new JTextField();
+		nameField.setText("Name:");
+		nameField.setEditable(false);
+		nameField.setColumns(10);
+		nameField.setBounds(70, 150, 80, 24);
+		panel.add(nameField);
 		
-		pw = new JPasswordField();
-		pw.setBounds(150, 150, 100, 24);
-		panel.add(pw);
+		txtName = new JTextField();
+		txtName.setBounds(160, 150, 120, 24);
+		panel.add(txtName);
 				
 		btnNewButton = new JButton("Login");
-		btnNewButton.setBounds(120, 210, 100, 24);
+		btnNewButton.setBounds(120, 290, 100, 24);
 		panel.add(btnNewButton);
 		
-		btnJoin = new JButton("Join");
-		btnJoin.setBounds(120, 270, 100, 24);
-		panel.add(btnJoin);
-		
-		btnIdPwFind = new JButton("Find ID/PW");
-		btnIdPwFind.setBounds(120, 330, 100, 24);
-		panel.add(btnIdPwFind);
 
 	}
 }
