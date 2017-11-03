@@ -5,10 +5,10 @@ import java.sql.SQLException;
 import java.sql.PreparedStatement;
 import java.util.Scanner;
 public class start_server {
-	static class room_info {
-		static int count=0;
-		static int id[];
-		static String name[];
+	class room_info {
+		int count=0;
+		int id[];
+		String name[];
 	}
 	public static Scanner in = new Scanner(System.in);
 	
@@ -103,7 +103,7 @@ public class start_server {
 		if(pstmt!=null)pstmt.close();
 		if(conn!=null)conn.close();
 	}
-	public static room_info search_room(int spare_time,String day,String content) throws ClassNotFoundException,SQLException{
+	/*public room_info search_room(int spare_time,String day,String content) throws ClassNotFoundException,SQLException{
 		Connection conn=getConnection();
 		room_info inform= new room_info();
 		String sql="select ID,name from room where spare_time = ? and day = ? and content = ?";
@@ -128,7 +128,7 @@ public class start_server {
 		if(conn!=null)conn.close();
 		return inform;
 	}
-	
+	*/
 	public static String[] search_content(String main) throws ClassNotFoundException,SQLException{
 		Connection conn=getConnection();
 		String sql="select content from category where main = ?";
@@ -174,9 +174,8 @@ public class start_server {
 		float star=5;
 		String address="IT¥Î«– ";
 		String phone="010-1234-5678";
-		
-		insert_room(ID,R_name,limit,spare_time,day,R_content);
-		delete_room(ID);
+		//insert_room(ID,R_name,limit,spare_time,day,R_content);
+		//delete_room(ID);
 		insert_event(E_content ,E_name,latitude,longitude,star,address,phone);
 		delete_event(E_name);
 	}
