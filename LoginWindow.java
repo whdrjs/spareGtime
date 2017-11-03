@@ -9,7 +9,7 @@ import javax.swing.JPasswordField;
 
 import javax.swing.JButton;
 
-public class LoginWindow extends JFrame {
+public class LoginWindow extends JFrame { // 로그임화면
 	private JPanel contentPane;
 	private JTextField idField;
 	private JTextField txtID;
