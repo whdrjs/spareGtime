@@ -48,7 +48,7 @@ public class start_server {
 		if(pstmt!=null)pstmt.close();
 		if(conn!=null)conn.close();
 	}
-	public static void insert_event(String content,String name,double latitude,double longitude,float star,String address ) throws ClassNotFoundException,SQLException{
+	public static void insert_event(String content,String name,double latitude,double longitude,float star,String addressm,String phone ) throws ClassNotFoundException,SQLException{
 		Connection conn=getConnection();
 		String sql="insert into contents values(?,?,?,?,?,?,?)";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -59,14 +59,15 @@ public class start_server {
 		//double longitude
 		//float star
 		//String address
-	
+		//String phone
 		pstmt.setString(1,content);
 		pstmt.setString(2,name);
 		pstmt.setDouble(3,latitude);
 		pstmt.setDouble(4,longitude);
 		pstmt.setFloat(5,star);
 		pstmt.setString(6,address);
-			
+		pstmt.setString(7,phone);
+		
 		int res = pstmt.executeUpdate();
 		if(res>0)
 			System.out.println("처리");
@@ -164,16 +165,18 @@ public class start_server {
 		//double longitude
 		//float star
 		//String address
+		//String phone
+		
 		String E_content ="이벤트";
 		String E_name="학과의날";
 		double latitude=37.4482461;
 		double longitude=127.1270569;
 		float star=5;
 		String address="IT대학 ";
-		
+		String phone="010-1234-5678";
 		insert_room(ID,R_name,limit,spare_time,day,R_content);
 		delete_room(ID);
-		insert_event(E_content ,E_name,latitude,longitude,star,address);
+		insert_event(E_content ,E_name,latitude,longitude,star,address,phone);
 		delete_event(E_name);
 	}
 }
