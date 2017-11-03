@@ -48,7 +48,7 @@ public class start_server {
 		if(pstmt!=null)pstmt.close();
 		if(conn!=null)conn.close();
 	}
-	public static void insert_event(String content,String name,double latitude,double longitude,float star,String addressm,String phone ) throws ClassNotFoundException,SQLException{
+	public static void insert_event(String content,String name,double latitude,double longitude,float star,String address,String phone ) throws ClassNotFoundException,SQLException{
 		Connection conn=getConnection();
 		String sql="insert into contents values(?,?,?,?,?,?,?)";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -174,6 +174,7 @@ public class start_server {
 		float star=5;
 		String address="IT¥Î«– ";
 		String phone="010-1234-5678";
+		
 		insert_room(ID,R_name,limit,spare_time,day,R_content);
 		delete_room(ID);
 		insert_event(E_content ,E_name,latitude,longitude,star,address,phone);
