@@ -2,7 +2,6 @@ package spareTime;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.PrintWriter;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -25,9 +24,16 @@ class mainPanel extends JPanel{
 		add(findBtn);
 		
 		eventBtn=new JButton("Event");
+		//event 새 창 띄우기
+		eventBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                new eventFrame();
+            }
+        });
 		eventBtn.setBounds(40, 120, 100, 24);
 		add(eventBtn);
 		
+		//findmate는 채팅방 구현 생각해보고 액션이벤트 추가하려구
 		mateBtn=new JButton("Find mate");
 		mateBtn.setBounds(40, 200, 100, 24);
 		add(mateBtn);
@@ -54,15 +60,15 @@ class actPanel extends JPanel{
 		setLayout(null);
 		
 		dessertBtn=new JButton("Dessert");
-		dessertBtn.setBounds(40, 40, 100, 24);
+		dessertBtn.setBounds(40, 40, 150, 24);
 		add(dessertBtn);
 		
-		entBtn=new JButton("Entertaiment");
-		entBtn.setBounds(40, 120, 100, 24);
+		entBtn=new JButton("Entertainment");
+		entBtn.setBounds(40, 120, 150, 24);
 		add(entBtn);
 		
 		univBtn=new JButton("Gachon Event");
-		univBtn.setBounds(40, 200, 100, 24);
+		univBtn.setBounds(40, 200, 150, 24);
 		add(univBtn);
 		
 		back=new JButton("Back");
@@ -95,39 +101,144 @@ class actPanel extends JPanel{
 		}
 	}
 }
+/**
+ * 이벤트 목록 보여주기 위한 팝업 창
+ * 팝업창이어서 eventFrame 은 Frame으로
+ * @author 종건
+ *
+ */
+class eventFrame extends JFrame {
+	private JButton close=new JButton("close");
+	JPanel ePanel =new JPanel();
+	
+	public eventFrame() {
+		setTitle("Event!");
+		setSize(450,200);
+		setLocation(0, 120);
+		close.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent arg0) {
+				System.exit(0);
+			}
+		});
+		close.setBounds(350, 150, 50, 24);
+		ePanel.add(close);
+		getContentPane().add(ePanel);
+		setVisible(true);
+	}
+}
+
+class dstPanel extends JPanel{
+	
+	private JButton bakeBtn;
+	private JButton iceBtn;
+	private JButton coffBtn;
+	private JButton back;
+	private UI frm;
+	
+	public dstPanel(UI frm) {
+		this.frm=frm;
+		setLayout(null);
+		
+		bakeBtn=new JButton("Bakery");
+		bakeBtn.setBounds(40, 40, 100, 24);
+		add(bakeBtn);
+		
+		iceBtn=new JButton("Ice-cream");
+		iceBtn.setBounds(40, 120, 100, 24);
+		add(iceBtn);
+		
+		coffBtn=new JButton("Coffee");
+		coffBtn.setBounds(40, 200, 100, 24);
+		add(coffBtn);
+		
+		back=new JButton("Back");
+		back.setBounds(550, 310, 100, 24);
+		add(back);
+
+		back.addActionListener(new backEvent());
+	}
+	class backEvent implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			frm.change("act");
+		}
+	}
+}
+
+class entPanel extends JPanel{
+	
+	private JButton singBtn;
+	private JButton billBtn;
+	private JButton pcBtn;
+	private JButton back;
+	private UI frm;
+	
+	public entPanel(UI frm) {
+		this.frm=frm;
+		setLayout(null);
+		
+		singBtn=new JButton("Singing");
+		singBtn.setBounds(40, 40, 100, 24);
+		add(singBtn);
+		
+		billBtn=new JButton("Billiard");
+		billBtn.setBounds(40, 120, 100, 24);
+		add(billBtn);
+		
+		pcBtn=new JButton("PC room");
+		pcBtn.setBounds(40, 200, 100, 24);
+		add(pcBtn);
+		
+		back=new JButton("Back");
+		back.setBounds(550, 310, 100, 24);
+		add(back);
+
+		back.addActionListener(new backEvent());
+	}
+	class backEvent implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			frm.change("act");
+		}
+	}
+}
 
 public class UI {
 
 		static JFrame frame = new JFrame("Gtime");	
 		public mainPanel mp=null;
 		public actPanel ap=null;
-		UI UI;
+		public dstPanel dp=null; 
+		public entPanel ep=null;
 		
 		public UI() {
 			// Layout GUI
 			frame.setSize(700,400);
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	//when window exit button(x) is clicked, process is terminated. 
-			// Add Listeners
-		/*	textField.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-						out.println(textField.getText());	//out to text field
-						textField.setText("");	//Initialization text field.
-				}
-			});*/
 			
 		}
-		
+		//패널 바꾸어 주는 함수!
 		public void change(String panelName)
 		{
 			if(panelName.equals("main")) {
-				frame.getContentPane().removeAll();
-				frame.getContentPane().add(mp);
+				frame.getContentPane().removeAll(); //기존 패널 제거
+				frame.getContentPane().add(mp);     //새 패널 추가
 				frame.revalidate();
 				frame.repaint();
 			}
 			else if(panelName.equals("act")) {
 				frame.getContentPane().removeAll();
 				frame.getContentPane().add(ap);
+				frame.revalidate();
+				frame.repaint();
+			}
+			else if(panelName.equals("dessert")) {
+				frame.getContentPane().removeAll();
+				frame.getContentPane().add(dp);
+				frame.revalidate();
+				frame.repaint();
+			}
+			else if(panelName.equals("ent")) {
+				frame.getContentPane().removeAll();
+				frame.getContentPane().add(ep);
 				frame.revalidate();
 				frame.repaint();
 			}
