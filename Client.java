@@ -40,11 +40,12 @@ public class Client {
 		Client client = new Client();		
 		UI userIn=new UI();				//UI 클래스 생성
 		userIn.mp=new mainPanel(userIn);//메인 페널 생성
-		userIn.frame.add(userIn.mp);	//mainpanel 이 default panel
-		userIn.frame.setVisible(true);	//can be show frame
+		UI.frame.add(userIn.mp);	//mainpanel 이 default panel
+		UI.frame.setVisible(true);	//can be show frame
 
 		userIn.ap=new actPanel(userIn);//act패널
-		
+		userIn.dp=new dstPanel(userIn);//dessert패널
+		userIn.ep=new entPanel(userIn);//entertainment패널
 		client.run();
 	}
 }
