@@ -13,10 +13,10 @@ class mainPanel extends JPanel{
 	private JButton findBtn;
 	private JButton eventBtn;
 	private JButton mateBtn;
-	private UI frm;
+	private UI frm;	
 	
 	public mainPanel(UI frm) {
-		this.frm=frm;
+		this.frm=frm;//UI 클래스 받아오기 메인(client.java 에서)
 		setLayout(null);
 		
 		findBtn=new JButton("Find activity");
@@ -60,15 +60,15 @@ class actPanel extends JPanel{
 		setLayout(null);
 		
 		dessertBtn=new JButton("Dessert");
-		dessertBtn.setBounds(40, 40, 150, 24);
+		dessertBtn.setBounds(40, 40, 130, 24);
 		add(dessertBtn);
 		
 		entBtn=new JButton("Entertainment");
-		entBtn.setBounds(40, 120, 150, 24);
+		entBtn.setBounds(40, 120, 130, 24);
 		add(entBtn);
 		
 		univBtn=new JButton("Gachon Event");
-		univBtn.setBounds(40, 200, 150, 24);
+		univBtn.setBounds(40, 200, 130, 24);
 		add(univBtn);
 		
 		back=new JButton("Back");
@@ -126,7 +126,11 @@ class eventFrame extends JFrame {
 		setVisible(true);
 	}
 }
-
+/**
+ * 디저트 패널
+ * @author 종건
+ *
+ */
 class dstPanel extends JPanel{
 	
 	private JButton bakeBtn;
@@ -163,7 +167,7 @@ class dstPanel extends JPanel{
 		}
 	}
 }
-
+//오락 pannel
 class entPanel extends JPanel{
 	
 	private JButton singBtn;
@@ -200,6 +204,48 @@ class entPanel extends JPanel{
 		}
 	}
 }
+/**학교 이벤트 패널
+ * 근데 이걸 다른 패널처럼 버튼개수를 두고 만들지 이벤트목록으로
+ * 만들지 정확히 기억이 안나넴...
+ * @author 종건
+ *
+ */
+class univPanel extends JPanel{
+	
+	private JButton Btn;
+	private JButton Btn2;
+	private JButton back;
+	private UI frm;
+	
+	public univPanel(UI frm) {
+		this.frm=frm;
+		setLayout(null);
+		
+		Btn=new JButton("Gachon Univ event");
+		Btn.setBounds(40, 40, 160, 24);
+		add(Btn);
+		
+		/*billBtn=new JButton("Billiard");
+		billBtn.setBounds(40, 120, 100, 24);
+		add(billBtn);
+		
+		pcBtn=new JButton("PC room");
+		pcBtn.setBounds(40, 200, 100, 24);
+		add(pcBtn);*/
+		
+		back=new JButton("Back");
+		back.setBounds(550, 310, 100, 24);
+		add(back);
+
+		back.addActionListener(new backEvent());
+	}
+	class backEvent implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			frm.change("act");
+		}
+	}
+}
+
 
 public class UI {
 
@@ -208,6 +254,7 @@ public class UI {
 		public actPanel ap=null;
 		public dstPanel dp=null; 
 		public entPanel ep=null;
+		public univPanel up=null;
 		
 		public UI() {
 			// Layout GUI
@@ -242,7 +289,12 @@ public class UI {
 				frame.revalidate();
 				frame.repaint();
 			}
-				
+			else if(panelName.equals("univ")) {
+				frame.getContentPane().removeAll();
+				frame.getContentPane().add(up);
+				frame.revalidate();
+				frame.repaint();
+			}
 		}
 		public static String getServerAddress() {	//help to clients socket for input ip address
 			return JOptionPane.showInputDialog(
