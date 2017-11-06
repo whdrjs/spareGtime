@@ -4,10 +4,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
 
+import spareTime.bakeryPanel.backEvent;
+
+import javax.swing.JList;
 class mainPanel extends JPanel{
 	
 	private JButton findBtn;
@@ -75,24 +81,19 @@ class actPanel extends JPanel{
 		back.setBounds(550, 310, 100, 24);
 		add(back);
 		
-		dessertBtn.addActionListener(new dstEvent());
-		entBtn.addActionListener(new entEvent());
-		univBtn.addActionListener(new univEvent());
+		dessertBtn.addActionListener(new nextEvent("dessert"));
+		entBtn.addActionListener(new nextEvent("ent"));
+		univBtn.addActionListener(new nextEvent("univ"));
 		back.addActionListener(new backEvent());
 	}
-	class dstEvent implements ActionListener{
-		public void actionPerformed(ActionEvent e) {
-			frm.change("dessert");
+	class nextEvent implements ActionListener{
+		String name;
+		public nextEvent(String name)
+		{
+			this.name=name;
 		}
-	}
-	class entEvent implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
-			frm.change("ent");
-		}
-	}
-	class univEvent implements ActionListener{
-		public void actionPerformed(ActionEvent e) {
-			frm.change("univ");
+			frm.change(name);
 		}
 	}
 	class backEvent implements ActionListener{
@@ -115,22 +116,12 @@ class eventFrame extends JFrame {
 		setTitle("Event!");
 		setSize(450,200);
 		setLocation(0, 120);
-		close.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent arg0) {
-				System.exit(0);
-			}
-		});
-		close.setBounds(350, 150, 50, 24);
-		ePanel.add(close);
+		
 		getContentPane().add(ePanel);
 		setVisible(true);
 	}
 }
-/**
- * 디저트 패널
- * @author 종건
- *
- */
+//디저트 패널
 class dstPanel extends JPanel{
 	
 	private JButton bakeBtn;
@@ -159,8 +150,21 @@ class dstPanel extends JPanel{
 		back.setBounds(550, 310, 100, 24);
 		add(back);
 
+		bakeBtn.addActionListener(new listEvent("bakery"));
+		coffBtn.addActionListener(new listEvent("Ice-cream"));
+		iceBtn.addActionListener(new listEvent("Coffee"));
 		back.addActionListener(new backEvent());
 	}
+	class listEvent implements ActionListener{
+		String name;
+		public listEvent(String name)
+		{
+			this.name=name;
+		}
+        public void actionPerformed(ActionEvent arg0) {
+            new listFrame(name);
+        }
+    }
 	class backEvent implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			frm.change("act");
@@ -208,7 +212,6 @@ class entPanel extends JPanel{
  * 근데 이걸 다른 패널처럼 버튼개수를 두고 만들지 이벤트목록으로
  * 만들지 정확히 기억이 안나넴...
  * @author 종건
- *
  */
 class univPanel extends JPanel{
 	
@@ -224,15 +227,7 @@ class univPanel extends JPanel{
 		Btn=new JButton("Gachon Univ event");
 		Btn.setBounds(40, 40, 160, 24);
 		add(Btn);
-		
-		/*billBtn=new JButton("Billiard");
-		billBtn.setBounds(40, 120, 100, 24);
-		add(billBtn);
-		
-		pcBtn=new JButton("PC room");
-		pcBtn.setBounds(40, 200, 100, 24);
-		add(pcBtn);*/
-		
+
 		back=new JButton("Back");
 		back.setBounds(550, 310, 100, 24);
 		add(back);
@@ -245,8 +240,62 @@ class univPanel extends JPanel{
 		}
 	}
 }
+/**
+ *bakery, ice, coffee , 노래방 당구장, pc방에 콤보박스는 넣겠는데
+ *그 밑에 콘테츠 디비와연동하고 정렬 방법... 
+ *
+ *이거 하나로 연동해서
+ * @author 종건
+ *이위에 author 계속 추가되네;
+ */
+class listFrame extends JFrame{
+	private JPanel panel=new JPanel();
+	private JComboBox<String> combo= new JComboBox<String>();
+	private JButton back;
+	private JList list=new JList();
+	private JScrollPane scroll=new JScrollPane();
+	private UI frm;
+	//DB에서 받아올 목록
+	public String[] listStr= {"임시 1","임시 2","임시 3","임시 4","임시 5","임시 6","임시 7"};//,"임시 1","임시 2","임시 3","임시 4","임시 5","임시 6","임시 7"};
+	
+	public listFrame(String pre) {
+		setTitle(pre+" List");
+		setSize(600,400);
+		setLocation(50, 90);
+			
+			panel.setLayout(null);
+			combo.addItem("평점순");
+			combo.addItem("거리순");
+			combo.addItem("가격순");
+			combo.setEditable(false);
+			combo.setBounds(210, 20, 180, 30);
+			panel.add(combo);
 
+			//list
+			list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		    list.setListData(listStr); //리스트의 데이터가 될 목록 설정
+			// list.addListSelectionListener(this); //이벤트리스너 장착
+		
+		    scroll.setViewportView(list);
+			scroll.setBounds(175, 75, 250, 200);
+			scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); //가로바정책
 
+		    scroll.setViewportView(list);
+		    panel.add(scroll);
+/*
+			back=new JButton("Back");
+			back.setBounds(550, 310, 100, 24);
+			panel.add(back);
+			
+			back.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent arg0) {
+					System.exit(0);
+				}
+			});*/
+			getContentPane().add(panel);
+			setVisible(true);
+	}
+}
 public class UI {
 
 		static JFrame frame = new JFrame("Gtime");	
@@ -255,7 +304,7 @@ public class UI {
 		public dstPanel dp=null; 
 		public entPanel ep=null;
 		public univPanel up=null;
-		
+
 		public UI() {
 			// Layout GUI
 			frame.setSize(700,400);
@@ -296,6 +345,7 @@ public class UI {
 				frame.repaint();
 			}
 		}
+		
 		public static String getServerAddress() {	//help to clients socket for input ip address
 			return JOptionPane.showInputDialog(
 					frame,
