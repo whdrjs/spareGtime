@@ -10,16 +10,17 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
-
-import spareTime.bakeryPanel.backEvent;
-
 import javax.swing.JList;
+
+import spareTime.ChatClient;
+
 class mainPanel extends JPanel{
 	
 	private JButton findBtn;
 	private JButton eventBtn;
 	private JButton mateBtn;
 	private UI frm;	
+	//JFrame chat=new ChatClient().frame;
 	
 	public mainPanel(UI frm) {
 		this.frm=frm;//UI 클래스 받아오기 메인(client.java 에서)
@@ -45,12 +46,18 @@ class mainPanel extends JPanel{
 		add(mateBtn);
 		
 		findBtn.addActionListener(new actEvent());
+		//mateBtn.addActionListener(new chatEvent());
 	}
 	class actEvent implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			frm.change("act");
 		}
 	}
+	/*class chatEvent implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			new
+		}
+	}*/
 }
 
 class actPanel extends JPanel{
@@ -150,7 +157,7 @@ class dstPanel extends JPanel{
 		back.setBounds(550, 310, 100, 24);
 		add(back);
 
-		bakeBtn.addActionListener(new listEvent("bakery"));
+		bakeBtn.addActionListener(new listEvent("Bakery"));
 		coffBtn.addActionListener(new listEvent("Ice-cream"));
 		iceBtn.addActionListener(new listEvent("Coffee"));
 		back.addActionListener(new backEvent());
@@ -200,8 +207,21 @@ class entPanel extends JPanel{
 		back.setBounds(550, 310, 100, 24);
 		add(back);
 
+		singBtn.addActionListener(new listEvent("Singing"));
+		billBtn.addActionListener(new listEvent("Billiard"));
+		pcBtn.addActionListener(new listEvent("PC room"));
 		back.addActionListener(new backEvent());
 	}
+	class listEvent implements ActionListener{
+		String name;
+		public listEvent(String name)
+		{
+			this.name=name;
+		}
+        public void actionPerformed(ActionEvent arg0) {
+            new listFrame(name);
+        }
+    }
 	class backEvent implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			frm.change("act");
