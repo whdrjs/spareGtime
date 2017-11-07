@@ -200,7 +200,7 @@ public class start_server {
 		insert_room(ID,R_name,maximum,spare_time,day,R_content);
 		R=search_room(spare_time,day,R_content);
 		for(int i=0;i<R.count;i++) {
-			System.out.println(R.id.get(i)+" "+R.name.get(i)+" "R.maximum.get(i) );
+			System.out.println(R.id.get(i)+" "+R.name.get(i)+" "+R.maximum.get(i) );
 		}
 		delete_room(ID);
 		insert_event(E_content ,E_name,latitude,longitude,star,address);
