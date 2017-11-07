@@ -10,6 +10,11 @@ public class start_server {
 		static int count=0;
 		static ArrayList < Integer > id=new ArrayList < Integer >();
 		static ArrayList < String > name=new ArrayList < String >();
+		static ArrayList < Integer > maximum=new ArrayList < Integer >();
+		static ArrayList < String > spare_time=new ArrayList < String >();
+		static ArrayList < String > day=new ArrayList < String >();
+		static ArrayList < String > content=new ArrayList < String >();
+		
 	}
 	public static Scanner in = new Scanner(System.in);
 	
@@ -118,6 +123,7 @@ public class start_server {
 		room_info inform= new room_info();
 		String sql="select ID,name from roomlist where spare_time = ? and day = ? and content = ?";//sql 쿼리
 		PreparedStatement pstmt = conn.prepareStatement(sql);
+		
 		pstmt.setString(1,spare_time);
 		pstmt.setString(2,day);
 		pstmt.setString(3,content);
@@ -132,8 +138,13 @@ public class start_server {
 			return inform;
 		}
 		while(res.next()){
+			
 			room_info.id.add(res.getInt("ID"));
 			room_info.name.add(res.getString("name"));
+			room_info.maximum.add(res.getInt("maximum"));
+			room_info.day.add(res.getString("day"));
+			room_info.spare_time.add(res.getString("spare_time"));
+			room_info.content.add(res.getString("content"));
 			inform.count++;
 		}
 		if(pstmt!=null)pstmt.close();
@@ -189,7 +200,7 @@ public class start_server {
 		insert_room(ID,R_name,maximum,spare_time,day,R_content);
 		R=search_room(spare_time,day,R_content);
 		for(int i=0;i<R.count;i++) {
-			System.out.println(R.id.get(i)+" "+R.name.get(i));
+			System.out.println(R.id.get(i)+" "+R.name.get(i)+" "R.maximum.get(i) );
 		}
 		delete_room(ID);
 		insert_event(E_content ,E_name,latitude,longitude,star,address);
