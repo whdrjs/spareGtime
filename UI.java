@@ -129,8 +129,8 @@ class eventFrame extends JFrame {
 
 	public eventFrame() {
 		setTitle("Event!");
-		setSize(450,200);
-		setLocation(0, 120);
+		setSize(450,500);
+		setLocation(0, 80);
 
 		getContentPane().add(ePanel);
 		setVisible(true);
@@ -274,9 +274,13 @@ class univPanel extends JPanel{
  *그 밑에 콘테츠 디비와연동하고 정렬 방법... 
  */
 class listFrame extends JFrame{
-	private JPanel panel=new JPanel();
+	private JPanel mainList=new JPanel();
+	private JPanel infoPanel=new JPanel();
 	private JComboBox<String> combo= new JComboBox<String>();
-	private JButton btn;
+	private JButton check;
+	private JButton rateBtn;
+	private JButton mateBtn;
+	private JButton backBtn;
 	private JList list=new JList();
 	private JScrollPane scroll=new JScrollPane();
 	private UI frm;
@@ -287,18 +291,17 @@ class listFrame extends JFrame{
 	public String select;
 
 	public listFrame(String pre) {
-
-		setTitle(pre+" List");
+		setTitle(pre);
 		setSize(600,400);
-		setLocation(50, 90);
+		setLocation(0, 0);
 
-		panel.setLayout(null);
+		mainList.setLayout(null);
 		combo.addItem("평점순");
 		combo.addItem("거리순");
 		combo.addItem("가격순");
 		combo.setEditable(false);
 		combo.setBounds(210, 20, 180, 30);
-		panel.add(combo);
+		mainList.add(combo);
 
 		//list
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -314,26 +317,53 @@ class listFrame extends JFrame{
 		scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); //가로바정책
 
 		scroll.setViewportView(list);
-		panel.add(scroll);
+		mainList.add(scroll);
 
-		btn=new JButton("confirm");
-		btn.setBounds(260, 300, 80, 24);
-		btn.addActionListener(new ActionListener(){
+		check=new JButton("pick");
+		check.setBounds(260, 300, 80, 24);
+		check.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
-				try {
+				/*try {
 					client.run();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}
+				}*/
+				getContentPane().removeAll();
+				getContentPane().add(infoPanel);
+				revalidate();
+				repaint();
 			}
 		});
-		add(btn);
-				
-		getContentPane().add(panel);
+		add(check);
+		getContentPane().add(mainList);
 		setVisible(true);
+		
+		infoPanel.setLayout(null);
+		
+		rateBtn=new JButton("rate");
+		rateBtn.setBounds(440, 40, 100, 24);
+		infoPanel.add(rateBtn);
+		
+		mateBtn=new JButton("Find mate");
+		mateBtn.setBounds(440, 88, 100, 24);
+		infoPanel.add(mateBtn);
+		
+		backBtn=new JButton("Back");
+		backBtn.setBounds(440, 300, 100, 24);
+		backBtn.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent arg0) {
+				getContentPane().removeAll();
+				getContentPane().add(mainList);
+				revalidate();
+				repaint();
+			}
+		});
+		
+		infoPanel.add(backBtn);
 	}
 }
+
 public class UI {
 
 	static JFrame frame = new JFrame("Gtime");	
