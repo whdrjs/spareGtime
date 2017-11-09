@@ -1,4 +1,4 @@
-package spareTime;
+dlspackage spareTime;
 
 import java.awt.EventQueue;
 import javax.swing.JFrame;
@@ -9,7 +9,7 @@ import javax.swing.JPasswordField;
 
 import javax.swing.JButton;
 
-public class LoginWindow extends JFrame { // 로그임화면
+public class LoginWindow extends JFrame { // 로그인화면
 	private JPanel contentPane;
 	private JTextField idField;
 	private JTextField txtID;
