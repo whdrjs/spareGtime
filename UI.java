@@ -13,6 +13,7 @@ import java.net.Socket;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -51,21 +52,22 @@ class mainPanel extends JPanel{
 		//findmate는 채팅방 구현 생각해보고 액션이벤트 추가하려구
 		mateBtn=new JButton("Find mate");
 		mateBtn.setBounds(40, 200, 100, 24);
+		mateBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				new mateFrame("main");
+			}
+		});
 		add(mateBtn);
 
 		findBtn.addActionListener(new actEvent());
-		//mateBtn.addActionListener(new chatEvent());
+
+
 	}
 	class actEvent implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			frm.change("act");
 		}
 	}
-	/*class chatEvent implements ActionListener{
-		public void actionPerformed(ActionEvent e) {
-			new
-		}
-	}*/
 }
 
 class actPanel extends JPanel{
@@ -167,8 +169,8 @@ class dstPanel extends JPanel{
 		add(back);
 
 		bakeBtn.addActionListener(new listEvent("Bakery"));
-		coffBtn.addActionListener(new listEvent("Ice-cream"));
-		iceBtn.addActionListener(new listEvent("Coffee"));
+		coffBtn.addActionListener(new listEvent("Coffee"));
+		iceBtn.addActionListener(new listEvent("Ice-cream"));
 		back.addActionListener(new backEvent());
 	}
 	class listEvent implements ActionListener{
@@ -238,9 +240,7 @@ class entPanel extends JPanel{
 	}
 }
 /**학교 이벤트 패널
- * 근데 이걸 다른 패널처럼 버튼개수를 두고 만들지 이벤트목록으로
- * 만들지 정확히 기억이 안나넴...
- * @author 종건
+ * 
  */
 class univPanel extends JPanel{
 
@@ -323,19 +323,13 @@ class listFrame extends JFrame{
 		check.setBounds(260, 300, 80, 24);
 		check.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
-				/*try {
-					client.run();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}*/
 				getContentPane().removeAll();
 				getContentPane().add(infoPanel);
 				revalidate();
 				repaint();
 			}
 		});
-		add(check);
+		mainList.add(check);
 		getContentPane().add(mainList);
 		setVisible(true);
 		
@@ -360,7 +354,70 @@ class listFrame extends JFrame{
 			}
 		});
 		
+		mateBtn.addActionListener(new mateEvent());
 		infoPanel.add(backBtn);
+	}
+	class mateEvent implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			new mateFrame(select);
+		}
+	}
+}
+class mateFrame extends JFrame{
+	private JPanel panel = new JPanel();
+	private JLabel label = new JLabel();
+	private JComboBox<String> toMain= new JComboBox<String>(); 
+	private JComboBox<String> time= new JComboBox<String>(); 
+	private JButton check;
+	
+	public mateFrame(String pre)
+	{
+		panel.setLayout(null);
+		label.setText(pre);
+		label.setBounds(250,30,100,40);
+		
+		toMain.addItem("Bakery");
+		toMain.addItem("Coffee");
+		toMain.addItem("Ice-cream");
+		toMain.addItem("PC room");
+		toMain.addItem("Billiard");
+		toMain.addItem("Singing");
+		toMain.setBounds(210,30,180,30);
+		
+		if(pre.equals("main"))
+			panel.add(toMain);
+		else
+			panel.add(label);
+			
+		setTitle(pre);
+		setSize(600,400);
+		setLocation(0, 0);
+		
+		time.addItem("9:00 ~ 10:00");
+		time.addItem("10:00 ~ 11:00");
+		time.addItem("11:00 ~ 12:00");
+		time.addItem("12:00 ~ 1:00");
+		time.addItem("1:00 ~ 2:00");
+		time.addItem("2:00 ~ 3:00");
+		time.addItem("3:00 ~ 4:00");
+		time.addItem("4:00 ~ 5:00");
+		time.addItem("5:00 ~ 6:00");
+		time.addItem("6:00 ~ 7:00");
+		time.setBounds(180, 120, 240, 30);	
+		panel.add(time);
+		
+		check=new JButton("check");
+		check.setBounds(260, 320, 80, 24);
+		check.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent arg0) {
+	
+			}
+		});
+		panel.add(check);		
+		
+		getContentPane().add(panel);
+		
+		setVisible(true);
 	}
 }
 
@@ -377,7 +434,6 @@ public class UI {
 		// Layout GUI
 		frame.setSize(700,400);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	//when window exit button(x) is clicked, process is terminated. 
-
 	}
 	//패널 바꾸어 주는 함수!
 	public void change(String panelName)
