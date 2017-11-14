@@ -29,11 +29,12 @@ public class Client {
 	 * 
 	 * */
 	// 종 : 아직 손안댄부분 -> 예: 채팅 창 GUI 보여주고  위스퍼 , 텍스트 등을 처리함 - 서버 연결하는 것만 논의 해보면됨.
-	private void run() throws IOException {
-
+	public void run() throws IOException {
+		UI userIn=new UI();				//UI 클래스 생성
+		userIn.setVisible(true);	//can be show frame
 		// Make connection and initialize streams
-		String serverAddress = UI.getServerAddress();	//type using getAddress method
-		Socket socket = new Socket(serverAddress, 9001); //create client socket
+		//String serverAddress = UI.getServerAddress();	//type using getAddress method
+		Socket socket = new Socket("128.0.0.1", 9001); //create client socket
 		in = new BufferedReader(new InputStreamReader(
 				socket.getInputStream()));	//receive from server, message.
 		out = new PrintWriter(socket.getOutputStream(), true); //send to server.
@@ -80,18 +81,7 @@ public class Client {
 	//메인
 	public static void main(String[] args) throws Exception {
 		Client client = new Client();		
-		UI userIn=new UI();				//UI 클래스 생성
-		userIn.mp=new mainPanel(userIn);//메인 페널 생성
-		UI.frame.add(userIn.mp);	//mainpanel 이 default panel
-		UI.frame.setVisible(true);	//can be show frame
 
-		userIn.ap=new actPanel(userIn);//act패널
-		userIn.dp=new dstPanel(userIn);//dessert패널
-		userIn.ep=new entPanel(userIn);//entertainment패널
-		userIn.up=new univPanel(userIn);//학교패널
-		
 		client.run();
 	}
 }
-
-
