@@ -1,15 +1,15 @@
 package spareTime;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.Socket;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -20,38 +20,50 @@ import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.JList;
 
+
 import spareTime.ChatClient;
 import spareTime.Client;;
 
 class mainPanel extends JPanel{
-
 	private JButton findBtn;
 	private JButton eventBtn;
 	private JButton mateBtn;
 	private UI frm;	
 	//JFrame chat=new ChatClient().frame;
 
-	public mainPanel(UI frm) {
+	public mainPanel(UI frm) throws IOException {
 		this.frm=frm;//UI 클래스 받아오기 메인(client.java 에서)
 		setLayout(null);
-
-		findBtn=new JButton("Find activity");
-		findBtn.setBounds(40, 40, 100, 24);
+		//이미지 추가
+		findBtn=new JButton(new ImageIcon("img/findactivity2.jpg"));
+		findBtn.setBackground(Color.red);
+		findBtn.setBounds(573, 400, 454, 108);
+		findBtn.setBorderPainted(false);
+		findBtn.setFocusPainted(false); 
+		findBtn.setContentAreaFilled(false); 
 		add(findBtn);
 
-		eventBtn=new JButton("Event");
+		eventBtn=new JButton(new ImageIcon("img/promotion.jpg"));
 		//event 새 창 띄우기
+		eventBtn.setBackground(Color.blue);
+		eventBtn.setBorderPainted(false);
+		eventBtn.setFocusPainted(false); 
+		eventBtn.setContentAreaFilled(false); 
 		eventBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				new eventFrame();
 			}
 		});
-		eventBtn.setBounds(40, 120, 100, 24);
+		eventBtn.setBounds(573, 558, 454, 108);
 		add(eventBtn);
 
 		//findmate는 채팅방 구현 생각해보고 액션이벤트 추가하려구
-		mateBtn=new JButton("Find mate");
-		mateBtn.setBounds(40, 200, 100, 24);
+		mateBtn=new JButton(new ImageIcon("img/findmate.jpg"));
+		mateBtn.setBackground(Color.blue);
+		mateBtn.setBorderPainted(false);
+		mateBtn.setFocusPainted(false); 
+		mateBtn.setContentAreaFilled(false); 
+		mateBtn.setBounds(573, 716, 454, 108);
 		mateBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				new mateFrame("main");
@@ -60,8 +72,6 @@ class mainPanel extends JPanel{
 		add(mateBtn);
 
 		findBtn.addActionListener(new actEvent());
-
-
 	}
 	class actEvent implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
@@ -423,7 +433,7 @@ class mateFrame extends JFrame{
 
 public class UI {
 
-	static JFrame frame = new JFrame("Gtime");	
+	static JFrame frame = new JFrame("Gtime");
 	public mainPanel mp=null;
 	public actPanel ap=null;
 	public dstPanel dp=null; 
@@ -432,7 +442,7 @@ public class UI {
 
 	public UI() {
 		// Layout GUI
-		frame.setSize(700,400);
+		frame.setSize(1600,900);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	//when window exit button(x) is clicked, process is terminated. 
 	}
 	//패널 바꾸어 주는 함수!
