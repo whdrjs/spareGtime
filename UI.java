@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.PrintWriter;
 
 import javax.swing.ImageIcon;
@@ -14,7 +13,6 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
@@ -24,123 +22,6 @@ import javax.swing.JList;
 import spareTime.ChatClient;
 import spareTime.Client;;
 
-class mainPanel extends JPanel{
-	private JButton findBtn;
-	private JButton eventBtn;
-	private JButton mateBtn;
-	private UI frm;	
-	//JFrame chat=new ChatClient().frame;
-
-	public mainPanel(UI frm) throws IOException {
-		this.frm=frm;//UI 클래스 받아오기 메인(client.java 에서)
-		setLayout(null);
-		//이미지 추가
-		findBtn=new JButton(new ImageIcon("img/findactivity2.jpg"));
-		findBtn.setBackground(Color.red);
-		findBtn.setBounds(573, 400, 454, 108);
-		findBtn.setBorderPainted(false);
-		findBtn.setFocusPainted(false); 
-		findBtn.setContentAreaFilled(false); 
-		add(findBtn);
-
-		eventBtn=new JButton(new ImageIcon("img/promotion.jpg"));
-		//event 새 창 띄우기
-		eventBtn.setBackground(Color.blue);
-		eventBtn.setBorderPainted(false);
-		eventBtn.setFocusPainted(false); 
-		eventBtn.setContentAreaFilled(false); 
-		eventBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				new eventFrame();
-			}
-		});
-		eventBtn.setBounds(573, 558, 454, 108);
-		add(eventBtn);
-
-		//findmate는 채팅방 구현 생각해보고 액션이벤트 추가하려구
-		mateBtn=new JButton(new ImageIcon("img/findmate.jpg"));
-		mateBtn.setBackground(Color.blue);
-		mateBtn.setBorderPainted(false);
-		mateBtn.setFocusPainted(false); 
-		mateBtn.setContentAreaFilled(false); 
-		mateBtn.setBounds(573, 716, 454, 108);
-		mateBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				new mateFrame("main");
-			}
-		});
-		add(mateBtn);
-
-		findBtn.addActionListener(new actEvent());
-	}
-	class actEvent implements ActionListener{
-		public void actionPerformed(ActionEvent e) {
-			frm.change("act");
-		}
-	}
-}
-
-class actPanel extends JPanel{
-
-	private JButton dessertBtn;
-	private JButton entBtn;
-	private JButton univBtn;
-	private JButton back;
-	private UI frm;
-
-	public actPanel(UI frm) {
-		this.frm=frm;
-		setLayout(null);
-
-		dessertBtn=new JButton(new ImageIcon("img/dessert.jpg"));
-		dessertBtn.setBackground(Color.red);
-		dessertBtn.setBounds(573, 280, 454, 108);
-		dessertBtn.setBorderPainted(false);
-		dessertBtn.setFocusPainted(false); 
-		add(dessertBtn);
-
-		entBtn=new JButton(new ImageIcon("img/entertainment.PNG"));
-		entBtn.setBackground(Color.red);
-		entBtn.setBounds(573, 430, 454, 108);
-		entBtn.setBorderPainted(false);
-		entBtn.setFocusPainted(false); 
-		add(entBtn);
-
-		univBtn=new JButton(new ImageIcon("img/Gachonevent.PNG"));
-		univBtn.setBackground(Color.red);
-		univBtn.setBounds(573, 580, 454, 108);
-		univBtn.setBorderPainted(false);
-		univBtn.setFocusPainted(false); 
-		add(univBtn);
-
-		back=new JButton(new ImageIcon("img/캡처3.PNG"));
-		back.setBackground(Color.red);
-		back.setBounds(650, 730, 300, 74);
-		back.setBorderPainted(false);
-		back.setFocusPainted(false); 
-		add(back);
-
-		dessertBtn.addActionListener(new nextEvent("dessert"));
-		entBtn.addActionListener(new nextEvent("ent"));
-		univBtn.addActionListener(new nextEvent("univ"));
-		back.addActionListener(new backEvent());
-	}
-	class nextEvent implements ActionListener{
-		String name;
-		public nextEvent(String name)
-		{
-			this.name=name;
-		}
-		public void actionPerformed(ActionEvent e) {
-			frm.change(name);
-		}
-	}
-	class backEvent implements ActionListener{
-		public void actionPerformed(ActionEvent e) {
-			frm.change("main");
-		}
-	}
-}
 /**
  * 이벤트 목록 보여주기 위한 팝업 창
  * 팝업창이어서 eventFrame 은 Frame으로
@@ -160,164 +41,6 @@ class eventFrame extends JFrame {
 		setVisible(true);
 	}
 }
-//디저트 패널
-class dstPanel extends JPanel{
-	BufferedReader in;	//receive to server
-	PrintWriter out;	//send to server
-	private JButton bakeBtn;
-	private JButton iceBtn;
-	private JButton coffBtn;
-	private JButton back;
-	private UI frm;
-
-	public dstPanel(UI frm) {
-		this.frm=frm;
-		setLayout(null);
-
-		bakeBtn=new JButton(new ImageIcon("img/bakery.jpg"));
-		bakeBtn.setBackground(Color.red);
-		bakeBtn.setBounds(573, 280, 454, 108);
-		bakeBtn.setBorderPainted(false);
-		bakeBtn.setFocusPainted(false); 
-		add(bakeBtn);
-
-		iceBtn=new JButton(new ImageIcon("img/icecream.jpg"));
-		iceBtn.setBackground(Color.red);
-		iceBtn.setBounds(573, 430, 454, 108);
-		iceBtn.setBorderPainted(false);
-		iceBtn.setFocusPainted(false); 
-		add(iceBtn);
-
-		coffBtn=new JButton(new ImageIcon("img/coffee.jpg"));
-		coffBtn.setBackground(Color.red);
-		coffBtn.setBounds(573, 580, 454, 108);
-		coffBtn.setBorderPainted(false);
-		coffBtn.setFocusPainted(false); 
-		add(coffBtn);
-
-		back=new JButton(new ImageIcon("img/캡처3.PNG"));
-		back.setBackground(Color.red);
-		back.setBounds(650, 730, 300, 74);
-		back.setBorderPainted(false);
-		back.setFocusPainted(false); 
-		add(back);
-		
-		bakeBtn.addActionListener(new listEvent("Bakery"));
-		coffBtn.addActionListener(new listEvent("Coffee"));
-		iceBtn.addActionListener(new listEvent("Ice-cream"));
-		back.addActionListener(new backEvent());
-	}
-	class listEvent implements ActionListener{
-		String name;
-		public listEvent(String name)
-		{
-			this.name=name;
-		}
-		public void actionPerformed(ActionEvent arg0) {
-			new listFrame(name);
-		}
-	}
-	class backEvent implements ActionListener{
-		public void actionPerformed(ActionEvent e) {
-			frm.change("act");
-		}
-	}
-}
-//오락 pannel
-class entPanel extends JPanel{
-
-	private JButton singBtn;
-	private JButton billBtn;
-	private JButton pcBtn;
-	private JButton back;
-	private UI frm;
-
-	public entPanel(UI frm) {
-		this.frm=frm;
-		setLayout(null);
-
-		singBtn=new JButton(new ImageIcon("img/singing.jpg"));
-		singBtn.setBackground(Color.red);
-		singBtn.setBounds(573, 280, 454, 108);
-		singBtn.setBorderPainted(false);
-		singBtn.setFocusPainted(false); 
-		add(singBtn);
-
-		billBtn=new JButton(new ImageIcon("img/billiard.jpg"));
-		billBtn.setBackground(Color.red);
-		billBtn.setBounds(573, 430, 454, 108);
-		billBtn.setBorderPainted(false);
-		billBtn.setFocusPainted(false); 
-		add(billBtn);
-
-		pcBtn=new JButton(new ImageIcon("img/pcroom.jpg"));
-		pcBtn.setBackground(Color.red);
-		pcBtn.setBounds(573, 580, 454, 108);
-		pcBtn.setBorderPainted(false);
-		pcBtn.setFocusPainted(false); 
-		add(pcBtn);
-
-		back=new JButton(new ImageIcon("img/캡처3.PNG"));
-		back.setBackground(Color.red);
-		back.setBounds(650, 730, 300, 74);
-		back.setBorderPainted(false);
-		back.setFocusPainted(false); 
-		add(back);
-		
-		singBtn.addActionListener(new listEvent("Bakery"));
-		billBtn.addActionListener(new listEvent("Coffee"));
-		pcBtn.addActionListener(new listEvent("Ice-cream"));
-		back.addActionListener(new backEvent());
-	}
-	class listEvent implements ActionListener{
-		String name;
-		public listEvent(String name)
-		{
-			this.name=name;
-		}
-		public void actionPerformed(ActionEvent arg0) {
-			new listFrame(name);
-		}
-	}
-	class backEvent implements ActionListener{
-		public void actionPerformed(ActionEvent e) {
-			frm.change("act");
-		}
-	}
-}
-/**학교 이벤트 패널
- * 
- */
-class univPanel extends JPanel{
-
-	private JButton Btn;
-	private JButton Btn2;
-	private JButton back;
-	private UI frm;
-
-	public univPanel(UI frm) {
-		this.frm=frm;
-		setLayout(null);
-
-		Btn=new JButton("Gachon Univ event");
-		Btn.setBounds(40, 40, 160, 24);
-	//	add(Btn);
-
-		back=new JButton(new ImageIcon("img/캡처3.PNG"));
-		back.setBackground(Color.red);
-		back.setBounds(650, 730, 300, 74);
-		back.setBorderPainted(false);
-		back.setFocusPainted(false); 
-		add(back);
-
-		back.addActionListener(new backEvent());
-	}
-	class backEvent implements ActionListener{
-		public void actionPerformed(ActionEvent e) {
-			frm.change("act");
-		}
-	}
-}
 /**
  *bakery, ice, coffee , 노래방 당구장, pc방에 콤보박스는 넣겠는데
  *그 밑에 콘테츠 디비와연동하고 정렬 방법... 
@@ -334,7 +57,7 @@ class listFrame extends JFrame{
 	private JScrollPane scroll=new JScrollPane();
 	private UI frm;
 	Client client=new Client();
-	
+
 	//DB에서 받아올 목록
 	public String[] listStr= {"임시 1","임시 2","임시 3","임시 4","임시 5","임시 6","임시 7"};//,"임시 1","임시 2","임시 3","임시 4","임시 5","임시 6","임시 7"};
 	public String select;
@@ -383,9 +106,9 @@ class listFrame extends JFrame{
 		mainList.add(check);
 		getContentPane().add(mainList);
 		setVisible(true);
-		
+
 		infoPanel.setLayout(null);
-		
+
 		mateBtn=new JButton(new ImageIcon("img/findmate2.jpg"));
 		mateBtn.setBackground(Color.blue);
 		mateBtn.setBorderPainted(false);
@@ -393,13 +116,13 @@ class listFrame extends JFrame{
 		mateBtn.setContentAreaFilled(false); 
 		mateBtn.setBounds(550, 60, 364, 87);
 		mateBtn.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent arg0) {
-			new mateFrame(select);
-		}
+			public void actionPerformed(ActionEvent arg0) {
+				new mateFrame(select);
+			}
 		});
-		
+
 		infoPanel.add(mateBtn);
-		
+
 		back=new JButton(new ImageIcon("img/캡처4.PNG"));
 		back.setBackground(Color.red);
 		back.setBounds(640, 550, 225, 56);
@@ -422,13 +145,13 @@ class mateFrame extends JFrame{
 	private JComboBox<String> toMain= new JComboBox<String>(); 
 	private JComboBox<String> time= new JComboBox<String>(); 
 	private JButton check;
-	
+
 	public mateFrame(String pre)
 	{
 		panel.setLayout(null);
 		label.setText(pre);
 		label.setBounds(250,30,100,40);
-		
+
 		toMain.addItem("Bakery");
 		toMain.addItem("Coffee");
 		toMain.addItem("Ice-cream");
@@ -436,16 +159,16 @@ class mateFrame extends JFrame{
 		toMain.addItem("Billiard");
 		toMain.addItem("Singing");
 		toMain.setBounds(210,30,180,30);
-		
+
 		if(pre.equals("main"))
 			panel.add(toMain);
 		else
 			panel.add(label);
-			
+
 		setTitle(pre);
 		setSize(600,400);
 		setLocation(0, 0);
-		
+
 		time.addItem("9:00 ~ 10:00");
 		time.addItem("10:00 ~ 11:00");
 		time.addItem("11:00 ~ 12:00");
@@ -458,84 +181,312 @@ class mateFrame extends JFrame{
 		time.addItem("6:00 ~ 7:00");
 		time.setBounds(180, 120, 240, 30);	
 		panel.add(time);
-		
+
 		check=new JButton("check");
 		check.setBounds(260, 320, 80, 24);
 		check.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
-	
+
 			}
 		});
 		panel.add(check);		
-		
+
 		getContentPane().add(panel);
-		
+
 		setVisible(true);
 	}
 }
 
-public class UI {
+public class UI extends JFrame{
 
-	static JFrame frame = new JFrame("Gtime");
-	public mainPanel mp=null;
-	public actPanel ap=null;
-	public dstPanel dp=null; 
-	public entPanel ep=null;
-	public univPanel up=null;
-
+	private JPanel mp=mainPanel();
+	private JPanel ap=actPanel();
+	private JPanel dp=dstPanel();
+	private JPanel ep=entPanel();
+	private JPanel up=univPanel();
+	
 	public UI() {
 		// Layout GUI
-		frame.setSize(1600,900);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	//when window exit button(x) is clicked, process is terminated. 
+		setTitle("Gtime");
+		setSize(1600,900);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	//when window exit button(x) is clicked, process is terminated. 
+		getContentPane().add(mp);
 	}
+
 	//패널 바꾸어 주는 함수!
 	public void change(String panelName)
 	{
 		if(panelName.equals("main")) {
-			frame.getContentPane().removeAll(); //기존 패널 제거
-			frame.getContentPane().add(mp);     //새 패널 추가
-			frame.revalidate();
-			frame.repaint();
+			getContentPane().removeAll(); //기존 패널 제거
+			getContentPane().add(mp);     //새 패널 추가
+			revalidate();
+			repaint();
 		}
 		else if(panelName.equals("act")) {
-			frame.getContentPane().removeAll();
-			frame.getContentPane().add(ap);
-			frame.revalidate();
-			frame.repaint();
+			getContentPane().removeAll();
+			getContentPane().add(ap);
+			revalidate();
+			repaint();
 		}
 		else if(panelName.equals("dessert")) {
-			frame.getContentPane().removeAll();
-			frame.getContentPane().add(dp);
-			frame.revalidate();
-			frame.repaint();
+			getContentPane().removeAll();
+			getContentPane().add(dp);
+			revalidate();
+			repaint();
 		}
 		else if(panelName.equals("ent")) {
-			frame.getContentPane().removeAll();
-			frame.getContentPane().add(ep);
-			frame.revalidate();
-			frame.repaint();
+			getContentPane().removeAll();
+			getContentPane().add(ep);
+			revalidate();
+			repaint();
 		}
 		else if(panelName.equals("univ")) {
-			frame.getContentPane().removeAll();
-			frame.getContentPane().add(up);
-			frame.revalidate();
-			frame.repaint();
+			getContentPane().removeAll();
+			getContentPane().add(up);
+			revalidate();
+			repaint();
 		}
 	}
 
-	public static String getServerAddress() {	//help to clients socket for input ip address
-		return JOptionPane.showInputDialog(
-				frame,
-				"Enter IP Address of the Server:",
-				"Welcome to the Chatter",
-				JOptionPane.QUESTION_MESSAGE);
+	//메인 패널
+	public JPanel mainPanel()
+	{
+		JPanel panel =new JPanel();
+		JButton findBtn;
+		JButton eventBtn;
+		JButton mateBtn;
+		panel.setLayout(null);
+		//이미지 추가
+		findBtn=new JButton(new ImageIcon("img/findactivity2.jpg"));
+		findBtn.setBackground(Color.red);
+		findBtn.setBounds(573, 400, 454, 108);
+		findBtn.setBorderPainted(false);
+		findBtn.setFocusPainted(false); 
+		findBtn.setContentAreaFilled(false); 
+		findBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				change("act");
+			}});
+		panel.add(findBtn);
+
+		eventBtn=new JButton(new ImageIcon("img/promotion.jpg"));
+		//event 새 창 띄우기
+		eventBtn.setBackground(Color.blue);
+		eventBtn.setBorderPainted(false);
+		eventBtn.setFocusPainted(false); 
+		eventBtn.setContentAreaFilled(false); 
+		eventBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				new eventFrame();
+			}
+		});
+		eventBtn.setBounds(573, 558, 454, 108);
+		panel.add(eventBtn);
+
+		mateBtn=new JButton(new ImageIcon("img/findmate.jpg"));
+		mateBtn.setBackground(Color.blue);
+		mateBtn.setBorderPainted(false);
+		mateBtn.setFocusPainted(false); 
+		mateBtn.setContentAreaFilled(false); 
+		mateBtn.setBounds(573, 716, 454, 108);
+		mateBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				new mateFrame("main");
+			}
+		});
+		panel.add(mateBtn);
+
+		return panel;
+	}
+	//activity 패널
+	public JPanel actPanel() {
+		JPanel panel =new JPanel();
+		JButton dessertBtn;
+		JButton entBtn;
+		JButton univBtn;
+		JButton back;
+		panel.setLayout(null);
+
+		dessertBtn=new JButton(new ImageIcon("img/dessert.jpg"));
+		dessertBtn.setBackground(Color.red);
+		dessertBtn.setBounds(573, 280, 454, 108);
+		dessertBtn.setBorderPainted(false);
+		dessertBtn.setFocusPainted(false); 
+		panel.add(dessertBtn);
+
+		entBtn=new JButton(new ImageIcon("img/entertainment.PNG"));
+		entBtn.setBackground(Color.red);
+		entBtn.setBounds(573, 430, 454, 108);
+		entBtn.setBorderPainted(false);
+		entBtn.setFocusPainted(false); 
+		panel.add(entBtn);
+
+		univBtn=new JButton(new ImageIcon("img/Gachonevent.PNG"));
+		univBtn.setBackground(Color.red);
+		univBtn.setBounds(573, 580, 454, 108);
+		univBtn.setBorderPainted(false);
+		univBtn.setFocusPainted(false); 
+		panel.add(univBtn);
+
+		back=new JButton(new ImageIcon("img/캡처3.PNG"));
+		back.setBackground(Color.red);
+		back.setBounds(650, 730, 300, 74);
+		back.setBorderPainted(false);
+		back.setFocusPainted(false); 
+		panel.add(back);
+
+		dessertBtn.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				change("dessert");
+			}
+		});
+		entBtn.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				change("ent");
+			}
+		});
+		univBtn.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				change("univ");
+			}
+		});
+		back.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				change("main");
+			}	
+		});
+		return panel;
+	}
+	//디저트
+	public JPanel dstPanel(){
+		BufferedReader in;	//receive to server
+		PrintWriter out;	//send to server
+		JPanel panel=new JPanel();
+		JButton bakeBtn;
+		JButton iceBtn;
+		JButton coffBtn;
+		JButton back;
+
+		panel.setLayout(null);
+
+		bakeBtn=new JButton(new ImageIcon("img/bakery.jpg"));
+		bakeBtn.setBackground(Color.red);
+		bakeBtn.setBounds(573, 280, 454, 108);
+		bakeBtn.setBorderPainted(false);
+		bakeBtn.setFocusPainted(false); 
+		panel.add(bakeBtn);
+
+		iceBtn=new JButton(new ImageIcon("img/icecream.jpg"));
+		iceBtn.setBackground(Color.red);
+		iceBtn.setBounds(573, 430, 454, 108);
+		iceBtn.setBorderPainted(false);
+		iceBtn.setFocusPainted(false); 
+		panel.add(iceBtn);
+
+		coffBtn=new JButton(new ImageIcon("img/coffee.jpg"));
+		coffBtn.setBackground(Color.red);
+		coffBtn.setBounds(573, 580, 454, 108);
+		coffBtn.setBorderPainted(false);
+		coffBtn.setFocusPainted(false); 
+		panel.add(coffBtn);
+
+		back=new JButton(new ImageIcon("img/캡처3.PNG"));
+		back.setBackground(Color.red);
+		back.setBounds(650, 730, 300, 74);
+		back.setBorderPainted(false);
+		back.setFocusPainted(false); 
+		back.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				change("act");
+			}	
+		});
+		panel.add(back);
+
+		bakeBtn.addActionListener(new listEvent("Bakery"));
+		coffBtn.addActionListener(new listEvent("Coffee"));
+		iceBtn.addActionListener(new listEvent("Ice-cream"));
+		return panel;
+	}
+	//오락 pannel
+	public JPanel entPanel(){
+		JPanel panel=new JPanel();
+		JButton singBtn;
+		JButton billBtn;
+		JButton pcBtn;
+		JButton back;
+
+		panel.setLayout(null);
+
+		singBtn=new JButton(new ImageIcon("img/singing.jpg"));
+		singBtn.setBackground(Color.red);
+		singBtn.setBounds(573, 280, 454, 108);
+		singBtn.setBorderPainted(false);
+		singBtn.setFocusPainted(false); 
+		panel.add(singBtn);
+
+		billBtn=new JButton(new ImageIcon("img/billiard.jpg"));
+		billBtn.setBackground(Color.red);
+		billBtn.setBounds(573, 430, 454, 108);
+		billBtn.setBorderPainted(false);
+		billBtn.setFocusPainted(false); 
+		panel.add(billBtn);
+
+		pcBtn=new JButton(new ImageIcon("img/pcroom.jpg"));
+		pcBtn.setBackground(Color.red);
+		pcBtn.setBounds(573, 580, 454, 108);
+		pcBtn.setBorderPainted(false);
+		pcBtn.setFocusPainted(false); 
+		panel.add(pcBtn);
+
+		back=new JButton(new ImageIcon("img/캡처3.PNG"));
+		back.setBackground(Color.red);
+		back.setBounds(650, 730, 300, 74);
+		back.setBorderPainted(false);
+		back.setFocusPainted(false); 
+		back.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				change("act");
+			}	
+		});
+		panel.add(back);
+
+		singBtn.addActionListener(new listEvent("Bakery"));
+		billBtn.addActionListener(new listEvent("Coffee"));
+		pcBtn.addActionListener(new listEvent("Ice-cream"));
+		return panel;
+	}
+	public class listEvent implements ActionListener{
+		String name;
+		public listEvent(String name)
+		{
+			this.name=name;
+		}
+		public void actionPerformed(ActionEvent arg0) {
+			new listFrame(name);
+		}
 	}
 
-	public static String getName() {		//help to clients, deciding name.
-		return JOptionPane.showInputDialog(
-				frame,
-				"Your Nickname:",
-				"Screen name selection",
-				JOptionPane.PLAIN_MESSAGE);
+/**학교 이벤트 패널
+ * 
+ */
+public JPanel univPanel(){
+	JPanel panel=new JPanel();
+	JButton back;
+	panel.setLayout(null);
+
+
+		back=new JButton(new ImageIcon("img/캡처3.PNG"));
+		back.setBackground(Color.red);
+		back.setBounds(650, 730, 300, 74);
+		back.setBorderPainted(false);
+		back.setFocusPainted(false); 
+		back.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				change("main");
+			}	
+		});
+		panel.add(back);
+		
+		return panel;
 	}
 }
