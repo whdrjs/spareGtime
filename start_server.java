@@ -20,7 +20,7 @@ public class start_server {
 	private static HashSet<PrintWriter> writers = new HashSet<PrintWriter>();
 	Vector<Handler> vc;
 
-	public void start_server() throws Exception {
+	public start_server() throws Exception {
 		System.out.println("The server is running.");
 		ServerSocket listener = new ServerSocket(PORT);
 		vc = new Vector<Handler>();
@@ -35,7 +35,7 @@ public class start_server {
 		}
 	}
 
-	public void S_removeClient(Handler hd) {
+	public void removeClient(Handler hd) {
 		// Remove client to vector.
 		vc.remove(hd);
 	}
@@ -127,7 +127,7 @@ public class start_server {
 	                if (out != null) {
 	                    writers.remove(out);
 	                }
-	                S_removeClient(this);
+	                removeClient(this);
 	                try {
 	                	socket.close();
 	                } catch (IOException e) {
