@@ -80,9 +80,23 @@ public class start_server {
 	                    String command=input.substring(0,4);
 	                    //가게목록 검색
 	                    if(command=="ACT") {
-	                    	input=input.substring(4);
-	                    	out.println(search_content(input));
-	                    }
+	                    	String input1[]=input.split(" ");
+				if(input[1]=="distance"){
+					//거리순
+					switch (input[2]){
+						case 1: //비타 7
+							
+						case 2: //복정파출소 20
+						case 3: //동서울대 27
+					}
+				}
+				else if(input[1]=="star"){
+					
+				}
+				else{
+	                    		out.println(search_content(input));
+	                    	}
+			    }
 	                    //가게정보 검색
 	                    if(command=="STO") {
 	                    	input=input.substring(4);
