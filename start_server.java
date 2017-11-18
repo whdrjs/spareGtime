@@ -27,6 +27,7 @@ public class start_server {
 		static ArrayList<Double> longitude = new ArrayList<Double>();
 		static ArrayList<Float> star = new ArrayList<Float>();
 		static ArrayList<String> address = new ArrayList<String>();
+		static ArrayList<Integer> distance = new ArrayList<Integer>();
 	}
 	static class room_info {// 방 목록을 반환하기 위한 클래스
 		static int count = 0;
@@ -66,6 +67,7 @@ public class start_server {
 			this.socket = socket;
 		}
 		
+
 		public void run()  {
 	            try {
 	            	in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -96,24 +98,53 @@ public class start_server {
 	                    String command=input.substring(0,4);
 	                    //가게목록 검색
 	                    if(command=="ACT") {
+				    //"ACT content distance 1"
+				    //"ACT content star"
 	                    	String input1[]=input.split(" ");
 				content_info inform = new content_info();
-				if(input[1]=="distance"){
+				    inform = search_content(input[1]);
+				if(input[2]=="distance"){
 					//거리순
+					
+					
+					
+					
+					int i,j,rank[5];
+					content_info rank = new content_info();
 					switch (input[2]){
 						case 1: //비타 7
+							for(i=0;i<inform.distance.size();i++){
+								inform.distance.set(i,inform.distance.get(i)-7);
+								if(inform.distance.get(i)<0)
+									inform.distance.set(i,inform.distance.get(i)*-1);
+							}
 							break;
 						case 2: //복정파출소 20
+							for(i=0;i<inform.distance.size();i++){
+								inform.distance.set(i,inform.distance.get(i)-20);
+								if(inform.distance.get(i)<0)
+									inform.distance.set(i,inform.distance.get(i)*-1);
+							}
 							break;
 						case 3: //동서울대 27
-							
+							for(i=0;i<inform.distance.size();i++){
+								inform.distance.set(i,inform.distance.get(i)-27);
+								if(inform.distance.get(i)<0)
+									inform.distance.set(i,inform.distance.get(i)*-1);
+							}
+					}
+					for(i=0;i<5;i++){
+						int max=-1;
+						for(j=0;j<inform.distance.size();j++){
+							if()
+						}
 					}
 				}
 				else if(input[1]=="star"){
 					
 				}
 				else{
-	                    		out.println(search_content(input));
+	                    		out.println();
 	                    	}
 			    }
 	                    //가게정보 검색
@@ -389,6 +420,7 @@ public class start_server {
 			inform.longitude.add(res.getString("longitude"));
 			inform.star.add(res.getString("star"));
 			inform.address.add(res.getString("address"));
+			inform.distance.add(res.getInt("distance"));
 			inform.count++;
 		}
 
