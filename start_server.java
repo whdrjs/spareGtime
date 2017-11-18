@@ -19,7 +19,23 @@ public class start_server {
 	private static HashSet<String> names = new HashSet<String>();
 	private static HashSet<PrintWriter> writers = new HashSet<PrintWriter>();
 	Vector<Handler> vc;
-
+	static class content_info {// 컨텐츠 목록을 반환하기 위한 클래스
+		static int count = 0;
+		static ArrayList<String> content = new ArrayList<String>();
+		static ArrayList<String> name = new ArrayList<String>();
+		static ArrayList<Double> latitude = new ArrayList<Double>();
+		static ArrayList<Double> longitude = new ArrayList<Double>();
+		static ArrayList<Float> star = new ArrayList<Float>();
+		static ArrayList<String> address = new ArrayList<String>();
+	}
+	static class room_info {// 방 목록을 반환하기 위한 클래스
+		static int count = 0;
+		static ArrayList<Integer> id = new ArrayList<Integer>();
+		static ArrayList<String> name = new ArrayList<String>();
+		static ArrayList<Integer> maximum = new ArrayList<Integer>();
+		static ArrayList<String> spare_time = new ArrayList<String>();
+		static ArrayList<String> content = new ArrayList<String>();
+	}
 	public start_server() throws Exception {
 		System.out.println("The server is running.");
 		ServerSocket listener = new ServerSocket(PORT);
@@ -81,13 +97,16 @@ public class start_server {
 	                    //가게목록 검색
 	                    if(command=="ACT") {
 	                    	String input1[]=input.split(" ");
+				content_info inform = new content_info();
 				if(input[1]=="distance"){
 					//거리순
 					switch (input[2]){
 						case 1: //비타 7
-							
+							break;
 						case 2: //복정파출소 20
+							break;
 						case 3: //동서울대 27
+							
 					}
 				}
 				else if(input[1]=="star"){
@@ -160,15 +179,7 @@ public class start_server {
 			return hd;
 		}
 	}
-
-	static class room_info {// 방 목록을 반환하기 위한 클래스
-		static int count = 0;
-		static ArrayList<Integer> id = new ArrayList<Integer>();
-		static ArrayList<String> name = new ArrayList<String>();
-		static ArrayList<Integer> maximum = new ArrayList<Integer>();
-		static ArrayList<String> spare_time = new ArrayList<String>();
-		static ArrayList<String> content = new ArrayList<String>();
-	}
+	
 
 	public static Scanner in = new Scanner(System.in);
 
@@ -356,35 +367,36 @@ public class start_server {
 		return inform;
 	}
 
-	public static String[] search_content(String content) throws ClassNotFoundException, SQLException {
+	public static content_info search_content(String content) throws ClassNotFoundException, SQLException {
 
 		// 카테고리에서 컨텐츠를 찾아오는 함수
 		// 매뉴에서 컨텐츠를 보여줄때 사용
 
 		Connection conn = getConnection();
-		String sql = "select name from contents where content = ?";// sql 쿼리
+		content_info inform = new content_info();
+		String sql = "select * from contents where content = ?";// sql 쿼리
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, content);
-		String name[] = null;
-		int count = 0;
-
+		
 		ResultSet res = pstmt.executeQuery();
 
 		if (res != null)
 			System.out.println("탐색완료");
-		else {
-			name[0] = "정보에 맞는 컨텐츠가 없습니다";
-			return name;
-		}
 		while (res.next()) {
-			name[count] = res.getString("name");
-			count++;
+			inform.content.add(res.getInt("content"));
+			inform.name.add(res.getString("name"));
+			inform.latitude.add(res.getInt("latitude"));
+			inform.longitude.add(res.getString("longitude"));
+			inform.star.add(res.getString("star"));
+			inform.address.add(res.getString("address"));
+			inform.count++;
 		}
+
 		if (pstmt != null)
 			pstmt.close();
 		if (conn != null)
 			conn.close();
-		return name;
+		return inform;
 	}
 	public static String[] search_store(String name) throws ClassNotFoundException, SQLException {
 
