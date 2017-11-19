@@ -28,6 +28,26 @@ public class start_server {
 		static ArrayList<Float> star = new ArrayList<Float>();
 		static ArrayList<String> address = new ArrayList<String>();
 		static ArrayList<Integer> distance = new ArrayList<Integer>();
+		static void add(res.getInt("ID")){
+			inform.content.add(res.getInt("content"));
+			inform.name.add(res.getString("name"));
+			inform.latitude.add(res.getInt("latitude"));
+			inform.longitude.add(res.getString("longitude"));
+			inform.star.add(res.getString("star"));
+			inform.address.add(res.getString("address"));
+			inform.distance.add(res.getInt("distance"));
+			inform.count++;
+		}
+		static void add(content_info a,int i){
+			inform.content.add(a.content.get(i));
+			inform.name.add(a.name.get(i));
+			inform.latitude.add(a.latitude.get(i));
+			inform.longitude.add(a.longitude.get(i));
+			inform.star.add(a.star.get(i));
+			inform.address.add(a.address.get(i));
+			inform.distance.add(a.distance.get(i));
+			inform.count++;
+		}
 	}
 	static class room_info {// 방 목록을 반환하기 위한 클래스
 		static int count = 0;
@@ -36,6 +56,22 @@ public class start_server {
 		static ArrayList<Integer> maximum = new ArrayList<Integer>();
 		static ArrayList<String> spare_time = new ArrayList<String>();
 		static ArrayList<String> content = new ArrayList<String>();
+		static void add(ResultSet res){
+			inform.id.add(res.getInt("ID"));
+			inform.name.add(res.getString("name"));
+			inform.maximum.add(res.getInt("maximum"));
+			inform.spare_time.add(res.getString("spare_time"));
+			inform.content.add(res.getString("content"));
+			inform.count++;
+		}
+		static void add(room_info a,int i){
+			inform.id.add(a.id.get(i));
+			inform.name.add(a.name.get(i));
+			inform.maximum.add(a.maximum.get(i));
+			inform.spare_time.add(a.spare_time.get(i));
+			inform.content.add(a.content.get(i));
+			inform.count++;
+		}
 	}
 	public start_server() throws Exception {
 		System.out.println("The server is running.");
@@ -105,10 +141,6 @@ public class start_server {
 				    inform = search_content(input[1]);
 				if(input[2]=="distance"){
 					//거리순
-					
-					
-					
-					
 					int i,j,rank[5];
 					content_info rank = new content_info();
 					switch (input[2]){
@@ -133,10 +165,15 @@ public class start_server {
 									inform.distance.set(i,inform.distance.get(i)*-1);
 							}
 					}
-					for(i=0;i<5;i++){
-						int max=-1;
-						for(j=0;j<inform.distance.size();j++){
-							if()
+					int min[4]=0;
+					int c=0;
+					for(i=0;i<inform.distance.size();i++){
+						for(j=i;j<inform.distance.size();j++){
+							if(inform.distance.get(j)<inform.distance.get(min[c])){
+								for(int k=0;k<c;k++){
+								}
+								min[c]=j;
+							}
 						}
 					}
 				}
@@ -383,12 +420,7 @@ public class start_server {
 		}
 
 		while (res.next()) {
-			inform.id.add(res.getInt("ID"));
-			inform.name.add(res.getString("name"));
-			inform.maximum.add(res.getInt("maximum"));
-			inform.spare_time.add(res.getString("spare_time"));
-			inform.content.add(res.getString("content"));
-			inform.count++;
+			inform.add(res);
 		}
 
 		if (pstmt != null)
@@ -414,14 +446,7 @@ public class start_server {
 		if (res != null)
 			System.out.println("탐색완료");
 		while (res.next()) {
-			inform.content.add(res.getInt("content"));
-			inform.name.add(res.getString("name"));
-			inform.latitude.add(res.getInt("latitude"));
-			inform.longitude.add(res.getString("longitude"));
-			inform.star.add(res.getString("star"));
-			inform.address.add(res.getString("address"));
-			inform.distance.add(res.getInt("distance"));
-			inform.count++;
+			inform.add(res);
 		}
 
 		if (pstmt != null)
