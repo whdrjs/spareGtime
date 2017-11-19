@@ -165,20 +165,82 @@ public class start_server {
 									inform.distance.set(i,inform.distance.get(i)*-1);
 							}
 					}
-					int min[4]=0;
-					int c=0;
-					for(i=0;i<inform.distance.size();i++){
-						for(j=i;j<inform.distance.size();j++){
-							if(inform.distance.get(j)<inform.distance.get(min[c])){
-								for(int k=0;k<c;k++){
-								}
-								min[c]=j;
+					int min[4]={0,1,2,3};
+					for(i=4;i<inform.distance.size();i++){
+						int c=0;
+						for(j=0;j<4;j++){
+							if(inform.distance.get(min[j])>inform.distance.get(min[c])){
+								c=j;
 							}
 						}
+						if(inform.distance.get(i)<inform.distance.get(min[c])){
+							min[c]=i;
+						}
 					}
+					int m1=0,m2=0;
+					for(i=0;i<4;i++){
+						if(inform.distance.get(min[i])>inform.distance.get(min[m1])){
+							m1=i;
+						}
+						if(inform.distance.get(min[i])<inform.distance.get(min[m2])){
+							m2=i;
+						}
+					}
+					int temp;
+					temp=min[3];
+					min[3]=min[m1];
+					min[m1]=temp;
+					temp=min[0];
+					min[0]=min[m2];
+					min[m2]=temp;
+					if((inform.distance.get(min[2])<inform.distance.get(min[1])){
+						temp=min[1];
+						min[1]=min[2];
+						min[2]=temp;
+					}
+					for(i=0;i<4;i++){
+						rank.add(inform,min[i]);
+					}	 
+					out.println(rank);
 				}
 				else if(input[1]=="star"){
-					
+					int min[4]={0,1,2,3};
+					for(i=4;i<inform.star.size();i++){
+						int c=0;
+						for(j=0;j<4;j++){
+							if(inform.star.get(min[j])>inform.star.get(min[c])){
+								c=j;
+							}
+						}
+						if(inform.star.get(i)<inform.star.get(min[c])){
+							min[c]=i;
+						}
+					}
+					int m1=0,m2=0;
+					for(i=0;i<4;i++){
+						if(inform.distance.get(min[i])>inform.distance.get(min[m1])){
+							m1=i;
+						}
+						if(inform.distance.get(min[i])<inform.distance.get(min[m2])){
+							m2=i;
+						}
+					}
+					int temp;
+					temp=min[3];
+					min[3]=min[m1];
+					min[m1]=temp;
+					temp=min[0];
+					min[0]=min[m2];
+					min[m2]=temp;
+					if((inform.distance.get(min[2])<inform.distance.get(min[1])){
+						temp=min[1];
+						min[1]=min[2];
+						min[2]=temp;
+					}
+					for(i=0;i<4;i++){
+						rank.add(inform,min[i]);
+					}	 
+					out.println(rank);
 				}
 				else{
 	                    		out.println();
