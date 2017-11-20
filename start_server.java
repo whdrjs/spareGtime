@@ -15,62 +15,62 @@ import java.util.HashSet;
 import java.util.Vector;
 
 public class start_server {
-	private static final int PORT = 9000;
-	private static HashSet<String> names = new HashSet<String>();
-	private static HashSet<PrintWriter> writers = new HashSet<PrintWriter>();
+	private   final int PORT = 9000;
+	private   HashSet<String> names = new HashSet<String>();
+	private   HashSet<PrintWriter> writers = new HashSet<PrintWriter>();
 	Vector<Handler> vc;
-	static class content_info {// 컨텐츠 목록을 반환하기 위한 클래스
-		static int count = 0;
-		static ArrayList<String> content = new ArrayList<String>();
-		static ArrayList<String> name = new ArrayList<String>();
-		static ArrayList<Double> latitude = new ArrayList<Double>();
-		static ArrayList<Double> longitude = new ArrayList<Double>();
-		static ArrayList<Float> star = new ArrayList<Float>();
-		static ArrayList<String> address = new ArrayList<String>();
-		static ArrayList<Integer> distance = new ArrayList<Integer>();
-		static void add(ResultSet res) throws SQLException{
-			content_info.content.add(res.getString("content"));
-			content_info.name.add(res.getString("name"));
-			content_info.latitude.add(res.getDouble("latitude"));
-			content_info.longitude.add(res.getDouble("longitude"));
-			content_info.star.add(res.getFloat("star"));
-			content_info.address.add(res.getString("address"));
-			content_info.distance.add(res.getInt("distance"));
-			content_info.count++;
+	class content_info {// 컨텐츠 목록을 반환하기 위한 클래스
+		int count = 0;
+		ArrayList<String> content = new ArrayList<String>();
+		  ArrayList<String> name = new ArrayList<String>();
+		  ArrayList<Double> latitude = new ArrayList<Double>();
+		  ArrayList<Double> longitude = new ArrayList<Double>();
+		  ArrayList<Float> star = new ArrayList<Float>();
+		  ArrayList<String> address = new ArrayList<String>();
+		  ArrayList<Integer> distance = new ArrayList<Integer>();
+		  void add(ResultSet res) throws SQLException{
+			this.content.add(res.getString("content"));
+			this.name.add(res.getString("name"));
+			this.latitude.add(res.getDouble("latitude"));
+			this.longitude.add(res.getDouble("longitude"));
+			this.star.add(res.getFloat("star"));
+			this.address.add(res.getString("address"));
+			this.distance.add(res.getInt("distance"));
+			this.count++;
 		}
-		static void add(content_info a,int i){
-			content_info.content.add(a.content.get(i));
-			content_info.name.add(a.name.get(i));
-			content_info.latitude.add(a.latitude.get(i));
-			content_info.longitude.add(a.longitude.get(i));
-			content_info.star.add(a.star.get(i));
-			content_info.address.add(a.address.get(i));
-			content_info.distance.add(a.distance.get(i));
-			content_info.count++;
+		  void add(content_info a,int i){
+			this.content.add(a.content.get(i));
+			this.name.add(a.name.get(i));
+			this.latitude.add(a.latitude.get(i));
+			this.longitude.add(a.longitude.get(i));
+			this.star.add(a.star.get(i));
+			this.address.add(a.address.get(i));
+			this.distance.add(a.distance.get(i));
+			this.count++;
 		}
 	}
-	static class room_info {// 방 목록을 반환하기 위한 클래스
-		static int count = 0;
-		static ArrayList<Integer> id = new ArrayList<Integer>();
-		static ArrayList<String> name = new ArrayList<String>();
-		static ArrayList<Integer> maximum = new ArrayList<Integer>();
-		static ArrayList<String> spare_time = new ArrayList<String>();
-		static ArrayList<String> content = new ArrayList<String>();
-		static void add(ResultSet res) throws SQLException{
-			room_info.id.add(res.getInt("ID"));
-			room_info.name.add(res.getString("name"));
-			room_info.maximum.add(res.getInt("maximum"));
-			room_info.spare_time.add(res.getString("spare_time"));
-			room_info.content.add(res.getString("content"));
-			room_info.count++;
+	  class room_info {// 방 목록을 반환하기 위한 클래스
+		  int count = 0;
+		  ArrayList<Integer> id = new ArrayList<Integer>();
+		  ArrayList<String> name = new ArrayList<String>();
+		  ArrayList<Integer> maximum = new ArrayList<Integer>();
+		  ArrayList<String> spare_time = new ArrayList<String>();
+		  ArrayList<String> content = new ArrayList<String>();
+		  void add(ResultSet res) throws SQLException{
+			this.id.add(res.getInt("ID"));
+			this.name.add(res.getString("name"));
+			this.maximum.add(res.getInt("maximum"));
+			this.spare_time.add(res.getString("spare_time"));
+			this.content.add(res.getString("content"));
+			this.count++;
 		}
-		static void add(room_info a,int i){
-			room_info.id.add(a.id.get(i));
-			room_info.name.add(a.name.get(i));
-			room_info.maximum.add(a.maximum.get(i));
-			room_info.spare_time.add(a.spare_time.get(i));
-			room_info.content.add(a.content.get(i));
-			room_info.count++;
+		  void add(room_info a,int i){
+			this.id.add(a.id.get(i));
+			this.name.add(a.name.get(i));
+			this.maximum.add(a.maximum.get(i));
+			this.spare_time.add(a.spare_time.get(i));
+			this.content.add(a.content.get(i));
+			this.count++;
 		}
 	}
 	public start_server() throws Exception {
@@ -313,9 +313,9 @@ public class start_server {
 	}
 	
 
-	public static Scanner in = new Scanner(System.in);
+	public   Scanner in = new Scanner(System.in);
 
-	public static Connection getConnection() throws ClassNotFoundException, SQLException {
+	public   Connection getConnection() throws ClassNotFoundException, SQLException {
 		// sql 데이터베이스에 연결
 		String url = "jdbc:mysql://localhost:3306/sparegtime";// 경로
 		String user = "root";// ID
@@ -330,7 +330,7 @@ public class start_server {
 
 	}
 
-	public static void insert_room(int ID, String name, int maximum, String spare_time, String content)
+	public   void insert_room(int ID, String name, int maximum, String spare_time, String content)
 			throws ClassNotFoundException, SQLException {
 		// 사용자가 방을 만들었을 때 방의 정보를 sql에 저장하는 함수
 		Connection conn = getConnection();
@@ -359,7 +359,7 @@ public class start_server {
 			conn.close();
 	}
 
-	public static void insert_event(String content, String name, double latitude, double longitude, float star,
+	public   void insert_event(String content, String name, double latitude, double longitude, float star,
 			String address) throws ClassNotFoundException, SQLException {
 
 		// 이벤트를 추가할때 사용하는 함수
@@ -394,7 +394,7 @@ public class start_server {
 
 	}
 
-	public static void delete_room(int ID) throws ClassNotFoundException, SQLException {
+	public   void delete_room(int ID) throws ClassNotFoundException, SQLException {
 
 		// 방에 인원이 다나갔을때 방을 삭제하는 함수
 		// 방에 인원이 다나갔는지 확인하는 기능추가(메인에서)
@@ -414,7 +414,7 @@ public class start_server {
 			conn.close();
 	}
 
-	public static void delete_event(String name) throws ClassNotFoundException, SQLException {
+	public   void delete_event(String name) throws ClassNotFoundException, SQLException {
 
 		// 기간이 지나거나 끝난 이벤트를 지우는 함수
 		// 다른 컨텐츠도 사용가능해서 가게를 지울때도 사용가능
@@ -434,7 +434,7 @@ public class start_server {
 			conn.close();
 
 	}
-	public static int enter_room() throws ClassNotFoundException, SQLException{
+	public   int enter_room() throws ClassNotFoundException, SQLException{
 		int port;
 		Connection conn = getConnection();
 		String sql = "select ID from roomlist";// sql 쿼리
@@ -461,7 +461,7 @@ public class start_server {
 		port=id[min];
 		return port;
 	}
-	public static room_info search_room(String spare_time, String content)
+	public   room_info search_room(String spare_time, String content)
 			throws ClassNotFoundException, SQLException {
 
 		// 방목록을 가져오는 함수
@@ -479,7 +479,7 @@ public class start_server {
 		if (res != null) {
 			System.out.println("탐색완료");
 		} else {
-			room_info.name.add("정보에 맞는 방이 없습니다");
+			inform.name.add("정보에 맞는 방이 없습니다");
 			return inform;
 		}
 
@@ -494,7 +494,7 @@ public class start_server {
 		return inform;
 	}
 
-	public static content_info search_content(String content) throws ClassNotFoundException, SQLException {
+	public   content_info search_content(String content) throws ClassNotFoundException, SQLException {
 
 		// 카테고리에서 컨텐츠를 찾아오는 함수
 		// 매뉴에서 컨텐츠를 보여줄때 사용
@@ -519,7 +519,7 @@ public class start_server {
 			conn.close();
 		return inform;
 	}
-	public static String[] search_store(String name) throws ClassNotFoundException, SQLException {
+	public   String[] search_store(String name) throws ClassNotFoundException, SQLException {
 
 		// 카테고리에서 컨텐츠를 찾아오는 함수
 		// 매뉴에서 컨텐츠를 보여줄때 사용
