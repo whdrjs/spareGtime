@@ -28,25 +28,25 @@ public class start_server {
 		static ArrayList<Float> star = new ArrayList<Float>();
 		static ArrayList<String> address = new ArrayList<String>();
 		static ArrayList<Integer> distance = new ArrayList<Integer>();
-		static void add(res.getInt("ID")){
-			inform.content.add(res.getInt("content"));
-			inform.name.add(res.getString("name"));
-			inform.latitude.add(res.getInt("latitude"));
-			inform.longitude.add(res.getString("longitude"));
-			inform.star.add(res.getString("star"));
-			inform.address.add(res.getString("address"));
-			inform.distance.add(res.getInt("distance"));
-			inform.count++;
+		static void add(ResultSet res) throws SQLException{
+			content_info.content.add(res.getString("content"));
+			content_info.name.add(res.getString("name"));
+			content_info.latitude.add(res.getDouble("latitude"));
+			content_info.longitude.add(res.getDouble("longitude"));
+			content_info.star.add(res.getFloat("star"));
+			content_info.address.add(res.getString("address"));
+			content_info.distance.add(res.getInt("distance"));
+			content_info.count++;
 		}
 		static void add(content_info a,int i){
-			inform.content.add(a.content.get(i));
-			inform.name.add(a.name.get(i));
-			inform.latitude.add(a.latitude.get(i));
-			inform.longitude.add(a.longitude.get(i));
-			inform.star.add(a.star.get(i));
-			inform.address.add(a.address.get(i));
-			inform.distance.add(a.distance.get(i));
-			inform.count++;
+			content_info.content.add(a.content.get(i));
+			content_info.name.add(a.name.get(i));
+			content_info.latitude.add(a.latitude.get(i));
+			content_info.longitude.add(a.longitude.get(i));
+			content_info.star.add(a.star.get(i));
+			content_info.address.add(a.address.get(i));
+			content_info.distance.add(a.distance.get(i));
+			content_info.count++;
 		}
 	}
 	static class room_info {// 방 목록을 반환하기 위한 클래스
@@ -56,21 +56,21 @@ public class start_server {
 		static ArrayList<Integer> maximum = new ArrayList<Integer>();
 		static ArrayList<String> spare_time = new ArrayList<String>();
 		static ArrayList<String> content = new ArrayList<String>();
-		static void add(ResultSet res){
-			inform.id.add(res.getInt("ID"));
-			inform.name.add(res.getString("name"));
-			inform.maximum.add(res.getInt("maximum"));
-			inform.spare_time.add(res.getString("spare_time"));
-			inform.content.add(res.getString("content"));
-			inform.count++;
+		static void add(ResultSet res) throws SQLException{
+			room_info.id.add(res.getInt("ID"));
+			room_info.name.add(res.getString("name"));
+			room_info.maximum.add(res.getInt("maximum"));
+			room_info.spare_time.add(res.getString("spare_time"));
+			room_info.content.add(res.getString("content"));
+			room_info.count++;
 		}
 		static void add(room_info a,int i){
-			inform.id.add(a.id.get(i));
-			inform.name.add(a.name.get(i));
-			inform.maximum.add(a.maximum.get(i));
-			inform.spare_time.add(a.spare_time.get(i));
-			inform.content.add(a.content.get(i));
-			inform.count++;
+			room_info.id.add(a.id.get(i));
+			room_info.name.add(a.name.get(i));
+			room_info.maximum.add(a.maximum.get(i));
+			room_info.spare_time.add(a.spare_time.get(i));
+			room_info.content.add(a.content.get(i));
+			room_info.count++;
 		}
 	}
 	public start_server() throws Exception {
@@ -138,34 +138,34 @@ public class start_server {
 				    //"ACT content star"
 	                    	String input1[]=input.split(" ");
 				content_info inform = new content_info();
-				    inform = search_content(input[1]);
-				if(input[2]=="distance"){
+				    inform = search_content(input1[1]);
+				if(input1[2]=="distance"){
 					//거리순
-					int i,j,rank[5];
+					int i,j;
 					content_info rank = new content_info();
-					switch (input[2]){
-						case 1: //비타 7
+					switch (input1[2]){
+						case "1": //비타 7
 							for(i=0;i<inform.distance.size();i++){
 								inform.distance.set(i,inform.distance.get(i)-7);
 								if(inform.distance.get(i)<0)
 									inform.distance.set(i,inform.distance.get(i)*-1);
 							}
 							break;
-						case 2: //복정파출소 20
+						case "2": //복정파출소 20
 							for(i=0;i<inform.distance.size();i++){
 								inform.distance.set(i,inform.distance.get(i)-20);
 								if(inform.distance.get(i)<0)
 									inform.distance.set(i,inform.distance.get(i)*-1);
 							}
 							break;
-						case 3: //동서울대 27
+						case "3": //동서울대 27
 							for(i=0;i<inform.distance.size();i++){
 								inform.distance.set(i,inform.distance.get(i)-27);
 								if(inform.distance.get(i)<0)
 									inform.distance.set(i,inform.distance.get(i)*-1);
 							}
 					}
-					int min[4]={0,1,2,3};
+					int min[]={0,1,2,3};
 					for(i=4;i<inform.distance.size();i++){
 						int c=0;
 						for(j=0;j<4;j++){
@@ -193,7 +193,7 @@ public class start_server {
 					temp=min[0];
 					min[0]=min[m2];
 					min[m2]=temp;
-					if((inform.distance.get(min[2])<inform.distance.get(min[1])){
+					if(inform.distance.get(min[2])<inform.distance.get(min[1])){
 						temp=min[1];
 						min[1]=min[2];
 						min[2]=temp;
@@ -203,8 +203,10 @@ public class start_server {
 					}	 
 					out.println(rank);
 				}
-				else if(input[1]=="star"){
-					int min[4]={0,1,2,3};
+				else if(input1[1]=="star"){
+					int i,j;
+					content_info rank = new content_info();
+					int min[]={0,1,2,3};
 					for(i=4;i<inform.star.size();i++){
 						int c=0;
 						for(j=0;j<4;j++){
@@ -232,7 +234,7 @@ public class start_server {
 					temp=min[0];
 					min[0]=min[m2];
 					min[m2]=temp;
-					if((inform.distance.get(min[2])<inform.distance.get(min[1])){
+					if(inform.distance.get(min[2])<inform.distance.get(min[1])){
 						temp=min[1];
 						min[1]=min[2];
 						min[2]=temp;
@@ -549,7 +551,7 @@ public class start_server {
 		return store;
 	}
 
-	public static void main(String[] args) throws ClassNotFoundException, SQLException, IOException {
+	public static void main(String[] args) throws Exception {
 
 		new start_server();
 	}
