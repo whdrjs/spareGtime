@@ -27,28 +27,17 @@ import javax.swing.JList;
 //import spareTime.ChatClient;
 import spareTime.Client;;
 
-/**
- * ÀÌº¥Æ® ¸ñ·Ï º¸¿©ÁÖ±â À§ÇÑ ÆË¾÷ Ã¢
- * ÆË¾÷Ã¢ÀÌ¾î¼­ eventFrame Àº FrameÀ¸·Î
- * @author Á¾°Ç
- *
- */
-//¹è°æ ³ÖÀ½
 class eventFrame extends JFrame {
 	
-	JPanel contentPane;// ¸ŞÀÎÆĞ³Î
+	JPanel contentPane=new JPanel() {
+		Image bg= new ImageIcon("img/mainBG.jpg").getImage();
+		public void paintComponent(Graphics g) {
+			g.drawImage(bg,0,0,getWidth(),getHeight(),this);
+		}
+	};
 	private JButton close=new JButton("close");
 	
 	public eventFrame() {
-				
-		contentPane =new JPanel() {
-			Image bg= new ImageIcon("img/mainBG.jpg").getImage(); // ¸ŞÀÎ ÆĞ³Î¿¡ ¹è°æ ³Ö±â
-			
-			public void paintComponent(Graphics g) {
-				g.drawImage(bg,0,0,getWidth(),getHeight(),this);//ÇÁ·¹ÀÓ¿¡ ¸Â°Ô Á¶Àı µÇ´Â ÀÌ¹ÌÁö
-			}
-		};
-
 		setTitle("Event!");
 		setSize(450,500);
 		setLocation(0, 80);
@@ -57,14 +46,8 @@ class eventFrame extends JFrame {
 		setVisible(true);
 	}
 }
-/**
- *bakery, ice, coffee , ³ë·¡¹æ ´ç±¸Àå, pc¹æ¿¡ ÄŞº¸¹Ú½º´Â ³Ö°Ú´Âµ¥
- *±× ¹Ø¿¡ ÄÜÅ×Ã÷ µğºñ¿Í¿¬µ¿ÇÏ°í Á¤·Ä ¹æ¹ı... 
- */
-//¹è°æ ³ÖÀ½
-class listFrame extends JFrame{
-	
 
+class listFrame extends JFrame{
 	private JPanel mainList;
 	private JPanel infoPanel;
 	private JComboBox<String> combo= new JComboBox<String>();
@@ -74,13 +57,10 @@ class listFrame extends JFrame{
 	private JButton back;
 	private JList list=new JList();
 	private JScrollPane scroll=new JScrollPane();
-	private UI frm;
 	
 	Client client=new Client();
 
-	//DB¿¡¼­ ¹Ş¾Æ¿Ã ¸ñ·Ï
-	public String[] listStr= {"ÀÓ½Ã 1","ÀÓ½Ã 2","ÀÓ½Ã 3","ÀÓ½Ã 4","ÀÓ½Ã 5","ÀÓ½Ã 6","ÀÓ½Ã 7"};
-	//,"ÀÓ½Ã 1","ÀÓ½Ã 2","ÀÓ½Ã 3","ÀÓ½Ã 4","ÀÓ½Ã 5","ÀÓ½Ã 6","ÀÓ½Ã 7"};
+	public String[] listStr= {"List 1"};
 	public String select;
 
 	public listFrame(String pre) {
@@ -89,32 +69,31 @@ class listFrame extends JFrame{
 		setLocation(530, 50);
 		
 		mainList =new JPanel() {
-			Image bg= new ImageIcon("img/submain.png").getImage(); // ¸ŞÀÎ ÆĞ³Î¿¡ ¹è°æ ³Ö±â
+			Image bg= new ImageIcon("img/submain.png").getImage();
 			
 			public void paintComponent(Graphics g) {
-				g.drawImage(bg,0,0,getWidth(),getHeight(),this);//ÇÁ·¹ÀÓ¿¡ ¸Â°Ô Á¶Àı µÇ´Â ÀÌ¹ÌÁö
+				g.drawImage(bg,0,0,getWidth(),getHeight(),this);
 			}
 		};
 		mainList.setLayout(null);
-		combo.addItem("ÆòÁ¡¼ø");
-		combo.addItem("°Å¸®¼ø");
-		combo.addItem("°¡°İ¼ø");
+		combo.addItem("ê±°ë¦¬");
+		combo.addItem("í‰ì ");
 		combo.setEditable(false);
 		combo.setBounds(150, 30, 240, 40);
 		mainList.add(combo);
 
 		//list
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		list.setListData(listStr); //¸®½ºÆ®ÀÇ µ¥ÀÌÅÍ°¡ µÉ ¸ñ·Ï ¼³Á¤
+		list.setListData(listStr);
 		list.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {					
-				select=" ";//µ¥ÀÌÅÍº£ÀÌ½º¿¡¼­ °¡Á®¿Â °¡°ÔÀÌ¸§ ¼±ÅÃÇÏ¸é Áı¾î³Ö±â
+				select=" ";
 			}
-		}); //ÀÌº¥Æ®¸®½º³Ê ÀåÂø
+		}); 
 
 		scroll.setViewportView(list);
 		scroll.setBounds(70, 105, 400, 450);
-		scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); //°¡·Î¹ÙÁ¤Ã¥
+		scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); 
 
 		scroll.setViewportView(list);
 		mainList.add(scroll);
@@ -136,10 +115,10 @@ class listFrame extends JFrame{
 		setVisible(true);
 
 		infoPanel =new JPanel() {
-			Image bg= new ImageIcon("img/submain.png").getImage(); // ¸ŞÀÎ ÆĞ³Î¿¡ ¹è°æ ³Ö±â
+			Image bg= new ImageIcon("img/submain.png").getImage(); 
 			
 			public void paintComponent(Graphics g) {
-				g.drawImage(bg,0,0,getWidth(),getHeight(),this);//ÇÁ·¹ÀÓ¿¡ ¸Â°Ô Á¶Àı µÇ´Â ÀÌ¹ÌÁö
+				g.drawImage(bg,0,0,getWidth(),getHeight(),this);
 			}
 		};
 		infoPanel.setLayout(null);
@@ -158,7 +137,7 @@ class listFrame extends JFrame{
 
 		infoPanel.add(mateBtn);
 
-		back=new JButton(new ImageIcon("img/Ä¸Ã³4.PNG"));
+		back=new JButton(new ImageIcon("img/ìº¡ì²˜4.PNG"));
 		back.setBackground(Color.red);
 		back.setBounds(640, 550, 225, 56);
 		back.setBorderPainted(false);
@@ -187,10 +166,10 @@ class mateFrame extends JFrame{
 	public mateFrame(String pre)
 	{
 		panel =new JPanel() {
-			Image bg= new ImageIcon("img/submain.png").getImage(); // ¸ŞÀÎ ÆĞ³Î¿¡ ¹è°æ ³Ö±â
+			Image bg= new ImageIcon("img/submain.png").getImage();
 			
 			public void paintComponent(Graphics g) {
-				g.drawImage(bg,0,0,getWidth(),getHeight(),this);//ÇÁ·¹ÀÓ¿¡ ¸Â°Ô Á¶Àı µÇ´Â ÀÌ¹ÌÁö
+				g.drawImage(bg,0,0,getWidth(),getHeight(),this);
 			}
 		};
 		panel.setLayout(null);
@@ -253,20 +232,18 @@ public class UI extends JFrame{
 	ImageIcon icon;
 	
 	public UI() {
-		
-		// Layout GUI
+
 		setTitle("Gtime");
 		setSize(1600,900);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	//when window exit button(x) is clicked, process is terminated. 
 		getContentPane().add(mp);
 	}
 
-	//ÆĞ³Î ¹Ù²Ù¾î ÁÖ´Â ÇÔ¼ö!
 	public void change(String panelName)
 	{
 		if(panelName.equals("main")) {
-			getContentPane().removeAll(); //±âÁ¸ ÆĞ³Î Á¦°Å
-			getContentPane().add(mp);     //»õ ÆĞ³Î Ãß°¡
+			getContentPane().removeAll(); 
+			getContentPane().add(mp);
 			revalidate();
 			repaint();
 		}
@@ -296,22 +273,21 @@ public class UI extends JFrame{
 		}
 	}
 
-	//¸ŞÀÎ ÆĞ³Î
+	//main
 	public JPanel mainPanel()
 	{
 		JPanel panel;
 		panel =new JPanel() {
-			Image bg= new ImageIcon("img/mainBG.jpg").getImage(); // ¸ŞÀÎ ÆĞ³Î¿¡ ¹è°æ ³Ö±â
+			Image bg= new ImageIcon("img/mainBG.jpg").getImage(); //ì´ë¯¸ì§€íŒŒì¼
 			
 			public void paintComponent(Graphics g) {
-				g.drawImage(bg,0,0,getWidth(),getHeight(),this);//ÇÁ·¹ÀÓ¿¡ ¸Â°Ô Á¶Àı µÇ´Â ÀÌ¹ÌÁö
+				g.drawImage(bg,0,0,getWidth(),getHeight(),this);
 			}
 		};
 		JButton findBtn;
 		JButton eventBtn;
 		JButton mateBtn;
 		panel.setLayout(null);
-		//ÀÌ¹ÌÁö Ãß°¡
 		findBtn=new JButton(new ImageIcon("img/findactivity2.jpg"));
 		findBtn.setBackground(Color.red);
 		findBtn.setBounds(573, 400, 454, 108);
@@ -325,7 +301,6 @@ public class UI extends JFrame{
 		panel.add(findBtn);
 
 		eventBtn=new JButton(new ImageIcon("img/promotion.jpg"));
-		//event »õ Ã¢ ¶ç¿ì±â
 		eventBtn.setBackground(Color.blue);
 		eventBtn.setBorderPainted(false);
 		eventBtn.setFocusPainted(false); 
@@ -353,7 +328,7 @@ public class UI extends JFrame{
 
 		return panel;
 	}
-	//activity ÆĞ³Î
+	//activity
 	public JPanel actPanel() {
 		JPanel panel ;
 		JButton dessertBtn;
@@ -362,10 +337,10 @@ public class UI extends JFrame{
 		JButton back;
 		
 		panel =new JPanel() {
-			Image bg= new ImageIcon("img/mainBG.jpg").getImage(); // ¸ŞÀÎ ÆĞ³Î¿¡ ¹è°æ ³Ö±â
+			Image bg= new ImageIcon("img/mainBG.jpg").getImage(); // ï¿½ï¿½ï¿½ï¿½ ï¿½Ğ³Î¿ï¿½ ï¿½ï¿½ï¿½ ï¿½Ö±ï¿½
 			
 			public void paintComponent(Graphics g) {
-				g.drawImage(bg,0,0,getWidth(),getHeight(),this);//ÇÁ·¹ÀÓ¿¡ ¸Â°Ô Á¶Àı µÇ´Â ÀÌ¹ÌÁö
+				g.drawImage(bg,0,0,getWidth(),getHeight(),this);//ï¿½ï¿½ï¿½ï¿½ï¿½Ó¿ï¿½ ï¿½Â°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ç´ï¿½ ï¿½Ì¹ï¿½ï¿½ï¿½
 			}
 		};
 			
@@ -392,7 +367,7 @@ public class UI extends JFrame{
 		univBtn.setFocusPainted(false); 
 		panel.add(univBtn);
 
-		back=new JButton(new ImageIcon("img/Ä¸Ã³3.PNG"));
+		back=new JButton(new ImageIcon("img/ìº¡ì²˜3.PNG"));
 		back.setBackground(Color.red);
 		back.setBounds(650, 730, 300, 74);
 		back.setBorderPainted(false);
@@ -421,7 +396,7 @@ public class UI extends JFrame{
 		});
 		return panel;
 	}
-	//µğÀúÆ®
+
 	public JPanel dstPanel(){
 		BufferedReader in;	//receive to server
 		PrintWriter out;	//send to server
@@ -432,10 +407,10 @@ public class UI extends JFrame{
 		JButton back;
 
 		panel =new JPanel() {
-			Image bg= new ImageIcon("img/mainBG.jpg").getImage(); // ¸ŞÀÎ ÆĞ³Î¿¡ ¹è°æ ³Ö±â
+			Image bg= new ImageIcon("img/mainBG.jpg").getImage();
 			
 			public void paintComponent(Graphics g) {
-				g.drawImage(bg,0,0,getWidth(),getHeight(),this);//ÇÁ·¹ÀÓ¿¡ ¸Â°Ô Á¶Àı µÇ´Â ÀÌ¹ÌÁö
+				g.drawImage(bg,0,0,getWidth(),getHeight(),this);
 			}
 		};
 		panel.setLayout(null);
@@ -461,7 +436,7 @@ public class UI extends JFrame{
 		coffBtn.setFocusPainted(false); 
 		panel.add(coffBtn);
 
-		back=new JButton(new ImageIcon("img/Ä¸Ã³3.PNG"));
+		back=new JButton(new ImageIcon("img/ìº¡ì²˜3.PNG"));
 		back.setBackground(Color.red);
 		back.setBounds(650, 730, 300, 74);
 		back.setBorderPainted(false);
@@ -478,7 +453,7 @@ public class UI extends JFrame{
 		iceBtn.addActionListener(new listEvent("Ice-cream"));
 		return panel;
 	}
-	//¿À¶ô pannel
+	// pannel
 	public JPanel entPanel(){
 		JPanel panel;
 		JButton singBtn;
@@ -486,10 +461,10 @@ public class UI extends JFrame{
 		JButton pcBtn;
 		JButton back;
 		panel =new JPanel() {
-			Image bg= new ImageIcon("img/mainBG.jpg").getImage(); // ¸ŞÀÎ ÆĞ³Î¿¡ ¹è°æ ³Ö±â
+			Image bg= new ImageIcon("img/mainBG.jpg").getImage();
 			
 			public void paintComponent(Graphics g) {
-				g.drawImage(bg,0,0,getWidth(),getHeight(),this);//ÇÁ·¹ÀÓ¿¡ ¸Â°Ô Á¶Àı µÇ´Â ÀÌ¹ÌÁö
+				g.drawImage(bg,0,0,getWidth(),getHeight(),this);
 			}
 		};
 
@@ -516,7 +491,7 @@ public class UI extends JFrame{
 		pcBtn.setFocusPainted(false); 
 		panel.add(pcBtn);
 
-		back=new JButton(new ImageIcon("img/Ä¸Ã³3.PNG"));
+		back=new JButton(new ImageIcon("img/ìº¡ì²˜3.PNG"));
 		back.setBackground(Color.red);
 		back.setBounds(650, 730, 300, 74);
 		back.setBorderPainted(false);
@@ -544,22 +519,19 @@ public class UI extends JFrame{
 		}
 	}
 
-/**ÇĞ±³ ÀÌº¥Æ® ÆĞ³Î
- * 
- */
 public JPanel univPanel(){
 	JPanel panel=new JPanel();
 	JButton back;
 	panel.setLayout(null);
 
 	panel =new JPanel() {
-		Image bg= new ImageIcon("img/mainBG.jpg").getImage(); // ¸ŞÀÎ ÆĞ³Î¿¡ ¹è°æ ³Ö±â
+		Image bg= new ImageIcon("img/mainBG.jpg").getImage();
 		
 		public void paintComponent(Graphics g) {
-			g.drawImage(bg,0,0,getWidth(),getHeight(),this);//ÇÁ·¹ÀÓ¿¡ ¸Â°Ô Á¶Àı µÇ´Â ÀÌ¹ÌÁö
+			g.drawImage(bg,0,0,getWidth(),getHeight(),this);
 		}
 	};
-		back=new JButton(new ImageIcon("img/Ä¸Ã³3.PNG"));
+		back=new JButton(new ImageIcon("img/ìº¡ì²˜3.PNG"));
 		back.setBackground(Color.red);
 		back.setBounds(650, 730, 300, 74);
 		back.setBorderPainted(false);
@@ -574,4 +546,3 @@ public JPanel univPanel(){
 		return panel;
 	}
 }
-
