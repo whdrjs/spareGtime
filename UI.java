@@ -12,12 +12,15 @@ import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
 import java.io.PrintWriter;
 
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
@@ -62,7 +65,66 @@ class listFrame extends JFrame{
 
 	public String[] listStr= {"List 1"};
 	public String select;
+	public Integer location=0;
+	
+	private class distance extends JFrame{
+		JRadioButton visionRaBtn = new JRadioButton("비전타워",true);
+		JRadioButton policeRaBtn = new JRadioButton("복정파출소");
+		JRadioButton otherRaBtn = new JRadioButton("동서울대");
+		
+		public distance()
+		{
+			setDefaultLookAndFeelDecorated(true);
+			setTitle("위치");
+			setSize(420,200);
+			setLocation(470, 40);
+			JPanel pan =new JPanel() {
+				Image bg= new ImageIcon("img/submain.png").getImage();
+				public void paintComponent(Graphics g) {
+					g.drawImage(bg,0,0,getWidth(),getHeight(),this);
+				}
+			};
+			pan.setLayout(null);
+			//버튼 그룹으로
+			ButtonGroup bg=new ButtonGroup();
+			bg.add(visionRaBtn);
+			bg.add(policeRaBtn);
+			bg.add(otherRaBtn);
+			visionRaBtn.setBounds(40, 40, 100,50);
+			visionRaBtn.setContentAreaFilled(false); 
+			visionRaBtn.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					location=1;
+					setVisible(false);
+				}
+			});
+			policeRaBtn.setBounds(150, 40, 100,50);
+			policeRaBtn.setContentAreaFilled(false); 
+			policeRaBtn.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					location=2;
+					setVisible(false);
+				}
+			});
+			otherRaBtn.setBounds(280, 40, 100,50);
+			otherRaBtn.setContentAreaFilled(false); 
+			otherRaBtn.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					location=3;
+					setVisible(false);
+				}
+			});
+			//추가
+			getContentPane().add(new JLabel("가장 근접한 위치를 골라주세요"));
+			pan.add(visionRaBtn);
+			pan.add(policeRaBtn);
+			pan.add(otherRaBtn);
 
+			pan.setVisible(true);
+			getContentPane().add(pan,BorderLayout.CENTER);
+			setVisible(true);
+		}
+	}
 	public listFrame(String pre) {
 		setTitle(pre);
 		setSize(540,720);
@@ -78,6 +140,16 @@ class listFrame extends JFrame{
 		mainList.setLayout(null);
 		combo.addItem("거리");
 		combo.addItem("평점");
+		//combobox에 이벤트 추가 거리 일때
+		combo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e)
+			{
+				if(((String)combo.getSelectedItem()).compareTo("거리")==0)
+				{
+					new distance();
+				}
+			}
+		});
 		combo.setEditable(false);
 		combo.setBounds(150, 30, 240, 40);
 		mainList.add(combo);
@@ -232,7 +304,6 @@ public class UI extends JFrame{
 	ImageIcon icon;
 	
 	public UI() {
-
 		setTitle("Gtime");
 		setSize(1600,900);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	//when window exit button(x) is clicked, process is terminated. 
