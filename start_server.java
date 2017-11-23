@@ -1,3 +1,5 @@
+package spareTime;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -59,7 +61,7 @@ public class start_server {
 					a=a+this.address.get(i)+" ";
 					a=a+this.distance.get(i)+" ";
 				}
-				  return a;
+				  return a; // 
 			  }
 	}
 	  class room_info {// 방 목록을 반환하기 위한 클래스
@@ -223,10 +225,10 @@ public class start_server {
 						min[2]=temp;
 					}
 					for(i=0;i<4;i++){
-						rank.add(inform,min[i]);
+						rank.add(inform,min[i]); //4개 가게 붙이기
 					}	 
-					//String a=rank.output();
-					out.println(rank);
+					String a=rank.output();
+					out.println(a); //클라이언트 한테 보내줌
 				}
 				else if(input1[1]=="star"){
 					int i,j;
@@ -267,8 +269,8 @@ public class start_server {
 					for(i=0;i<4;i++){
 						rank.add(inform,min[i]);
 					}	 
-					//String a=rank.output();
-					out.println(rank);
+					String a=rank.output();
+					out.println(a);
 				}
 				else{
 	                    		out.println();
