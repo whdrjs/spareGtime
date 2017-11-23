@@ -25,8 +25,7 @@ public class start_server {
 		  ArrayList<String> name = new ArrayList<String>();
 		  ArrayList<Float> star = new ArrayList<Float>();
 		  ArrayList<String> address = new ArrayList<String>();
-		  ArrayList<Integer> distance = new ArrayList<Integer>();
-		  void add(ResultSet res) throws SQLException{
+		  ArrayList<Integer> distance = new ArrayList<Integer>();		  void add(ResultSet res) throws SQLException{
 			this.content.add(res.getString("content"));
 			this.name.add(res.getString("name"));
 			this.star.add(res.getFloat("star"));
@@ -49,7 +48,7 @@ public class start_server {
 					a=a+this.name.get(i)+" ";
 					a=a+this.star.get(i)+" ";
 					a=a+this.address.get(i)+" ";
-					a=a+this.distance.get(i)+" ";
+					a=a+this.distance.get(i)+"^";
 				}
 				  return a;
 			  }
@@ -84,7 +83,7 @@ public class start_server {
 				a=a+this.name.get(i)+" ";
 				a=a+this.maximum.get(i)+" ";
 				a=a+this.spare_time.get(i)+" ";
-				a=a+this.content.get(i)+" ";
+				a=a+this.content.get(i)+"^";
 			}
 			  return a;
 		  }
