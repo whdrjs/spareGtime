@@ -141,7 +141,8 @@ public class start_server {
 	                    if (name == null) {
 	                        return;
 	                    }
-	                    synchronized (names) {
+
+				synchronized (names) {
 	                        if (!names.contains(name)) {
 	                            names.add(name);
 	                            break;
@@ -162,6 +163,7 @@ public class start_server {
 	                    if(command=="ACT") {
 				    //"ACT content distance 1"
 				    //"ACT content star"
+				    //"ACT content"
 	                    	String input1[]=input.split(" ");
 				content_info inform = new content_info();
 				    inform = search_content(input1[1]);
@@ -273,7 +275,8 @@ public class start_server {
 					out.println(a);
 				}
 				else{
-	                    		out.println();
+	                    		String a=inform.output();
+					out.println(a);
 	                    	}
 			    }
 	                    //가게정보 검색
