@@ -1,6 +1,5 @@
 package spareTime;
 
-import java.awt.Container;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -12,27 +11,24 @@ import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
-import javax.swing.border.EmptyBorder;
+import javax.swing.border.*;
 import javax.swing.JList;
 
-
 //import spareTime.ChatClient;
-import spareTime.Client;;
+import spareTime.Client;
 
 class eventFrame extends JFrame {
-	
+
 	JPanel contentPane=new JPanel() {
 		Image bg= new ImageIcon("img/mainBG.jpg").getImage();
 		public void paintComponent(Graphics g) {
@@ -40,12 +36,11 @@ class eventFrame extends JFrame {
 		}
 	};
 	private JButton close=new JButton("close");
-	
+
 	public eventFrame() {
 		setTitle("Event!");
 		setSize(450,500);
 		setLocation(0, 80);
-
 		getContentPane().add(contentPane);
 		setVisible(true);
 	}
@@ -59,17 +54,22 @@ class listFrame extends JFrame{
 	private JButton rateBtn;
 	private JButton mateBtn;
 	private JButton back;
-	private JList list=new JList();
+	private JList<String> list=new JList<String>();
 	private JScrollPane scroll=new JScrollPane();
-	
-	public String type1; //act 인지 event 인지
+
+	public String type1="ACT"; //act 인지 event 인지
 	public String type2;//bakery, coffee,ice_cream 인지
-	public String type3;// priority (distance 아니면 star 인지 ).
+	public String type3=" ";// priority (distance 아니면 star 인지 ).
 	public String rawStr;
-	
+
 	Client client=new Client();
 
 	public String[] storeList= {"NULL"}; //가게 리스트
+	//가게 정보 저장
+	public String[] names;
+	public String[] star;
+	public String[] address;
+	
 	public String select;
 	//public Integer location=0; // 1 ,2 ,3 을 보낼꺼다.
 	public String location;
@@ -77,7 +77,7 @@ class listFrame extends JFrame{
 		JRadioButton visionRaBtn = new JRadioButton("비전타워",true);
 		JRadioButton policeRaBtn = new JRadioButton("복정파출소");
 		JRadioButton otherRaBtn = new JRadioButton("동서울대");
-		
+
 		public distance()
 		{
 			setDefaultLookAndFeelDecorated(true);
@@ -103,12 +103,12 @@ class listFrame extends JFrame{
 					type1="ACT";
 					location="1";
 					try {
+						setVisible(false);
 						rawStr=Client.getStoreData(type1, type2 , type3 ,location); 
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					} 
-					setVisible(false);
 				}
 			});
 			policeRaBtn.setBounds(150, 40, 100,50);
@@ -118,12 +118,12 @@ class listFrame extends JFrame{
 					type1="ACT";
 					location="2";
 					try {
+						setVisible(false);
 						rawStr=Client.getStoreData(type1, type2 , type3 ,location);
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					} 
-					setVisible(false);
 				}
 			});
 			otherRaBtn.setBounds(280, 40, 100,50);
@@ -133,12 +133,12 @@ class listFrame extends JFrame{
 					type1="ACT";
 					location="3";
 					try {
+						setVisible(false);
 						rawStr=Client.getStoreData(type1, type2 , type3 ,location);
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					} 
-					setVisible(false);
 				}
 			});
 			//추가
@@ -150,7 +150,7 @@ class listFrame extends JFrame{
 			pan.setVisible(true);
 			getContentPane().add(pan,BorderLayout.CENTER);
 			setVisible(true);
-			
+
 		}
 	}
 	public listFrame(String pre) { //프리 여기 있어요옹
@@ -158,25 +158,38 @@ class listFrame extends JFrame{
 		type2=pre; //pre (bakery) 를 type1 에 넣었어요옹
 		setSize(540,720);
 		setLocation(530, 50);
-		
+
 		mainList =new JPanel() {
 			Image bg= new ImageIcon("img/submain.png").getImage();
-			
+
 			public void paintComponent(Graphics g) {
 				g.drawImage(bg,0,0,getWidth(),getHeight(),this);
 			}
 		};
 		mainList.setLayout(null);
-		combo.addItem("거리");
-		combo.addItem("평점");
+		combo.addItem("Distance");
+		combo.addItem("Rate");
 		//combobox에 이벤트 추가 거리 일때
-		
+		/*try {
+			rawStr=Client.getStoreData(type1, type2 , type3 ,location);
+		} catch (UnsupportedEncodingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} */
 		combo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e)
 			{
-				if(((String)combo.getSelectedItem()).compareTo("거리")==0)
+				if(((String)combo.getSelectedItem()).compareTo("Distance")==0)
 				{
 					type3="distance"; //distance 를 넣어줄꺼야
+					new distance();
+				}
+				if(((String)combo.getSelectedItem()).compareTo("Rate")==0)
+				{
+					type3="star"; //distance 를 넣어줄꺼야
 					new distance();
 				}
 			}
@@ -184,7 +197,8 @@ class listFrame extends JFrame{
 		combo.setEditable(false);
 		combo.setBounds(150, 30, 240, 40);
 		mainList.add(combo);
-
+	//	new makeList(rawStr);
+	//	System.arraycopy(storeList, 0, names,0, names.length);
 		//list
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.setListData(storeList);// 가게 들을 뽑아주기!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -216,10 +230,10 @@ class listFrame extends JFrame{
 		mainList.add(check);
 		getContentPane().add(mainList);
 		setVisible(true);
-		
+
 		infoPanel =new JPanel() {
 			Image bg= new ImageIcon("img/submain.png").getImage(); 
-			
+
 			public void paintComponent(Graphics g) {
 				g.drawImage(bg,0,0,getWidth(),getHeight(),this);
 			}
@@ -254,9 +268,24 @@ class listFrame extends JFrame{
 			}
 		});
 		infoPanel.add(back);
-		
+
 	}
-	
+
+	private class makeList{
+		public makeList(String list)
+		{
+			System.out.println(list);
+			String[] store=list.split("^");
+			String[] infoSplit;
+			for(int i=0;i<store.length;i++)
+			{
+				infoSplit=store[i].split("_");
+				names[i]=infoSplit[0];
+				star[i]=infoSplit[1];
+				address[i]=infoSplit[2];
+			}
+		}
+	}
 }
 
 class mateFrame extends JFrame{
@@ -270,7 +299,7 @@ class mateFrame extends JFrame{
 	{
 		panel =new JPanel() {
 			Image bg= new ImageIcon("img/submain.png").getImage();
-			
+
 			public void paintComponent(Graphics g) {
 				g.drawImage(bg,0,0,getWidth(),getHeight(),this);
 			}
@@ -319,7 +348,7 @@ class mateFrame extends JFrame{
 		panel.add(check);		
 
 		getContentPane().add(panel);
-
+		//setDefaultCloseOperation(pre.);
 		setVisible(true);
 	}
 }
@@ -331,12 +360,12 @@ public class UI extends JFrame{
 	private JPanel dp=dstPanel();
 	private JPanel ep=entPanel();
 	private JPanel up=univPanel();
-	
+
 	ImageIcon icon;
 	String type1;
 	String type2;
 	String type3;
-	
+
 	String name;
 	public String getType1() {
 		return this.type1;
@@ -388,7 +417,7 @@ public class UI extends JFrame{
 		JPanel panel;
 		panel =new JPanel() {
 			Image bg= new ImageIcon("img/mainBG.jpg").getImage(); //이미지파일
-			
+
 			public void paintComponent(Graphics g) {
 				g.drawImage(bg,0,0,getWidth(),getHeight(),this);
 			}
@@ -444,15 +473,15 @@ public class UI extends JFrame{
 		JButton entBtn;
 		JButton univBtn;
 		JButton back;
-		
+
 		panel =new JPanel() {
 			Image bg= new ImageIcon("img/mainBG.jpg").getImage(); // ���� �гο� ��� �ֱ�
-			
+
 			public void paintComponent(Graphics g) {
 				g.drawImage(bg,0,0,getWidth(),getHeight(),this);//�����ӿ� �°� ���� �Ǵ� �̹���
 			}
 		};
-			
+
 		panel.setLayout(null);
 
 		dessertBtn=new JButton(new ImageIcon("img/dessert.jpg"));
@@ -517,7 +546,7 @@ public class UI extends JFrame{
 
 		panel =new JPanel() {
 			Image bg= new ImageIcon("img/mainBG.jpg").getImage();
-			
+
 			public void paintComponent(Graphics g) {
 				g.drawImage(bg,0,0,getWidth(),getHeight(),this);
 			}
@@ -557,11 +586,11 @@ public class UI extends JFrame{
 		});
 		panel.add(back);
 
-		bakeBtn.addActionListener(new listEvent("bakery"));
-		coffBtn.addActionListener(new listEvent("coffee"));
-		iceBtn.addActionListener(new listEvent("ice_cream"));
+		bakeBtn.addActionListener(new listEvent("Bakery"));
+		coffBtn.addActionListener(new listEvent("Coffee"));
+		iceBtn.addActionListener(new listEvent("Ice"));
 		return panel;
-		
+
 	}
 	// pannel
 	public JPanel entPanel(){
@@ -572,7 +601,7 @@ public class UI extends JFrame{
 		JButton back;
 		panel =new JPanel() {
 			Image bg= new ImageIcon("img/mainBG.jpg").getImage();
-			
+
 			public void paintComponent(Graphics g) {
 				g.drawImage(bg,0,0,getWidth(),getHeight(),this);
 			}
@@ -613,40 +642,36 @@ public class UI extends JFrame{
 		});
 		panel.add(back);
 
-		singBtn.addActionListener(new listEvent("Bakery"));
-		billBtn.addActionListener(new listEvent("Coffee"));
-		pcBtn.addActionListener(new listEvent("Ice-cream"));
+		singBtn.addActionListener(new listEvent("Sing"));
+		billBtn.addActionListener(new listEvent("Billiard"));
+		pcBtn.addActionListener(new listEvent("Pcroom"));
 		return panel;
 	}
-	
-	public class listEvent implements ActionListener{
-		//String name;
-		
-		String name;
 
-		public listEvent(String name)
+	public class listEvent implements ActionListener{
+		String preCont;
+
+		public listEvent(String cont)
 		{
-			this.name=name;
+			preCont=cont;
 		}
-		
+
 		public void actionPerformed(ActionEvent arg0) {
-			new listFrame(name);
-			//String type1=Client.getName(name); //요깅 추가한 부분
-		
+			new listFrame(preCont);
 		}
 	}
-public JPanel univPanel(){
-	JPanel panel=new JPanel();
-	JButton back;
-	panel.setLayout(null);
+	public JPanel univPanel(){
+		JPanel panel=new JPanel();
+		JButton back;
+		panel.setLayout(null);
 
-	panel =new JPanel() {
-		Image bg= new ImageIcon("img/mainBG.jpg").getImage();
-		
-		public void paintComponent(Graphics g) {
-			g.drawImage(bg,0,0,getWidth(),getHeight(),this);
-		}
-	};
+		panel =new JPanel() {
+			Image bg= new ImageIcon("img/mainBG.jpg").getImage();
+
+			public void paintComponent(Graphics g) {
+				g.drawImage(bg,0,0,getWidth(),getHeight(),this);
+			}
+		};
 		back=new JButton(new ImageIcon("img/캡처3.PNG"));
 		back.setBackground(Color.red);
 		back.setBounds(650, 730, 300, 74);
@@ -658,8 +683,7 @@ public JPanel univPanel(){
 			}	
 		});
 		panel.add(back);
-		
+
 		return panel;
 	}
 }
-
