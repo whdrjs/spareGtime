@@ -11,6 +11,8 @@ import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -69,89 +71,84 @@ class listFrame extends JFrame{
 	public String[] names;
 	public String[] star;
 	public String[] address;
-	
+
 	public String select;
 	//public Integer location=0; // 1 ,2 ,3 을 보낼꺼다.
 	public String location;
-	private class distance extends JFrame{
+	private String distance (){
+		JFrame pop=new JFrame();
 		JRadioButton visionRaBtn = new JRadioButton("비전타워",true);
 		JRadioButton policeRaBtn = new JRadioButton("복정파출소");
 		JRadioButton otherRaBtn = new JRadioButton("동서울대");
 
-		public distance()
-		{
-			setDefaultLookAndFeelDecorated(true);
-			setTitle("위치");
-			setSize(420,200);
-			setLocation(470, 40);
-			JPanel pan =new JPanel() {
-				Image bg= new ImageIcon("img/submain.png").getImage();
-				public void paintComponent(Graphics g) {
-					g.drawImage(bg,0,0,getWidth(),getHeight(),this);
-				}
-			};
-			pan.setLayout(null);
-			//버튼 그룹으로
-			ButtonGroup bg=new ButtonGroup();
-			bg.add(visionRaBtn);
-			bg.add(policeRaBtn);
-			bg.add(otherRaBtn);
-			visionRaBtn.setBounds(40, 40, 100,50);
-			visionRaBtn.setContentAreaFilled(false); 
-			visionRaBtn.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) { //거리순 을 클릭하고 비타, 복파, 동서울 을 클릭하면 서버에 필요한 정보를 주고 그거에 해당하는 가게 리스트 top4를 받을 꺼야
-					type1="ACT";
-					location="1";
-					try {
-						setVisible(false);
-						rawStr=Client.getStoreData(type1, type2 , type3 ,location); 
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} 
-				}
-			});
-			policeRaBtn.setBounds(150, 40, 100,50);
-			policeRaBtn.setContentAreaFilled(false); 
-			policeRaBtn.addActionListener(new ActionListener() { //거리순 을 클릭하고 비타, 복파, 동서울 을 클릭하면 서버에 필요한 정보를 주고 그거에 해당하는 가게 리스트 top4를 받을 꺼야
-				public void actionPerformed(ActionEvent e) {
-					type1="ACT";
-					location="2";
-					try {
-						setVisible(false);
-						rawStr=Client.getStoreData(type1, type2 , type3 ,location);
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} 
-				}
-			});
-			otherRaBtn.setBounds(280, 40, 100,50);
-			otherRaBtn.setContentAreaFilled(false); 
-			otherRaBtn.addActionListener(new ActionListener() { //거리순 을 클릭하고 비타, 복파, 동서울 을 클릭하면 서버에 필요한 정보를 주고 그거에 해당하는 가게 리스트 top4를 받을 꺼야
-				public void actionPerformed(ActionEvent e) {
-					type1="ACT";
-					location="3";
-					try {
-						setVisible(false);
-						rawStr=Client.getStoreData(type1, type2 , type3 ,location);
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} 
-				}
-			});
-			//추가
-			getContentPane().add(new JLabel("가장 근접한 위치를 골라주세요"));
-			pan.add(visionRaBtn);
-			pan.add(policeRaBtn);
-			pan.add(otherRaBtn);
+		pop.setDefaultLookAndFeelDecorated(true);
+		pop.setTitle("위치");
+		pop.setSize(420,200);
+		pop.setLocation(470, 40);
+		JPanel pan =new JPanel() {
+			Image bg= new ImageIcon("img/submain.png").getImage();
+			public void paintComponent(Graphics g) {
+				g.drawImage(bg,0,0,getWidth(),getHeight(),this);
+			}
+		};
+		pan.setLayout(null);
+		//버튼 그룹으로
+		ButtonGroup bg=new ButtonGroup();
+		bg.add(visionRaBtn);
+		bg.add(policeRaBtn);
+		bg.add(otherRaBtn);
+		visionRaBtn.setBounds(40, 40, 100,50);
+		visionRaBtn.setContentAreaFilled(false); 
+		visionRaBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) { //거리순 을 클릭하고 비타, 복파, 동서울 을 클릭하면 서버에 필요한 정보를 주고 그거에 해당하는 가게 리스트 top4를 받을 꺼야
+				location="1";
+				try {
+					pop.setVisible(false);
+					rawStr=Client.getStoreData(type1, type2 , type3 ,location); 
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} 
+			}
+		});
+		policeRaBtn.setBounds(150, 40, 100,50);
+		policeRaBtn.setContentAreaFilled(false); 
+		policeRaBtn.addActionListener(new ActionListener() { //거리순 을 클릭하고 비타, 복파, 동서울 을 클릭하면 서버에 필요한 정보를 주고 그거에 해당하는 가게 리스트 top4를 받을 꺼야
+			public void actionPerformed(ActionEvent e) {
+				location="2";
+				try {
+					pop.setVisible(false);
+					rawStr=Client.getStoreData(type1, type2 , type3 ,location);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} 
+			}
+		});
+		otherRaBtn.setBounds(280, 40, 100,50);
+		otherRaBtn.setContentAreaFilled(false); 
+		otherRaBtn.addActionListener(new ActionListener() { //거리순 을 클릭하고 비타, 복파, 동서울 을 클릭하면 서버에 필요한 정보를 주고 그거에 해당하는 가게 리스트 top4를 받을 꺼야
+			public void actionPerformed(ActionEvent e) {
+				location="3";
+				try {
+					pop.setVisible(false);
+					rawStr=Client.getStoreData(type1, type2 , type3 ,location);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} 
+			}
+		});
+		//추가
+		pop.getContentPane().add(new JLabel("가장 근접한 위치를 골라주세요"));
+		pan.add(visionRaBtn);
+		pan.add(policeRaBtn);
+		pan.add(otherRaBtn);
 
-			pan.setVisible(true);
-			getContentPane().add(pan,BorderLayout.CENTER);
-			setVisible(true);
-
-		}
+		pan.setVisible(true);
+		pop.getContentPane().add(pan,BorderLayout.CENTER);
+		pop.setVisible(true);
+		return rawStr;
 	}
 	public listFrame(String pre) { //프리 여기 있어요옹
 		setTitle(pre);
@@ -169,36 +166,25 @@ class listFrame extends JFrame{
 		mainList.setLayout(null);
 		combo.addItem("Distance");
 		combo.addItem("Rate");
-		//combobox에 이벤트 추가 거리 일때
-		/*try {
-			rawStr=Client.getStoreData(type1, type2 , type3 ,location);
-		} catch (UnsupportedEncodingException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} */
 		combo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e)
 			{
 				if(((String)combo.getSelectedItem()).compareTo("Distance")==0)
 				{
 					type3="distance"; //distance 를 넣어줄꺼야
-					new distance();
+					rawStr= distance();
 				}
 				if(((String)combo.getSelectedItem()).compareTo("Rate")==0)
 				{
 					type3="star"; //distance 를 넣어줄꺼야
-					new distance();
 				}
 			}
 		});
 		combo.setEditable(false);
 		combo.setBounds(150, 30, 240, 40);
 		mainList.add(combo);
-	//	new makeList(rawStr);
-	//	System.arraycopy(storeList, 0, names,0, names.length);
+		//new makeList(rawStr);
+		//System.arraycopy(storeList, 0, names,0, names.length);
 		//list
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.setListData(storeList);// 가게 들을 뽑아주기!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
