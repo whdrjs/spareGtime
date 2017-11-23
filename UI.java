@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.PrintWriter;
 
 import javax.swing.ButtonGroup;
@@ -61,12 +62,17 @@ class listFrame extends JFrame{
 	private JList list=new JList();
 	private JScrollPane scroll=new JScrollPane();
 	
+	public String type1; //act 인지 event 인지
+	public String type2;//bakery, coffee,ice_cream 인지
+	public String type3;// priority (distance 아니면 star 인지 ).
+	public String rawStr;
+	
 	Client client=new Client();
 
-	public String[] listStr= {"List 1"};
+	public String[] storeList= {"NULL"}; //가게 리스트
 	public String select;
-	public Integer location=0;
-	
+	//public Integer location=0; // 1 ,2 ,3 을 보낼꺼다.
+	public String location;
 	private class distance extends JFrame{
 		JRadioButton visionRaBtn = new JRadioButton("비전타워",true);
 		JRadioButton policeRaBtn = new JRadioButton("복정파출소");
@@ -93,24 +99,45 @@ class listFrame extends JFrame{
 			visionRaBtn.setBounds(40, 40, 100,50);
 			visionRaBtn.setContentAreaFilled(false); 
 			visionRaBtn.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					location=1;
+				public void actionPerformed(ActionEvent e) { //거리순 을 클릭하고 비타, 복파, 동서울 을 클릭하면 서버에 필요한 정보를 주고 그거에 해당하는 가게 리스트 top4를 받을 꺼야
+					type1="ACT";
+					location="1";
+					try {
+						rawStr=Client.getStoreData(type1, type2 , type3 ,location); 
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} 
 					setVisible(false);
 				}
 			});
 			policeRaBtn.setBounds(150, 40, 100,50);
 			policeRaBtn.setContentAreaFilled(false); 
-			policeRaBtn.addActionListener(new ActionListener() {
+			policeRaBtn.addActionListener(new ActionListener() { //거리순 을 클릭하고 비타, 복파, 동서울 을 클릭하면 서버에 필요한 정보를 주고 그거에 해당하는 가게 리스트 top4를 받을 꺼야
 				public void actionPerformed(ActionEvent e) {
-					location=2;
+					type1="ACT";
+					location="2";
+					try {
+						rawStr=Client.getStoreData(type1, type2 , type3 ,location);
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} 
 					setVisible(false);
 				}
 			});
 			otherRaBtn.setBounds(280, 40, 100,50);
 			otherRaBtn.setContentAreaFilled(false); 
-			otherRaBtn.addActionListener(new ActionListener() {
+			otherRaBtn.addActionListener(new ActionListener() { //거리순 을 클릭하고 비타, 복파, 동서울 을 클릭하면 서버에 필요한 정보를 주고 그거에 해당하는 가게 리스트 top4를 받을 꺼야
 				public void actionPerformed(ActionEvent e) {
-					location=3;
+					type1="ACT";
+					location="3";
+					try {
+						rawStr=Client.getStoreData(type1, type2 , type3 ,location);
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} 
 					setVisible(false);
 				}
 			});
@@ -123,10 +150,12 @@ class listFrame extends JFrame{
 			pan.setVisible(true);
 			getContentPane().add(pan,BorderLayout.CENTER);
 			setVisible(true);
+			
 		}
 	}
-	public listFrame(String pre) {
+	public listFrame(String pre) { //프리 여기 있어요옹
 		setTitle(pre);
+		type2=pre; //pre (bakery) 를 type1 에 넣었어요옹
 		setSize(540,720);
 		setLocation(530, 50);
 		
@@ -141,11 +170,13 @@ class listFrame extends JFrame{
 		combo.addItem("거리");
 		combo.addItem("평점");
 		//combobox에 이벤트 추가 거리 일때
+		
 		combo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e)
 			{
 				if(((String)combo.getSelectedItem()).compareTo("거리")==0)
 				{
+					type3="distance"; //distance 를 넣어줄꺼야
 					new distance();
 				}
 			}
@@ -156,7 +187,7 @@ class listFrame extends JFrame{
 
 		//list
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		list.setListData(listStr);
+		list.setListData(storeList);// 가게 들을 뽑아주기!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		list.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {					
 				select=" ";
@@ -185,7 +216,7 @@ class listFrame extends JFrame{
 		mainList.add(check);
 		getContentPane().add(mainList);
 		setVisible(true);
-
+		
 		infoPanel =new JPanel() {
 			Image bg= new ImageIcon("img/submain.png").getImage(); 
 			
@@ -302,7 +333,14 @@ public class UI extends JFrame{
 	private JPanel up=univPanel();
 	
 	ImageIcon icon;
+	String type1;
+	String type2;
+	String type3;
 	
+	String name;
+	public String getType1() {
+		return this.type1;
+	}
 	public UI() {
 		setTitle("Gtime");
 		setSize(1600,900);
@@ -519,10 +557,11 @@ public class UI extends JFrame{
 		});
 		panel.add(back);
 
-		bakeBtn.addActionListener(new listEvent("Bakery"));
-		coffBtn.addActionListener(new listEvent("Coffee"));
-		iceBtn.addActionListener(new listEvent("Ice-cream"));
+		bakeBtn.addActionListener(new listEvent("bakery"));
+		coffBtn.addActionListener(new listEvent("coffee"));
+		iceBtn.addActionListener(new listEvent("ice_cream"));
 		return panel;
+		
 	}
 	// pannel
 	public JPanel entPanel(){
@@ -579,17 +618,23 @@ public class UI extends JFrame{
 		pcBtn.addActionListener(new listEvent("Ice-cream"));
 		return panel;
 	}
+	
 	public class listEvent implements ActionListener{
+		//String name;
+		
 		String name;
+
 		public listEvent(String name)
 		{
 			this.name=name;
 		}
+		
 		public void actionPerformed(ActionEvent arg0) {
 			new listFrame(name);
+			//String type1=Client.getName(name); //요깅 추가한 부분
+		
 		}
 	}
-
 public JPanel univPanel(){
 	JPanel panel=new JPanel();
 	JButton back;
@@ -617,3 +662,4 @@ public JPanel univPanel(){
 		return panel;
 	}
 }
+
