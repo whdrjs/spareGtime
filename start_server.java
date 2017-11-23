@@ -53,13 +53,13 @@ public class start_server {
 		  String output() {
 				String a="";
 				for(int i=0;i<count;i++) {
-					a=a+this.content.get(i)+" ";
-					a=a+this.name.get(i)+" ";
-					a=a+this.latitude.get(i)+" ";
-					a=a+this.longitude.get(i)+" ";
-					a=a+this.star.get(i)+" ";
-					a=a+this.address.get(i)+" ";
-					a=a+this.distance.get(i)+" ";
+					a=a+this.content.get(i)+"_";
+					a=a+this.name.get(i)+"_";
+					a=a+this.latitude.get(i)+"_";
+					a=a+this.longitude.get(i)+"_";
+					a=a+this.star.get(i)+"_";
+					a=a+this.address.get(i)+"_";
+					a=a+this.distance.get(i)+"_";
 				}
 				  return a; // 
 			  }
@@ -90,11 +90,11 @@ public class start_server {
 		  String output() {
 			String a="";
 			for(int i=0;i<count;i++) {
-				a=a+this.id.get(i)+" ";
-				a=a+this.name.get(i)+" ";
-				a=a+this.maximum.get(i)+" ";
-				a=a+this.spare_time.get(i)+" ";
-				a=a+this.content.get(i)+" ";
+				a=a+this.id.get(i)+"_";
+				a=a+this.name.get(i)+"_";
+				a=a+this.maximum.get(i)+"_";
+				a=a+this.spare_time.get(i)+"_";
+				a=a+this.content.get(i)+"_";
 			}
 			  return a;
 		  }
