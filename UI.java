@@ -75,7 +75,7 @@ class listFrame extends JFrame{
 	public String select;
 	//public Integer location=0; // 1 ,2 ,3 을 보낼꺼다.
 	public String location;
-	private String distance (){
+	private void distance(){
 		JFrame pop=new JFrame();
 		JRadioButton visionRaBtn = new JRadioButton("비전타워",true);
 		JRadioButton policeRaBtn = new JRadioButton("복정파출소");
@@ -148,7 +148,6 @@ class listFrame extends JFrame{
 		pan.setVisible(true);
 		pop.getContentPane().add(pan,BorderLayout.CENTER);
 		pop.setVisible(true);
-		return rawStr;
 	}
 	public listFrame(String pre) { //프리 여기 있어요옹
 		setTitle(pre);
@@ -172,7 +171,7 @@ class listFrame extends JFrame{
 				if(((String)combo.getSelectedItem()).compareTo("Distance")==0)
 				{
 					type3="distance"; //distance 를 넣어줄꺼야
-					rawStr= distance();
+					distance();
 				}
 				if(((String)combo.getSelectedItem()).compareTo("Rate")==0)
 				{
@@ -257,19 +256,16 @@ class listFrame extends JFrame{
 
 	}
 
-	private class makeList{
-		public makeList(String list)
+private void makeList (String list) {
+		System.out.println(list);
+		String[] store=list.split("^");
+		String[] infoSplit;
+		for(int i=0;i<store.length;i++)
 		{
-			System.out.println(list);
-			String[] store=list.split("^");
-			String[] infoSplit;
-			for(int i=0;i<store.length;i++)
-			{
-				infoSplit=store[i].split("_");
-				names[i]=infoSplit[0];
-				star[i]=infoSplit[1];
-				address[i]=infoSplit[2];
-			}
+			infoSplit=store[i].split("_");
+			names[i]=infoSplit[0];
+			star[i]=infoSplit[1];
+			address[i]=infoSplit[2];
 		}
 	}
 }
