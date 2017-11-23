@@ -1,5 +1,3 @@
-package spareTime;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -25,16 +23,12 @@ public class start_server {
 		int count = 0;
 		ArrayList<String> content = new ArrayList<String>();
 		  ArrayList<String> name = new ArrayList<String>();
-		  ArrayList<Double> latitude = new ArrayList<Double>();
-		  ArrayList<Double> longitude = new ArrayList<Double>();
 		  ArrayList<Float> star = new ArrayList<Float>();
 		  ArrayList<String> address = new ArrayList<String>();
 		  ArrayList<Integer> distance = new ArrayList<Integer>();
 		  void add(ResultSet res) throws SQLException{
 			this.content.add(res.getString("content"));
 			this.name.add(res.getString("name"));
-			this.latitude.add(res.getDouble("latitude"));
-			this.longitude.add(res.getDouble("longitude"));
 			this.star.add(res.getFloat("star"));
 			this.address.add(res.getString("address"));
 			this.distance.add(res.getInt("distance"));
@@ -43,8 +37,6 @@ public class start_server {
 		  void add(content_info a,int i){
 			this.content.add(a.content.get(i));
 			this.name.add(a.name.get(i));
-			this.latitude.add(a.latitude.get(i));
-			this.longitude.add(a.longitude.get(i));
 			this.star.add(a.star.get(i));
 			this.address.add(a.address.get(i));
 			this.distance.add(a.distance.get(i));
@@ -53,15 +45,13 @@ public class start_server {
 		  String output() {
 				String a="";
 				for(int i=0;i<count;i++) {
-					a=a+this.content.get(i)+"_";
-					a=a+this.name.get(i)+"_";
-					a=a+this.latitude.get(i)+"_";
-					a=a+this.longitude.get(i)+"_";
-					a=a+this.star.get(i)+"_";
-					a=a+this.address.get(i)+"_";
-					a=a+this.distance.get(i)+"_";
+					a=a+this.content.get(i)+" ";
+					a=a+this.name.get(i)+" ";
+					a=a+this.star.get(i)+" ";
+					a=a+this.address.get(i)+" ";
+					a=a+this.distance.get(i)+" ";
 				}
-				  return a; // 
+				  return a;
 			  }
 	}
 	  class room_info {// 방 목록을 반환하기 위한 클래스
@@ -90,11 +80,11 @@ public class start_server {
 		  String output() {
 			String a="";
 			for(int i=0;i<count;i++) {
-				a=a+this.id.get(i)+"_";
-				a=a+this.name.get(i)+"_";
-				a=a+this.maximum.get(i)+"_";
-				a=a+this.spare_time.get(i)+"_";
-				a=a+this.content.get(i)+"_";
+				a=a+this.id.get(i)+" ";
+				a=a+this.name.get(i)+" ";
+				a=a+this.maximum.get(i)+" ";
+				a=a+this.spare_time.get(i)+" ";
+				a=a+this.content.get(i)+" ";
 			}
 			  return a;
 		  }
@@ -141,8 +131,7 @@ public class start_server {
 	                    if (name == null) {
 	                        return;
 	                    }
-
-				synchronized (names) {
+	                    synchronized (names) {
 	                        if (!names.contains(name)) {
 	                            names.add(name);
 	                            break;
@@ -163,7 +152,6 @@ public class start_server {
 	                    if(command=="ACT") {
 				    //"ACT content distance 1"
 				    //"ACT content star"
-				    //"ACT content"
 	                    	String input1[]=input.split(" ");
 				content_info inform = new content_info();
 				    inform = search_content(input1[1]);
@@ -227,10 +215,10 @@ public class start_server {
 						min[2]=temp;
 					}
 					for(i=0;i<4;i++){
-						rank.add(inform,min[i]); //4개 가게 붙이기
+						rank.add(inform,min[i]);
 					}	 
-					String a=rank.output();
-					out.println(a); //클라이언트 한테 보내줌
+					//String a=rank.output();
+					out.println(rank);
 				}
 				else if(input1[1]=="star"){
 					int i,j;
@@ -271,13 +259,13 @@ public class start_server {
 					for(i=0;i<4;i++){
 						rank.add(inform,min[i]);
 					}	 
-					String a=rank.output();
-					out.println(a);
+					//String a=rank.output();
+					out.println(rank);
 				}
 				else{
-	                    		String a=inform.output();
+					String a=inform.output();
 					out.println(a);
-	                    	}
+				}
 			    }
 	                    //가게정보 검색
 	                   /* if(command=="STO") {
@@ -405,29 +393,25 @@ public class start_server {
 			conn.close();
 	}
 
-	public   void insert_event(String content, String name, double latitude, double longitude, float star,
+	public   void insert_event(String content, String name,  float star,
 			String address) throws ClassNotFoundException, SQLException {
 
 		// 이벤트를 추가할때 사용하는 함수
 		// 다른 컨텐츠를 추가할때도 사용가능
 
 		Connection conn = getConnection();
-		String sql = "insert into contents1 values(?,?,?,?,?,?)";// sql 쿼리
+		String sql = "insert into contents1 values(?,?,?,?)";// sql 쿼리
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 
 		// 컨텐츠 String content
 		// 이름 String name
-		// 위도 double latitude
-		// 경도 double longitude
 		// 평점 float star
 		// 주소 String address
 
 		pstmt.setString(1, content);
 		pstmt.setString(2, name);
-		pstmt.setDouble(3, latitude);
-		pstmt.setDouble(4, longitude);
-		pstmt.setFloat(5, star);
-		pstmt.setString(6, address);
+		pstmt.setFloat(3, star);
+		pstmt.setString(4, address);
 
 		int res = pstmt.executeUpdate();
 
