@@ -225,8 +225,8 @@ public class start_server {
 					for(i=0;i<4;i++){
 						rank.add(inform,min[i]);
 					}	 
-					String a=rank.output();
-					out.println(a);
+					//String a=rank.output();
+					out.println(rank);
 				}
 				else if(input1[1]=="star"){
 					int i,j;
@@ -267,8 +267,8 @@ public class start_server {
 					for(i=0;i<4;i++){
 						rank.add(inform,min[i]);
 					}	 
-					String a=rank.output();
-					out.println(a);
+					//String a=rank.output();
+					out.println(rank);
 				}
 				else{
 	                    		out.println();
