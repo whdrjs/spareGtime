@@ -102,7 +102,11 @@ public class Client {
 		//outToServer.write(input.getBytes("UTF-8")); //이렇게 안보내면 한글이깨져요
 		out = new PrintWriter(dataSocket.getOutputStream(), true);
 		out.println(input);
-		String result = inFromServer.readLine();
+		in = new BufferedReader(new InputStreamReader(
+				dataSocket.getInputStream()));
+		String result = in.readLine();
+		System.out.println(result);
+		
 
 		return result; //서버로 받은 스트링
 	}
