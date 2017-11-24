@@ -99,8 +99,9 @@ public class Client {
 	//UI 에서 가져오고 서버로 보내고  가게리스트를 받아오는 메소드
 	public static String getStoreData(String type1, String type2 , String type3 , String type4) throws UnsupportedEncodingException, IOException{
 		String input=type1+" "+type2+" "+type3+" "+type4;
-		outToServer.write(input.getBytes("UTF-8")); //이렇게 안보내면 한글이깨져요
-
+		//outToServer.write(input.getBytes("UTF-8")); //이렇게 안보내면 한글이깨져요
+		out = new PrintWriter(dataSocket.getOutputStream(), true);
+		out.println(input);
 		String result = inFromServer.readLine();
 
 		return result; //서버로 받은 스트링
