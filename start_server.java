@@ -1,3 +1,4 @@
+package spareTime;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -124,37 +125,25 @@ public class start_server {
 	            	in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 	            	out = new PrintWriter(socket.getOutputStream(), true);
 	            	
-	                while (true) {
-	                	out.println("SUBMITNAME");
-	                	name = in.readLine();
-	                    if (name == null) {
-	                        return;
-	                    }
-	                    synchronized (names) {
-	                        if (!names.contains(name)) {
-	                            names.add(name);
-	                            break;
-	                        }
-	                    }
-	                }
-
-	                out.println("NAMEACCEPTED");
-	                writers.add(out);
-
+	                
 	                while (true) {
 	                    String input = in.readLine();
+	                    System.out.println(input);
 	                    if (input == null) {
 	                        return;
 	                    }
-	                    String command=input.substring(0,4);
+	                    String command=input.substring(0,3);
 	                    //가게목록 검색
-	                    if(command=="ACT") {
+	                    System.out.println(command);
+	                    if(command.equals("ACT")) {
 				    //"ACT content distance 1"
 				    //"ACT content star"
 	                    	String input1[]=input.split(" ");
 				content_info inform = new content_info();
+				System.out.println(input1[1]);
 				    inform = search_content(input1[1]);
-				if(input1[2]=="distance"){
+				    System.out.println(input1[2]);
+				if(input1[2].equals("distance")){
 					//거리순
 					int i,j;
 					content_info rank = new content_info();
@@ -216,10 +205,11 @@ public class start_server {
 					for(i=0;i<4;i++){
 						rank.add(inform,min[i]);
 					}	 
-					//String a=rank.output();
-					out.println(rank);
+					String a=rank.output();
+					System.out.println(a);
+					out.println(a);
 				}
-				else if(input1[1]=="star"){
+				else if(input1[1].equals("star")){
 					int i,j;
 					content_info rank = new content_info();
 					int min[]={0,1,2,3};
@@ -258,8 +248,9 @@ public class start_server {
 					for(i=0;i<4;i++){
 						rank.add(inform,min[i]);
 					}	 
-					//String a=rank.output();
-					out.println(rank);
+					String a=rank.output();
+					System.out.println(a);
+					out.println(a);
 				}
 				else{
 					String a=inform.output();
@@ -278,7 +269,7 @@ public class start_server {
 	                    	out.println(b);
 	                    }*/
 	                    //채팅방 검색
-	                    if(command=="SCH") {
+	                    if(command.equals("SCH")) {
 	                    	String input1=input.substring(4,16);
 	                    	String input2=input.substring(16);
 	                    	room_info room =search_room(input1,input2);
@@ -287,7 +278,7 @@ public class start_server {
 	                    	
 	                    }
 	                    //채팅방 생성
-	                    if(command=="MAK") {
+	                    if(command.equals("MAK")) {
 	                    	input=input.substring(4);
 	                    	String input1[]=input.split(" ");
 	                    	int int_input1=Integer.valueOf(input1[0]);
@@ -295,19 +286,19 @@ public class start_server {
 	                    	insert_room(int_input1,input1[1],int_input2,input1[3],input1[4]);
 	                    }
 	                    //채팅방 삭제
-	                    if(command=="DEL") {
+	                    if(command.equals("DEL")) {
 	                    	input=input.substring(4);
 	                    	int int_input=Integer.valueOf(input);
 	                    	delete_room(int_input);
 	                    }
 	                    //채팅방 입장
-	                    if(command=="COM") {
+	                    if(command.equals("COM")) {
 	                    	input=input.substring(4);
 	                    	int port=enter_room();
 	                    	new ChatServer(port);
 	                    }
 	                    //이벤트 
-	                    if(command=="COM") {
+	                    if(command.equals("COM")) {
 	                    	input=input.substring(4);
 	                    	content_info inform = new content_info();
 	                    	inform=search_content(input);
