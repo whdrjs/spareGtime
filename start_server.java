@@ -140,6 +140,7 @@ public class start_server {
 				    //"ACT content star"
 	                    	String input1[]=input.split(" ");
 				content_info inform = new content_info();
+				System.out.println(input1[0]);
 				System.out.println(input1[1]);
 				    inform = search_content(input1[1]);
 				    System.out.println(input1[2]);
@@ -147,7 +148,7 @@ public class start_server {
 					//거리순
 					int i,j;
 					content_info rank = new content_info();
-					switch (input1[2]){
+					switch (input1[3]){
 						case "1": //비타 7
 							for(i=0;i<inform.distance.size();i++){
 								inform.distance.set(i,inform.distance.get(i)-7);
@@ -209,7 +210,7 @@ public class start_server {
 					System.out.println(a);
 					out.println(a);
 				}
-				else if(input1[1].equals("star")){
+				else if(input1[2].equals("star")){
 					int i,j;
 					content_info rank = new content_info();
 					int min[]={0,1,2,3};
