@@ -378,6 +378,7 @@ class disFrame extends JFrame{
 		
 		setSize(540,720);
 		setLocation(530, 50);
+		//메인패널
 
 		mPanel =new JPanel() {
 			Image bg= new ImageIcon("img/submain.png").getImage();
@@ -386,27 +387,12 @@ class disFrame extends JFrame{
 				g.drawImage(bg,0,0,getWidth(),getHeight(),this);
 			}
 		};
-		//기본값!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		///dist 넣어주기
 		
-		//JFrame pop=new JFrame();
 		JRadioButton visionRaBtn = new JRadioButton("비전타워");
 		JRadioButton policeRaBtn = new JRadioButton("복정파출소");
 		JRadioButton otherRaBtn = new JRadioButton("동서울대");
 
-		//pop.setDefaultLookAndFeelDecorated(true);
-		//pop.setTitle("위치");
-		//pop.setSize(420,200);
-		//pop.setLocation(470, 40);
-		/*
-		JPanel pan =new JPanel() {
-			Image bg= new ImageIcon("img/submain.png").getImage();
-			public void paintComponent(Graphics g) {
-				g.drawImage(bg,0,0,getWidth(),getHeight(),this);
-			}
-		};
-		*/
-		//pan.setLayout(null);
+		
 		//버튼 그룹으로
 		ButtonGroup bg=new ButtonGroup();
 		bg.add(visionRaBtn);
@@ -414,16 +400,7 @@ class disFrame extends JFrame{
 		bg.add(otherRaBtn);
 		visionRaBtn.setBounds(40, 40, 100,50);
 		visionRaBtn.setContentAreaFilled(false); 
-		/*
-		 * list.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {					
-				select=list.getSelectedValue();// 선택!
-				imgName=new String("img/"+select+".png");//지도 위치 스트링으로
-				System.out.println("select 얌"+select);
-			}
-		}); 
-		 * */
-		 
+		
 		visionRaBtn.addActionListener(new ActionListener() {	
 			public void actionPerformed(ActionEvent e) {	 //거리순 을 클릭하고 비타, 복파, 동서울 을 클릭하면 서버에 필요한 정보를 주고 그거에 해당하는 가게 리스트 top4를 받을 꺼야
 				//System.out.println("distance 안이다"+type4);
@@ -497,7 +474,6 @@ class disFrame extends JFrame{
 		scroll.setViewportView(list);
 		mPanel.add(scroll);
 		
-		System.out.println("215줄 distance 밖의 top4Str"+top4Str);
 		
 		check=new JButton(new ImageIcon("img/select2.PNG"));//분홍버튼
 		check.setBounds(135, 580, 270, 65);
