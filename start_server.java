@@ -1,4 +1,5 @@
 package spareTime;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -23,10 +24,10 @@ public class start_server {
 	class content_info {// 컨텐츠 목록을 반환하기 위한 클래스
 		int count = 0;
 		ArrayList<String> content = new ArrayList<String>();
-		  ArrayList<String> name = new ArrayList<String>();
-		  ArrayList<Float> star = new ArrayList<Float>();
-		  ArrayList<String> address = new ArrayList<String>();
-		  ArrayList<Integer> distance = new ArrayList<Integer>();		  void add(ResultSet res) throws SQLException{
+		ArrayList<String> name = new ArrayList<String>();
+		ArrayList<Float> star = new ArrayList<Float>();
+		ArrayList<String> address = new ArrayList<String>();
+		ArrayList<Integer> distance = new ArrayList<Integer>();		  void add(ResultSet res) throws SQLException{
 			this.content.add(res.getString("content"));
 			this.name.add(res.getString("name"));
 			this.star.add(res.getFloat("star"));
@@ -34,7 +35,7 @@ public class start_server {
 			this.distance.add(res.getInt("distance"));
 			this.count++;
 		}
-		  void add(content_info a,int i){
+		void add(content_info a,int i){
 			this.content.add(a.content.get(i));
 			this.name.add(a.name.get(i));
 			this.star.add(a.star.get(i));
@@ -42,26 +43,26 @@ public class start_server {
 			this.distance.add(a.distance.get(i));
 			this.count++;
 		}
-		  String output() {
-				String a="";
-				for(int i=0;i<count;i++) {
-					a=a+this.content.get(i)+" ";
-					a=a+this.name.get(i)+" ";
-					a=a+this.star.get(i)+" ";
-					a=a+this.address.get(i)+" ";
-					a=a+this.distance.get(i)+"^";
-				}
-				  return a;
-			  }
+		String output() {
+			String a="";
+			for(int i=0;i<count;i++) {
+				a=a+this.content.get(i)+"_";
+				a=a+this.name.get(i)+"_";
+				a=a+this.star.get(i)+"_";
+				a=a+this.address.get(i)+"_";
+				a=a+this.distance.get(i)+"^";
+			}
+			return a;
+		}
 	}
-	  class room_info {// 방 목록을 반환하기 위한 클래스
-		  int count = 0;
-		  ArrayList<Integer> id = new ArrayList<Integer>();
-		  ArrayList<String> name = new ArrayList<String>();
-		  ArrayList<Integer> maximum = new ArrayList<Integer>();
-		  ArrayList<String> spare_time = new ArrayList<String>();
-		  ArrayList<String> content = new ArrayList<String>();
-		  void add(ResultSet res) throws SQLException{
+	class room_info {// 방 목록을 반환하기 위한 클래스
+		int count = 0;
+		ArrayList<Integer> id = new ArrayList<Integer>();
+		ArrayList<String> name = new ArrayList<String>();
+		ArrayList<Integer> maximum = new ArrayList<Integer>();
+		ArrayList<String> spare_time = new ArrayList<String>();
+		ArrayList<String> content = new ArrayList<String>();
+		void add(ResultSet res) throws SQLException{
 			this.id.add(res.getInt("ID"));
 			this.name.add(res.getString("name"));
 			this.maximum.add(res.getInt("maximum"));
@@ -69,7 +70,7 @@ public class start_server {
 			this.content.add(res.getString("content"));
 			this.count++;
 		}
-		  void add(room_info a,int i){
+		void add(room_info a,int i){
 			this.id.add(a.id.get(i));
 			this.name.add(a.name.get(i));
 			this.maximum.add(a.maximum.get(i));
@@ -77,7 +78,7 @@ public class start_server {
 			this.content.add(a.content.get(i));
 			this.count++;
 		}
-		  String output() {
+		String output() {
 			String a="";
 			for(int i=0;i<count;i++) {
 				a=a+this.id.get(i)+" ";
@@ -86,8 +87,8 @@ public class start_server {
 				a=a+this.spare_time.get(i)+" ";
 				a=a+this.content.get(i)+"^";
 			}
-			  return a;
-		  }
+			return a;
+		}
 	}
 	public start_server() throws Exception {
 		System.out.println("The server is running.");
@@ -118,143 +119,143 @@ public class start_server {
 		public Handler(Socket socket) {
 			this.socket = socket;
 		}
-		
+
 
 		public void run()  {
-	            try {
-	            	in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-	            	out = new PrintWriter(socket.getOutputStream(), true);
-	            	
-	                
-	                while (true) {
-	                    String input = in.readLine();
-	                    System.out.println(input);
-	                    if (input == null) {
-	                        return;
-	                    }
-	                    String command=input.substring(0,3);
-	                    //가게목록 검색
-	                    System.out.println(command);
-	                    if(command.equals("ACT")) {
-				    //"ACT content distance 1"
-				    //"ACT content star"
-	                    	String input1[]=input.split(" ");
-				content_info inform = new content_info();
-				    inform = search_content(input1[1]);
-				if(input1[2].equals("distance")){
-					//거리순
-					int i,j;
-					content_info rank = new content_info();
-					switch (input1[3]){
-						case "1": //비타 7
-							for(i=0;i<inform.distance.size();i++){
-								inform.distance.set(i,inform.distance.get(i)-7);
-								if(inform.distance.get(i)<0)
-									inform.distance.set(i,inform.distance.get(i)*-1);
-							}
-							break;
-						case "2": //복정파출소 20
-							for(i=0;i<inform.distance.size();i++){
-								inform.distance.set(i,inform.distance.get(i)-20);
-								if(inform.distance.get(i)<0)
-									inform.distance.set(i,inform.distance.get(i)*-1);
-							}
-							break;
-						case "3": //동서울대 27
-							for(i=0;i<inform.distance.size();i++){
-								inform.distance.set(i,inform.distance.get(i)-27);
-								if(inform.distance.get(i)<0)
-									inform.distance.set(i,inform.distance.get(i)*-1);
-							}
-					}
-					int min[]={0,1,2,3};
-					for(i=4;i<inform.distance.size();i++){
-						int c=0;
-						for(j=0;j<4;j++){
-							if(inform.distance.get(min[j])>inform.distance.get(min[c])){
-								c=j;
-							}
-						}
-						if(inform.distance.get(i)<inform.distance.get(min[c])){
-							min[c]=i;
-						}
-					}					int m1=0,m2=0;
-					for(i=0;i<4;i++){
-						if(inform.distance.get(min[i])>inform.distance.get(min[m1])){
-							m1=i;
-						}
-						if(inform.distance.get(min[i])<inform.distance.get(min[m2])){
-							m2=i;
-						}
-					}
-					int temp;
-					temp=min[3];
-					min[3]=min[m1];
-					min[m1]=temp;
-					temp=min[0];
-					min[0]=min[m2];
-					min[m2]=temp;
-					if(inform.distance.get(min[2])<inform.distance.get(min[1])){
-						temp=min[1];
-						min[1]=min[2];
-						min[2]=temp;
-					}
-					for(i=0;i<4;i++){
-						rank.add(inform,min[i]);
-					}	 
-					String a=rank.output();
+			try {
+				in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+				out = new PrintWriter(socket.getOutputStream(), true);
 
-					out.println(a);
-				}
-				else if(input1[2].equals("star")){
-					int i,j;
-					content_info rank = new content_info();
-					int min[]={0,1,2,3};
-					for(i=4;i<inform.star.size();i++){
-						int c=0;
-						for(j=0;j<4;j++){
-							if(inform.star.get(min[j])>inform.star.get(min[c])){
-								c=j;
+
+				while (true) {
+					String input = in.readLine();
+					System.out.println(input);
+					if (input == null) {
+						return;
+					}
+					String command=input.substring(0,3);
+					//가게목록 검색
+					System.out.println(command);
+					if(command.equals("ACT")) {
+						//"ACT content distance 1"
+						//"ACT content star"
+						String input1[]=input.split(" ");
+						content_info inform = new content_info();
+						inform = search_content(input1[1]);
+						if(input1[2].equals("distance")){
+							//거리순
+							int i,j;
+							content_info rank = new content_info();
+							switch (input1[3]){
+							case "1": //비타 7
+								for(i=0;i<inform.distance.size();i++){
+									inform.distance.set(i,inform.distance.get(i)-7);
+									if(inform.distance.get(i)<0)
+										inform.distance.set(i,inform.distance.get(i)*-1);
+								}
+								break;
+							case "2": //복정파출소 20
+								for(i=0;i<inform.distance.size();i++){
+									inform.distance.set(i,inform.distance.get(i)-20);
+									if(inform.distance.get(i)<0)
+										inform.distance.set(i,inform.distance.get(i)*-1);
+								}
+								break;
+							case "3": //동서울대 27
+								for(i=0;i<inform.distance.size();i++){
+									inform.distance.set(i,inform.distance.get(i)-27);
+									if(inform.distance.get(i)<0)
+										inform.distance.set(i,inform.distance.get(i)*-1);
+								}
 							}
+							int min[]={0,1,2,3};
+							for(i=4;i<inform.distance.size();i++){
+								int c=0;
+								for(j=0;j<4;j++){
+									if(inform.distance.get(min[j])>inform.distance.get(min[c])){
+										c=j;
+									}
+								}
+								if(inform.distance.get(i)<inform.distance.get(min[c])){
+									min[c]=i;
+								}
+							}					int m1=0,m2=0;
+							for(i=0;i<4;i++){
+								if(inform.distance.get(min[i])>inform.distance.get(min[m1])){
+									m1=i;
+								}
+								if(inform.distance.get(min[i])<inform.distance.get(min[m2])){
+									m2=i;
+								}
+							}
+							int temp;
+							temp=min[3];
+							min[3]=min[m1];
+							min[m1]=temp;
+							temp=min[0];
+							min[0]=min[m2];
+							min[m2]=temp;
+							if(inform.distance.get(min[2])<inform.distance.get(min[1])){
+								temp=min[1];
+								min[1]=min[2];
+								min[2]=temp;
+							}
+							for(i=0;i<4;i++){
+								rank.add(inform,min[i]);
+							}	 
+							String a=rank.output();
+
+							out.println(a);
 						}
-						if(inform.star.get(i)<inform.star.get(min[c])){
-							min[c]=i;
+						else if(input1[2].equals("star")){
+							int i,j;
+							content_info rank = new content_info();
+							int min[]={0,1,2,3};
+							for(i=4;i<inform.star.size();i++){
+								int c=0;
+								for(j=0;j<4;j++){
+									if(inform.star.get(min[j])>inform.star.get(min[c])){
+										c=j;
+									}
+								}
+								if(inform.star.get(i)<inform.star.get(min[c])){
+									min[c]=i;
+								}
+							}
+							int m1=0,m2=0;
+							for(i=0;i<4;i++){
+								if(inform.distance.get(min[i])>inform.distance.get(min[m1])){
+									m1=i;
+								}
+								if(inform.distance.get(min[i])<inform.distance.get(min[m2])){
+									m2=i;
+								}
+							}
+							int temp;
+							temp=min[3];
+							min[3]=min[m1];
+							min[m1]=temp;
+							temp=min[0];
+							min[0]=min[m2];
+							min[m2]=temp;
+							if(inform.distance.get(min[2])<inform.distance.get(min[1])){
+								temp=min[1];
+								min[1]=min[2];
+								min[2]=temp;
+							}
+							for(i=0;i<4;i++){
+								rank.add(inform,min[i]);
+							}	 
+							String a=rank.output();
+							out.println(a);
+						}
+						else{
+							String a=inform.output();
+							out.println(a);
 						}
 					}
-					int m1=0,m2=0;
-					for(i=0;i<4;i++){
-						if(inform.distance.get(min[i])>inform.distance.get(min[m1])){
-							m1=i;
-						}
-						if(inform.distance.get(min[i])<inform.distance.get(min[m2])){
-							m2=i;
-						}
-					}
-					int temp;
-					temp=min[3];
-					min[3]=min[m1];
-					min[m1]=temp;
-					temp=min[0];
-					min[0]=min[m2];
-					min[m2]=temp;
-					if(inform.distance.get(min[2])<inform.distance.get(min[1])){
-						temp=min[1];
-						min[1]=min[2];
-						min[2]=temp;
-					}
-					for(i=0;i<4;i++){
-						rank.add(inform,min[i]);
-					}	 
-					String a=rank.output();
-					out.println(a);
-				}
-				else{
-					String a=inform.output();
-					out.println(a);
-				}
-			    }
-	                    //가게정보 검색
-	                   /* if(command=="STO") {
+					//가게정보 검색
+					/* if(command=="STO") {
 	                    	input=input.substring(4);
 	                    	String a[];
 	                    	a=search_store(input);
@@ -264,62 +265,62 @@ public class start_server {
 	                    	}
 	                    	out.println(b);
 	                    }*/
-	                    //채팅방 검색
-	                    if(command.equals("SCH")) {
-	                    	String input1=input.substring(4,16);
-	                    	String input2=input.substring(16);
-	                    	room_info room =search_room(input1,input2);
-	                    	String a=room.output();
-	    					out.println(a);
-	                    	
-	                    }
-	                    //채팅방 생성
-	                    if(command.equals("MAK")) {
-	                    	input=input.substring(4);
-	                    	String input1[]=input.split(" ");
-	                    	int int_input1=Integer.valueOf(input1[0]);
-	                    	int int_input2=Integer.valueOf(input1[2]);
-	                    	insert_room(int_input1,input1[1],int_input2,input1[3],input1[4]);
-	                    }
-	                    //채팅방 삭제
-	                    if(command.equals("DEL")) {
-	                    	input=input.substring(4);
-	                    	int int_input=Integer.valueOf(input);
-	                    	delete_room(int_input);
-	                    }
-	                    //채팅방 입장
-	                    if(command.equals("COM")) {
-	                    	input=input.substring(4);
-	                    	int port=enter_room();
-	                    	new ChatServer(port);
-	                    }
-	                    //이벤트 
-	                    if(command.equals("COM")) {
-	                    	input=input.substring(4);
-	                    	content_info inform = new content_info();
-	                    	inform=search_content(input);
-	                    }
-	                    //C_Server(room_num);
-	                    
-	                }
-	            } catch ( Exception e) {
-	                System.out.println(e);
-	            } finally {
+					//채팅방 검색
+					if(command.equals("SCH")) {
+						String input1=input.substring(4,16);
+						String input2=input.substring(16);
+						room_info room =search_room(input1,input2);
+						String a=room.output();
+						out.println(a);
 
-	                if (name != null) {
-	                    names.remove(name);
-	                }
-	                if (out != null) {
-	                    writers.remove(out);
-	                }
-	                removeClient(this);
-	                try {
-	                	socket.close();
-	                } catch (IOException e) {
-	                }
-	            }
+					}
+					//채팅방 생성
+					if(command.equals("MAK")) {
+						input=input.substring(4);
+						String input1[]=input.split(" ");
+						int int_input1=Integer.valueOf(input1[0]);
+						int int_input2=Integer.valueOf(input1[2]);
+						insert_room(int_input1,input1[1],int_input2,input1[3],input1[4]);
+					}
+					//채팅방 삭제
+					if(command.equals("DEL")) {
+						input=input.substring(4);
+						int int_input=Integer.valueOf(input);
+						delete_room(int_input);
+					}
+					//채팅방 입장
+					if(command.equals("COM")) {
+						input=input.substring(4);
+						int port=enter_room();
+						new ChatServer(port);
+					}
+					//이벤트 
+					if(command.equals("COM")) {
+						input=input.substring(4);
+						content_info inform = new content_info();
+						inform=search_content(input);
+					}
+					//C_Server(room_num);
 
-	        }
+				}
+			} catch ( Exception e) {
+				System.out.println(e);
+			} finally {
+
+				if (name != null) {
+					names.remove(name);
+				}
+				if (out != null) {
+					writers.remove(out);
+				}
+				removeClient(this);
+				try {
+					socket.close();
+				} catch (IOException e) {
+				}
+			}
+
+		}
 
 		public Handler findThread(String name) {
 			Handler hd = null;
@@ -331,7 +332,7 @@ public class start_server {
 			return hd;
 		}
 	}
-	
+
 
 	public   Scanner in = new Scanner(System.in);
 
@@ -342,12 +343,11 @@ public class start_server {
 		String pass = "1234";// password
 
 		Connection conn = null;
-		Class.forName("org.gjt.mm.mysql.Driver");
+		Class.forName("com.mysql.jdbc.Driver");
 		conn = DriverManager.getConnection(url, user, pass);
 		System.out.println("접속");
 
 		return conn;
-
 	}
 
 	public   void insert_room(int ID, String name, int maximum, String spare_time, String content)
@@ -520,7 +520,7 @@ public class start_server {
 		String sql = "select * from contents where content = ?";// sql 쿼리
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, content);
-		
+
 		ResultSet res = pstmt.executeQuery();
 
 		if (res != null)
@@ -536,10 +536,8 @@ public class start_server {
 		return inform;
 	}
 	/*public   String[] search_store(String name) throws ClassNotFoundException, SQLException {
-
 		// 카테고리에서 컨텐츠를 찾아오는 함수
 		// 매뉴에서 컨텐츠를 보여줄때 사용
-
 		Connection conn = getConnection();
 		String sql = "select star,address,latitude,longitude from contents where name = ?";// sql 쿼리
 		PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -547,9 +545,7 @@ public class start_server {
 		String store[] = null;
 		// 지도 주소 평점 
 		int count = 0;
-
 		ResultSet res = pstmt.executeQuery();
-
 		if (res != null)
 			System.out.println("탐색완료");
 		else {
