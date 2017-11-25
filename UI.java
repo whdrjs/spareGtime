@@ -64,7 +64,9 @@ class listFrame extends JFrame{
 	public String type1="ACT"; //act 인지 event 인지
 	public String type2;//bakery, coffee,ice_cream 인지
 	public String type3=" ";// priority (distance 아니면 star 인지 ).
+	public String type4="";
 	public String rawStr;
+	public String top4Str;
 
 	Client client=new Client();
 
@@ -76,7 +78,8 @@ class listFrame extends JFrame{
 
 	public String select;
 	public String imgName;
-	private void distance(){
+	
+	public void distance(){
 		System.out.println("켜짐");
 		JFrame pop=new JFrame();
 		JRadioButton visionRaBtn = new JRadioButton("비전타워");
@@ -101,17 +104,33 @@ class listFrame extends JFrame{
 		bg.add(otherRaBtn);
 		visionRaBtn.setBounds(40, 40, 100,50);
 		visionRaBtn.setContentAreaFilled(false); 
-		visionRaBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) { //거리순 을 클릭하고 비타, 복파, 동서울 을 클릭하면 서버에 필요한 정보를 주고 그거에 해당하는 가게 리스트 top4를 받을 꺼야
+		/*
+		 * list.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {					
+				select=list.getSelectedValue();// 선택!
+				imgName=new String("img/"+select+".png");//지도 위치 스트링으로
+				System.out.println("select 얌"+select);
+			}
+		}); 
+		 * */
+		 
+		visionRaBtn.addMouseListener(new MouseAdapter() {	
+			public void mouseClicked(MouseEvent e) {	 //거리순 을 클릭하고 비타, 복파, 동서울 을 클릭하면 서버에 필요한 정보를 주고 그거에 해당하는 가게 리스트 top4를 받을 꺼야
 				pop.setVisible(false);
+				//type4="0";
+				//System.out.println("distance 안이다"+type4);
+	
 				try {
-					rawStr=new String(Client.getStoreData(type1, type2 , type3 ,"1"));
+					top4Str=new String(Client.getStoreData(type1, type2 , type3 ,"1"));
+					System.out.println("distance() 안에서 부른 top4 "+top4Str);
+					
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				System.out.println(rawStr);
+				
 			}
+			
 		});
 		policeRaBtn.setBounds(150, 40, 100,50);
 		policeRaBtn.setContentAreaFilled(false); 
@@ -148,6 +167,7 @@ class listFrame extends JFrame{
 		pan.setVisible(true);
 		pop.getContentPane().add(pan,BorderLayout.CENTER);
 		pop.setVisible(true);
+		
 	}
 	public listFrame(String pre) { //프리 여기 있어요옹
 		setTitle(pre);
@@ -162,7 +182,7 @@ class listFrame extends JFrame{
 				g.drawImage(bg,0,0,getWidth(),getHeight(),this);
 			}
 		};
-		//기본값
+		//기본값!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		try {
 			rawStr=new String(Client.getStoreData(type1, type2 , type3 ,"0"));
 		} catch (IOException e1) {
@@ -180,6 +200,7 @@ class listFrame extends JFrame{
 				{
 					type3="distance"; //distance 를 넣어줄꺼야
 					distance();
+					
 				}
 				if(((String)combo.getSelectedItem()).compareTo("Rate")==0)
 				{
@@ -191,6 +212,7 @@ class listFrame extends JFrame{
 		combo.setEditable(false);
 		combo.setBounds(150, 30, 240, 40);
 		mainList.add(combo);
+		
 		makeList(rawStr);//받아온 ^ _ 나누기
 		//list
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -200,7 +222,7 @@ class listFrame extends JFrame{
 			public void mouseClicked(MouseEvent e) {					
 				select=list.getSelectedValue();// 선택!
 				imgName=new String("img/"+select+".png");//지도 위치 스트링으로
-				System.out.println(select);
+				System.out.println("select 얌"+select);
 			}
 		}); 
 
@@ -209,7 +231,8 @@ class listFrame extends JFrame{
 		scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); 
 		scroll.setViewportView(list);
 		mainList.add(scroll);
-
+		
+		System.out.println("215줄 distance 밖의 top4Str"+top4Str);
 		check=new JButton(new ImageIcon("img/select2.PNG"));
 		check.setBounds(135, 580, 270, 65);
 		//누르면 정보 보여주는거로 바뀐다
