@@ -105,9 +105,7 @@ public class Client {
 		in = new BufferedReader(new InputStreamReader(
 				dataSocket.getInputStream()));
 		String result = in.readLine();
-		System.out.println(result);
-		
-
+	//	System.out.println("client"+result);
 		return result; //서버로 받은 스트링
 	}
 	public static void main(String[] args) throws Exception {
