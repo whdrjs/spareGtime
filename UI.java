@@ -26,6 +26,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.*;
+
+//import conn.test.mateFrame;
+
 import javax.swing.JList;
 
 //import spareTime.ChatClient;
@@ -69,7 +72,8 @@ class listFrame extends JFrame{
 	public String top4Str;
 
 	Client client=new Client();
-
+	disFrame d=new disFrame();
+	
 	public ArrayList<String> storeList=new ArrayList<String>();//가게 리스트
 	//가게 정보 저장
 	public ArrayList<String> names=new ArrayList<String>();
@@ -78,7 +82,7 @@ class listFrame extends JFrame{
 
 	public String select;
 	public String imgName;
-	
+	/*
 	public void distance(){
 		System.out.println("켜짐");
 		JFrame pop=new JFrame();
@@ -112,7 +116,7 @@ class listFrame extends JFrame{
 				System.out.println("select 얌"+select);
 			}
 		}); 
-		 * */
+		 * 
 		 
 		visionRaBtn.addMouseListener(new MouseAdapter() {	
 			public void mouseClicked(MouseEvent e) {	 //거리순 을 클릭하고 비타, 복파, 동서울 을 클릭하면 서버에 필요한 정보를 주고 그거에 해당하는 가게 리스트 top4를 받을 꺼야
@@ -169,12 +173,13 @@ class listFrame extends JFrame{
 		pop.setVisible(true);
 		
 	}
+	*/
 	public listFrame(String pre) { //프리 여기 있어요옹
 		setTitle(pre);
 		type2=pre; //pre (bakery) 를 type1 에 넣었어요옹
 		setSize(540,720);
 		setLocation(530, 50);
-
+		
 		mainList =new JPanel() {
 			Image bg= new ImageIcon("img/submain.png").getImage();
 
@@ -193,14 +198,15 @@ class listFrame extends JFrame{
 		mainList.setLayout(null);
 		combo.addItem("Distance");
 		combo.addItem("Rate");
+		//disFrame d=new disFrame(); //distance frame 임.
+		
 		combo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e)
 			{
 				if(((String)combo.getSelectedItem()).compareTo("Distance")==0)
 				{
 					type3="distance"; //distance 를 넣어줄꺼야
-					distance();
-					
+					d.run(type1,type2,type3); //listframe 에 저장된 type1 ,type2,type3 를 보내줌
 				}
 				if(((String)combo.getSelectedItem()).compareTo("Rate")==0)
 				{
@@ -218,6 +224,7 @@ class listFrame extends JFrame{
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		storeList=cloneList(names);//나눈거 storelist에 저장하기
 		list=new JList (storeList.toArray());// 가게 들을 뽑아주기!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		
 		list.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {					
 				select=list.getSelectedValue();// 선택!
@@ -325,8 +332,265 @@ class listFrame extends JFrame{
 		for(String item: list) clone.add(new String(item));
 		return clone;
 	}
+	
 }
+class disFrame extends JFrame{
+	private JPanel mPanel;
+	private JPanel infoPanel;
+	private JComboBox<String> combo= new JComboBox<String>();
+	private JTextArea info=new JTextArea();
+	private JButton check;
+	private JButton mateBtn;
+	private JButton back;
+	private JButton img;
+	private JList<String> list=new JList<String>(); //가게 리스트 보내주는
+	private JScrollPane scroll=new JScrollPane();
 
+	public String type1; //act 인지 event 인지
+	public String type2; //bakery, coffee,ice_cream 인지
+	public String type3;// priority (distance 아니면 star 인지 ).
+	public String type4;
+	public String rawStr;
+	public String top4Str;
+
+	public ArrayList<String> storeList=new ArrayList<String>();//가게 리스트
+	//가게 정보 저장
+	public ArrayList<String> names=new ArrayList<String>();
+	public ArrayList<String> star=new ArrayList<String>();
+	public ArrayList<String> address=new ArrayList<String>();
+
+	public String select;
+	public String imgName;
+	
+	Client client=new Client();
+	
+	public void disFrame() {
+		
+	}
+	public void run(String t1,String t2,String t3) {
+		setTitle("priority-distance");
+		type1=t1;
+		type2=t2;
+		type3=t3;
+		System.out.println("dis frame 에서 type1은 "+type1);
+		System.out.println("dis frame 에서 type2은 "+type2);
+		System.out.println("dis frame 에서 type3은 "+type3);
+		
+		setSize(540,720);
+		setLocation(530, 50);
+
+		mPanel =new JPanel() {
+			Image bg= new ImageIcon("img/submain.png").getImage();
+
+			public void paintComponent(Graphics g) {
+				g.drawImage(bg,0,0,getWidth(),getHeight(),this);
+			}
+		};
+		//기본값!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		///dist 넣어주기
+		
+		//JFrame pop=new JFrame();
+		JRadioButton visionRaBtn = new JRadioButton("비전타워");
+		JRadioButton policeRaBtn = new JRadioButton("복정파출소");
+		JRadioButton otherRaBtn = new JRadioButton("동서울대");
+
+		//pop.setDefaultLookAndFeelDecorated(true);
+		//pop.setTitle("위치");
+		//pop.setSize(420,200);
+		//pop.setLocation(470, 40);
+		/*
+		JPanel pan =new JPanel() {
+			Image bg= new ImageIcon("img/submain.png").getImage();
+			public void paintComponent(Graphics g) {
+				g.drawImage(bg,0,0,getWidth(),getHeight(),this);
+			}
+		};
+		*/
+		//pan.setLayout(null);
+		//버튼 그룹으로
+		ButtonGroup bg=new ButtonGroup();
+		bg.add(visionRaBtn);
+		bg.add(policeRaBtn);
+		bg.add(otherRaBtn);
+		visionRaBtn.setBounds(40, 40, 100,50);
+		visionRaBtn.setContentAreaFilled(false); 
+		/*
+		 * list.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {					
+				select=list.getSelectedValue();// 선택!
+				imgName=new String("img/"+select+".png");//지도 위치 스트링으로
+				System.out.println("select 얌"+select);
+			}
+		}); 
+		 * */
+		 
+		visionRaBtn.addActionListener(new ActionListener() {	
+			public void actionPerformed(ActionEvent e) {	 //거리순 을 클릭하고 비타, 복파, 동서울 을 클릭하면 서버에 필요한 정보를 주고 그거에 해당하는 가게 리스트 top4를 받을 꺼야
+				//System.out.println("distance 안이다"+type4);
+				try {
+					top4Str=new String(Client.getStoreData(type1, type2 , type3 ,"1"));
+					System.out.println("distance frame 에서 부른 top4 "+top4Str);
+					
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+			}
+			
+		});
+		policeRaBtn.setBounds(150, 40, 100,50);
+		policeRaBtn.setContentAreaFilled(false); 
+		policeRaBtn.addActionListener(new ActionListener() { //거리순 을 클릭하고 비타, 복파, 동서울 을 클릭하면 서버에 필요한 정보를 주고 그거에 해당하는 가게 리스트 top4를 받을 꺼야
+			public void actionPerformed(ActionEvent e) {
+				//pop.setVisible(false);
+				try {
+					top4Str=new String(Client.getStoreData(type1, type2 , type3 ,"2"));
+					System.out.println("distance frame 에서 부른 top4 "+top4Str);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		otherRaBtn.setBounds(280, 40, 100,50);
+		otherRaBtn.setContentAreaFilled(false); 
+		otherRaBtn.addActionListener(new ActionListener() { //거리순 을 클릭하고 비타, 복파, 동서울 을 클릭하면 서버에 필요한 정보를 주고 그거에 해당하는 가게 리스트 top4를 받을 꺼야
+			public void actionPerformed(ActionEvent e) {
+				try {
+					top4Str=new String(Client.getStoreData(type1, type2 , type3 ,"3"));
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		//추가
+		mPanel.add(new JLabel("Select your closet location"));
+		mPanel.add(visionRaBtn);
+		mPanel.add(policeRaBtn);
+		mPanel.add(otherRaBtn);
+		mPanel.setVisible(true);
+		
+		add(mPanel,BorderLayout.CENTER);
+		setVisible(true);
+		//distance 끝
+		mPanel.setLayout(null);
+		
+		
+		makeList(top4Str);//받아온 top4 String 을 ^ _ 나누기
+		//list
+		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		storeList=cloneList(names);//나눈거 storelist에 저장하기
+		list=new JList (storeList.toArray());// 가게 들을 뽑아주기!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		list.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {					
+				select=list.getSelectedValue();// 선택!
+				imgName=new String("img/"+select+".png");//지도 위치 스트링으로
+				System.out.println("select 얌"+select);
+			}
+		}); 
+
+		scroll.setViewportView(list);
+		scroll.setBounds(70, 105, 400, 450);
+		scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); 
+		scroll.setViewportView(list);
+		mPanel.add(scroll);
+		
+		System.out.println("215줄 distance 밖의 top4Str"+top4Str);
+		
+		check=new JButton(new ImageIcon("img/select2.PNG"));//분홍버튼
+		check.setBounds(135, 580, 270, 65);
+		//누르면 정보 보여주는거로 바뀐다
+		check.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println(imgName);
+				getContentPane().removeAll();
+				//여기부터는 정보받고 나오는 패널
+				infoPanel =new JPanel() {
+					Image bg= new ImageIcon("img/submain.png").getImage(); 
+
+					public void paintComponent(Graphics g) {
+						g.drawImage(bg,0,0,getWidth(),getHeight(),this);
+					}
+				};
+				infoPanel.setLayout(null);
+
+				img=new JButton(new ImageIcon(imgName));
+				img.setBackground(Color.blue);
+				img.setBorderPainted(false);
+				img.setFocusPainted(false); 
+				img.setContentAreaFilled(false); 
+				img.setBounds(10, 10, 570, 435);
+
+				int idx= names.indexOf(select);
+				//System.out.println(new String(names.get(idx)));
+				info.append(names.get(idx)+"\n");
+				info.append(address.get(idx));
+				info.setBounds(10, 455, 500, 100);
+				info.setOpaque(false);
+				info.setEditable(false);
+
+				mateBtn=new JButton(new ImageIcon("img/findmate3.jpg"));
+				mateBtn.setBackground(Color.blue);
+				mateBtn.setBorderPainted(false);
+				mateBtn.setFocusPainted(false); 
+				mateBtn.setContentAreaFilled(false); 
+				mateBtn.setBounds(610, 60, 295, 71);
+				mateBtn.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						new mateFrame(select);
+					}
+				});
+				infoPanel.add(img);
+				infoPanel.add(info);
+				infoPanel.add(mateBtn);
+
+				back=new JButton(new ImageIcon("img/캡처4.PNG"));
+				back.setBackground(Color.red);
+				back.setBounds(640, 550, 225, 56);
+				back.setBorderPainted(false);
+				back.setFocusPainted(false); 
+				back.addActionListener(new ActionListener(){
+					public void actionPerformed(ActionEvent arg0) {
+						getContentPane().removeAll();
+						getContentPane().add(mPanel);
+						revalidate();
+						repaint();
+					}
+				});
+				infoPanel.add(back);
+				getContentPane().add(infoPanel);
+				revalidate();
+				repaint();
+				setSize(960,720);
+				setLocation(370, 50);
+			}
+		});
+		mPanel.add(check);
+		getContentPane().add(mPanel);
+		setVisible(true);//여기까지가 맨처음 실행했을때의 swing들을 위한
+	}
+	private void makeList (String list) {
+		System.out.println(list);
+		String[] store=list.split("\\^");
+		String[] infoSplit;
+		for(int i=0;i<store.length;i++)
+		{
+			System.out.println(store[i]);
+			infoSplit=store[i].split("\\_");
+			//System.out.println(infoSplit[0]+" "+infoSplit.length);
+			names.add(infoSplit[1]);
+			star.add(infoSplit[2]);
+			address.add(infoSplit[3]);
+		}
+	}
+	public static ArrayList<String> cloneList(ArrayList<String>list) {
+		ArrayList<String> clone = new ArrayList<String>(list.size());
+		for(String item: list) clone.add(new String(item));
+		return clone;
+	}
+}
 class mateFrame extends JFrame{
 	private JPanel panel ;
 	private JLabel label = new JLabel();
