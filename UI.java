@@ -53,7 +53,6 @@ class listFrame extends JFrame{
 	private JPanel infoPanel;
 	private JComboBox<String> combo= new JComboBox<String>();
 	private JButton check;
-	private JButton rateBtn;
 	private JButton mateBtn;
 	private JButton back;
 	private JList<String> list=new JList<String>();
@@ -73,11 +72,10 @@ class listFrame extends JFrame{
 	public String[] address;
 
 	public String select;
-	//public Integer location=0; // 1 ,2 ,3 을 보낼꺼다.
-	public String location;
 	private void distance(){
+		System.out.println("켜짐");
 		JFrame pop=new JFrame();
-		JRadioButton visionRaBtn = new JRadioButton("비전타워",true);
+		JRadioButton visionRaBtn = new JRadioButton("비전타워");
 		JRadioButton policeRaBtn = new JRadioButton("복정파출소");
 		JRadioButton otherRaBtn = new JRadioButton("동서울대");
 
@@ -101,42 +99,41 @@ class listFrame extends JFrame{
 		visionRaBtn.setContentAreaFilled(false); 
 		visionRaBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) { //거리순 을 클릭하고 비타, 복파, 동서울 을 클릭하면 서버에 필요한 정보를 주고 그거에 해당하는 가게 리스트 top4를 받을 꺼야
-				location="1";
+				pop.setVisible(false);
 				try {
-					pop.setVisible(false);
-					rawStr=Client.getStoreData(type1, type2 , type3 ,location); 
+					rawStr=new String(Client.getStoreData(type1, type2 , type3 ,"1"));
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
-				} 
+				}
+				System.out.println(rawStr);
 			}
 		});
 		policeRaBtn.setBounds(150, 40, 100,50);
 		policeRaBtn.setContentAreaFilled(false); 
 		policeRaBtn.addActionListener(new ActionListener() { //거리순 을 클릭하고 비타, 복파, 동서울 을 클릭하면 서버에 필요한 정보를 주고 그거에 해당하는 가게 리스트 top4를 받을 꺼야
 			public void actionPerformed(ActionEvent e) {
-				location="2";
+				pop.setVisible(false);
 				try {
-					pop.setVisible(false);
-					rawStr=Client.getStoreData(type1, type2 , type3 ,location);
+					rawStr=new String(Client.getStoreData(type1, type2 , type3 ,"2"));
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
-				} 
+				}
 			}
 		});
 		otherRaBtn.setBounds(280, 40, 100,50);
 		otherRaBtn.setContentAreaFilled(false); 
 		otherRaBtn.addActionListener(new ActionListener() { //거리순 을 클릭하고 비타, 복파, 동서울 을 클릭하면 서버에 필요한 정보를 주고 그거에 해당하는 가게 리스트 top4를 받을 꺼야
 			public void actionPerformed(ActionEvent e) {
-				location="3";
+				pop.setVisible(false);
+				System.out.println("버튼눌러짐");
 				try {
-					pop.setVisible(false);
-					rawStr=Client.getStoreData(type1, type2 , type3 ,location);
+					rawStr=new String(Client.getStoreData(type1, type2 , type3 ,"3"));
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
-				} 
+				}
 			}
 		});
 		//추가
@@ -144,7 +141,6 @@ class listFrame extends JFrame{
 		pan.add(visionRaBtn);
 		pan.add(policeRaBtn);
 		pan.add(otherRaBtn);
-
 		pan.setVisible(true);
 		pop.getContentPane().add(pan,BorderLayout.CENTER);
 		pop.setVisible(true);
@@ -162,6 +158,13 @@ class listFrame extends JFrame{
 				g.drawImage(bg,0,0,getWidth(),getHeight(),this);
 			}
 		};
+		try {
+			rawStr=new String(Client.getStoreData(type1, type2 , type3 ,"0"));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		//System.out.println("List:"+rawStr);
 		mainList.setLayout(null);
 		combo.addItem("Distance");
 		combo.addItem("Rate");
@@ -179,11 +182,12 @@ class listFrame extends JFrame{
 				}
 			}
 		});
+
 		combo.setEditable(false);
 		combo.setBounds(150, 30, 240, 40);
 		mainList.add(combo);
-		//new makeList(rawStr);
-		//System.arraycopy(storeList, 0, names,0, names.length);
+		makeList(rawStr);
+		System.arraycopy(storeList, 0, names,0, names.length);
 		//list
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.setListData(storeList);// 가게 들을 뽑아주기!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -196,12 +200,12 @@ class listFrame extends JFrame{
 		scroll.setViewportView(list);
 		scroll.setBounds(70, 105, 400, 450);
 		scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); 
-
 		scroll.setViewportView(list);
 		mainList.add(scroll);
 
 		check=new JButton(new ImageIcon("img/select2.PNG"));
 		check.setBounds(135, 580, 270, 65);
+		//누르면 정보 보여주는거로 바뀐다
 		check.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
 				getContentPane().removeAll();
@@ -214,8 +218,9 @@ class listFrame extends JFrame{
 		});
 		mainList.add(check);
 		getContentPane().add(mainList);
-		setVisible(true);
-
+		setVisible(true);//여기까지가 맨처음 실행했을때의 swing들을 위한
+		
+		//여기부터는 정보받고
 		infoPanel =new JPanel() {
 			Image bg= new ImageIcon("img/submain.png").getImage(); 
 
@@ -256,13 +261,14 @@ class listFrame extends JFrame{
 
 	}
 
-private void makeList (String list) {
+	private void makeList (String list) {
 		System.out.println(list);
-		String[] store=list.split("^");
+		String[] store=list.split("\\^");
+		System.out.println(store[0]);
 		String[] infoSplit;
 		for(int i=0;i<store.length;i++)
 		{
-			infoSplit=store[i].split("_");
+			infoSplit=store[i].split("\\_");
 			names[i]=infoSplit[0];
 			star[i]=infoSplit[1];
 			address[i]=infoSplit[2];
