@@ -23,6 +23,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.*;
 import javax.swing.JList;
@@ -31,7 +32,6 @@ import javax.swing.JList;
 import spareTime.Client;
 
 class eventFrame extends JFrame {
-
 	JPanel contentPane=new JPanel() {
 		Image bg= new ImageIcon("img/mainBG.jpg").getImage();
 		public void paintComponent(Graphics g) {
@@ -53,6 +53,7 @@ class listFrame extends JFrame{
 	private JPanel mainList;
 	private JPanel infoPanel;
 	private JComboBox<String> combo= new JComboBox<String>();
+	private JTextArea info=new JTextArea();
 	private JButton check;
 	private JButton mateBtn;
 	private JButton back;
@@ -232,7 +233,15 @@ class listFrame extends JFrame{
 				img.setFocusPainted(false); 
 				img.setContentAreaFilled(false); 
 				img.setBounds(10, 10, 570, 435);
-				
+
+				int idx= names.indexOf(select);
+				//System.out.println(new String(names.get(idx)));
+				info.append(names.get(idx)+"\n");
+				info.append(address.get(idx));
+				info.setBounds(10, 455, 500, 100);
+				info.setOpaque(false);
+				info.setEditable(false);
+
 				mateBtn=new JButton(new ImageIcon("img/findmate3.jpg"));
 				mateBtn.setBackground(Color.blue);
 				mateBtn.setBorderPainted(false);
@@ -245,6 +254,7 @@ class listFrame extends JFrame{
 					}
 				});
 				infoPanel.add(img);
+				infoPanel.add(info);
 				infoPanel.add(mateBtn);
 
 				back=new JButton(new ImageIcon("img/캡처4.PNG"));
@@ -289,8 +299,8 @@ class listFrame extends JFrame{
 	}
 	public static ArrayList<String> cloneList(ArrayList<String>list) {
 		ArrayList<String> clone = new ArrayList<String>(list.size());
-	    for(String item: list) clone.add(new String(item));
-	    return clone;
+		for(String item: list) clone.add(new String(item));
+		return clone;
 	}
 }
 
