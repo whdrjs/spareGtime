@@ -12,6 +12,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
@@ -55,6 +56,7 @@ class listFrame extends JFrame{
 	private JButton check;
 	private JButton mateBtn;
 	private JButton back;
+	private JButton img;
 	private JList<String> list=new JList<String>();
 	private JScrollPane scroll=new JScrollPane();
 
@@ -65,13 +67,14 @@ class listFrame extends JFrame{
 
 	Client client=new Client();
 
-	public String[] storeList= {"NULL"}; //가게 리스트
+	public ArrayList<String> storeList=new ArrayList<String>();//가게 리스트
 	//가게 정보 저장
-	public String[] names;
-	public String[] star;
-	public String[] address;
+	public ArrayList<String> names=new ArrayList<String>();
+	public ArrayList<String> star=new ArrayList<String>();
+	public ArrayList<String> address=new ArrayList<String>();
 
 	public String select;
+	public String imgName;
 	private void distance(){
 		System.out.println("켜짐");
 		JFrame pop=new JFrame();
@@ -158,6 +161,7 @@ class listFrame extends JFrame{
 				g.drawImage(bg,0,0,getWidth(),getHeight(),this);
 			}
 		};
+		//기본값
 		try {
 			rawStr=new String(Client.getStoreData(type1, type2 , type3 ,"0"));
 		} catch (IOException e1) {
@@ -186,14 +190,16 @@ class listFrame extends JFrame{
 		combo.setEditable(false);
 		combo.setBounds(150, 30, 240, 40);
 		mainList.add(combo);
-		makeList(rawStr);
-		System.arraycopy(storeList, 0, names,0, names.length);
+		makeList(rawStr);//받아온 ^ _ 나누기
 		//list
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		list.setListData(storeList);// 가게 들을 뽑아주기!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		storeList=cloneList(names);//나눈거 storelist에 저장하기
+		list=new JList (storeList.toArray());// 가게 들을 뽑아주기!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		list.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {					
-				select=" ";
+				select=list.getSelectedValue();// 선택!
+				imgName=new String("img/"+select+".png");//지도 위치 스트링으로
+				System.out.println(select);
 			}
 		}); 
 
@@ -208,7 +214,53 @@ class listFrame extends JFrame{
 		//누르면 정보 보여주는거로 바뀐다
 		check.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
+				System.out.println(imgName);
 				getContentPane().removeAll();
+				//여기부터는 정보받고 나오는 패널
+				infoPanel =new JPanel() {
+					Image bg= new ImageIcon("img/submain.png").getImage(); 
+
+					public void paintComponent(Graphics g) {
+						g.drawImage(bg,0,0,getWidth(),getHeight(),this);
+					}
+				};
+				infoPanel.setLayout(null);
+
+				img=new JButton(new ImageIcon(imgName));
+				img.setBackground(Color.blue);
+				img.setBorderPainted(false);
+				img.setFocusPainted(false); 
+				img.setContentAreaFilled(false); 
+				img.setBounds(10, 10, 570, 435);
+				
+				mateBtn=new JButton(new ImageIcon("img/findmate3.jpg"));
+				mateBtn.setBackground(Color.blue);
+				mateBtn.setBorderPainted(false);
+				mateBtn.setFocusPainted(false); 
+				mateBtn.setContentAreaFilled(false); 
+				mateBtn.setBounds(610, 60, 295, 71);
+				mateBtn.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						new mateFrame(select);
+					}
+				});
+				infoPanel.add(img);
+				infoPanel.add(mateBtn);
+
+				back=new JButton(new ImageIcon("img/캡처4.PNG"));
+				back.setBackground(Color.red);
+				back.setBounds(640, 550, 225, 56);
+				back.setBorderPainted(false);
+				back.setFocusPainted(false); 
+				back.addActionListener(new ActionListener(){
+					public void actionPerformed(ActionEvent arg0) {
+						getContentPane().removeAll();
+						getContentPane().add(mainList);
+						revalidate();
+						repaint();
+					}
+				});
+				infoPanel.add(back);
 				getContentPane().add(infoPanel);
 				revalidate();
 				repaint();
@@ -219,60 +271,26 @@ class listFrame extends JFrame{
 		mainList.add(check);
 		getContentPane().add(mainList);
 		setVisible(true);//여기까지가 맨처음 실행했을때의 swing들을 위한
-		
-		//여기부터는 정보받고
-		infoPanel =new JPanel() {
-			Image bg= new ImageIcon("img/submain.png").getImage(); 
-
-			public void paintComponent(Graphics g) {
-				g.drawImage(bg,0,0,getWidth(),getHeight(),this);
-			}
-		};
-		infoPanel.setLayout(null);
-
-		mateBtn=new JButton(new ImageIcon("img/findmate2.jpg"));
-		mateBtn.setBackground(Color.blue);
-		mateBtn.setBorderPainted(false);
-		mateBtn.setFocusPainted(false); 
-		mateBtn.setContentAreaFilled(false); 
-		mateBtn.setBounds(550, 60, 364, 87);
-		mateBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				new mateFrame(select);
-			}
-		});
-
-		infoPanel.add(mateBtn);
-
-		back=new JButton(new ImageIcon("img/캡처4.PNG"));
-		back.setBackground(Color.red);
-		back.setBounds(640, 550, 225, 56);
-		back.setBorderPainted(false);
-		back.setFocusPainted(false); 
-		back.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent arg0) {
-				getContentPane().removeAll();
-				getContentPane().add(mainList);
-				revalidate();
-				repaint();
-			}
-		});
-		infoPanel.add(back);
-
 	}
 
 	private void makeList (String list) {
 		System.out.println(list);
 		String[] store=list.split("\\^");
-		System.out.println(store[0]);
 		String[] infoSplit;
 		for(int i=0;i<store.length;i++)
 		{
+			System.out.println(store[i]);
 			infoSplit=store[i].split("\\_");
-			names[i]=infoSplit[0];
-			star[i]=infoSplit[1];
-			address[i]=infoSplit[2];
+			//System.out.println(infoSplit[0]+" "+infoSplit.length);
+			names.add(infoSplit[1]);
+			star.add(infoSplit[2]);
+			address.add(infoSplit[3]);
 		}
+	}
+	public static ArrayList<String> cloneList(ArrayList<String>list) {
+		ArrayList<String> clone = new ArrayList<String>(list.size());
+	    for(String item: list) clone.add(new String(item));
+	    return clone;
 	}
 }
 
