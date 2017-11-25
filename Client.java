@@ -33,7 +33,8 @@ public class Client {
 	static String type1;
 	//ChatClient chat;
 	public Client() {
-
+		userIn = new UI();				//UI 클래스 생성
+		userIn.setVisible(true);	//can be show frame
 	}
 
 	/*
@@ -43,9 +44,6 @@ public class Client {
 	 * */
 	// 종 : 아직 손안댄부분 -> 예: 채팅 창 GUI 보여주고  위스퍼 , 텍스트 등을 처리함 - 서버 연결하는 것만 논의 해보면됨.
 	public void run() throws IOException {
-		userIn = new UI();				//UI 클래스 생성
-		userIn.setVisible(true);	//can be show frame
-
 		//String serverAddress = UI.getServerAddress();	//type using getAddress method
 		chatSocket = new Socket("127.0.0.1", 9000); //채팅소켓을 만듬 +  port부여했음
 		in = new BufferedReader(new InputStreamReader(
@@ -112,6 +110,5 @@ public class Client {
 		Client client = new Client();		
 
 		client.run();
-
 	}
 }
