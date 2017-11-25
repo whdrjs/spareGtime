@@ -33,8 +33,7 @@ public class Client {
 	static String type1;
 	//ChatClient chat;
 	public Client() {
-		userIn = new UI();				//UI 클래스 생성
-		userIn.setVisible(true);	//can be show frame
+
 	}
 
 	/*
@@ -108,7 +107,8 @@ public class Client {
 	}
 	public static void main(String[] args) throws Exception {
 		Client client = new Client();		
-
+		UI userIn = new UI();				//UI 클래스 생성
+		userIn.setVisible(true);	//can be show frame
 		client.run();
 	}
 }
