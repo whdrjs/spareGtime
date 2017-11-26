@@ -327,14 +327,14 @@ class listFrame extends JFrame{
 		mainList.add(list);
 	}
 }
-
+//mate!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 class mateFrame extends JFrame{
 	private JPanel panel ;
 	private JLabel label = new JLabel();
 	private JComboBox<String> toMain= new JComboBox<String>(); 
 	private JComboBox<String> time= new JComboBox<String>(); 
 	private JButton check;
-	String cate;
+	String category;
 	String whatTime;
 	public mateFrame(String cont,String name)
 	{
@@ -359,7 +359,7 @@ class mateFrame extends JFrame{
 		toMain.setBounds(210,30,180,30);
 		toMain.addActionListener(new ActionListener(){//누르면 정보 보여주는거로 바뀐다
 			public void actionPerformed(ActionEvent arg0) {
-				cate=new String((String)toMain.getSelectedItem());
+				category=new String((String)toMain.getSelectedItem());
 			}});
 
 		if(name.equals("main"))
@@ -367,7 +367,7 @@ class mateFrame extends JFrame{
 		else
 		{
 			panel.add(label);
-			cate=cont;
+			category=cont;
 		}
 
 		setTitle(name);
@@ -393,8 +393,10 @@ class mateFrame extends JFrame{
 		check=new JButton(new ImageIcon("img/select3.PNG"));
 		check.setBounds(219, 300, 162, 41);
 		check.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent arg0) {
-
+			public void actionPerformed(ActionEvent arg0) { //roomcondtion 보내기
+				//whatTime 쪼개서 시작시간만 가져오기
+				//roomInforming
+				Client.roomInforming(category,whatTime);
 			}
 		});
 		panel.add(check);		
