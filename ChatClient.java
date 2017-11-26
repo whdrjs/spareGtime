@@ -25,12 +25,10 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.JLabel;
 
-/*
- * @author ¿¹Áö */
 public class ChatClient{
    String text="";
    String name="";
-    JFrame frame = new JFrame("Ã¤ÆÃÃ¢");
+    JFrame frame = new JFrame("SpareGtime ì±„íŒ…ì°½");
     JTextField textField = new JTextField();
     JTextField textName = new JTextField();
     JTextArea messageArea;
@@ -40,7 +38,7 @@ public class ChatClient{
     
     public ChatClient() throws IOException,InterruptedException 
     {
-       messageArea = new JTextArea(){ //message¸¦ º¸¿©ÁÖ´Â Ã¢¿¡ ´ëÇÑ GUI
+       messageArea = new JTextArea(){ //messageë¥¼ ë³´ì—¬ì£¼ëŠ” ì°½ì— ëŒ€í•œ GUI
           {setOpaque(false);}
         
        };
@@ -51,18 +49,18 @@ public class ChatClient{
        };
        
        frame.getContentPane().setBackground(new Color(79,54,29));
-       //Àü¼Û, ±Ó¼Ó¸» , ³ª°¡±â¸¦ °¢°¢ ¹öÆ°À» ¸¸µë.-ÀÌ¹ÌÁö ³ªÁß¿¡ ³ÖÀ¸·Á°í ºñ¿ö ³ùÀ½.
+       //ì „ì†¡, ê·“ì†ë§ , ë‚˜ê°€ê¸°ë¥¼ ê°ê° ë²„íŠ¼ì„ ë§Œë“¬
        JButton b1 = new JButton(new ImageIcon(
-                ((new ImageIcon("ÀÌ¹ÌÁöÀÌ¸§")).getImage()).getScaledInstance(35, 35, java.awt.Image.SCALE_SMOOTH))); //Àü¼Û¹öÆ°
+                ((new ImageIcon("ì „ì†¡ì´ë¯¸ì§€")).getImage()).getScaledInstance(35, 35, java.awt.Image.SCALE_SMOOTH))); //ì „ì†¡ë²„íŠ¼
        JButton whisper = new JButton(new ImageIcon(
-                ((new ImageIcon("ÀÌ¹ÌÁö ÀÌ¸§")).getImage()).getScaledInstance(80, 35, java.awt.Image.SCALE_SMOOTH))); //±Ó¼Ó¸»¹öÆ°
+                ((new ImageIcon("ê·“ì†ë§ì´ë¯¸ì§€")).getImage()).getScaledInstance(80, 35, java.awt.Image.SCALE_SMOOTH))); //ê·“ì†ë§ë²„íŠ¼
        JButton b2 = new JButton(new ImageIcon(
-                ((new ImageIcon("ÀÌ¹ÌÁö ÀÌ¸§")).getImage()).getScaledInstance(80, 55, java.awt.Image.SCALE_SMOOTH))); //³ª°¡±â¹öÆ°
+                ((new ImageIcon("ë‚˜ê°€ê¸°ë²„íŠ¼")).getImage()).getScaledInstance(80, 55, java.awt.Image.SCALE_SMOOTH))); //ë‚˜ê°€ê¸°ë²„íŠ¼
         whisper.setBackground(new Color(225,219,249));
         // Layout GUI
         
-        textField.setEditable(false);//textField¸¦ Á÷Àº »ç¿ëÇÏÁö ¸øÇÏ°Ô false°ªÀ¸·Î ÃÊ±âÈ­ÇÑ´Ù.
-        messageArea.setEditable(false);//messageArea¸¦ ¾ÆÁ÷Àº »ç¿ëÇÏÁö ¸øÇÏ°Ô false°ªÀ¸·Î ÃÊ±âÈ­ÇÑ´Ù.
+        textField.setEditable(false);//textFieldë¥¼ ì§ì€ ì‚¬ìš©í•˜ì§€ ëª»í•˜ê²Œ falseê°’ìœ¼ë¡œ ì´ˆê¸°í™”í•œë‹¤.
+        messageArea.setEditable(false);//messageAreaë¥¼ ì•„ì§ì€ ì‚¬ìš©í•˜ì§€ ëª»í•˜ê²Œ falseê°’ìœ¼ë¡œ ì´ˆê¸°í™”í•œë‹¤.
         
         
         frame.setLayout(null);
@@ -75,11 +73,11 @@ public class ChatClient{
         panel.setBounds(15, 10, 35, 35);
         textField.setBackground(new Color(255,255,255));
         textField.setBorder(BorderFactory.createLineBorder(new Color(0,0,0,0)));
-        frame.getContentPane().add(textField); // textField¸¦ »ı¼ºÇÑ´Ù.
+        frame.getContentPane().add(textField); // textFieldë¥¼ ìƒì„±í•œë‹¤.
         frame.getContentPane().add(textName);
         frame.getContentPane().add(panel);
-        textField.setFont(new Font("¹è´ŞÀÇ¹ÎÁ· ÁÖ¾Æ",Font.PLAIN,15)); //ÆùÆ® ¿¬½ÀÇØº¼·Á°í ³Ö¾îºÃÀ½..
-        textName.setFont(new Font("¹è´ŞÀÇ¹ÎÁ· ÁÖ¾Æ",Font.PLAIN,25));
+        textField.setFont(new Font("ë°°ë‹¬ì˜ë¯¼ì¡± ì£¼ì•„",Font.PLAIN,15)); //í°íŠ¸ ì—°ìŠµí•´ë³¼ë ¤ê³  ë„£ì–´ë´¤ìŒ..
+        textName.setFont(new Font("ë°°ë‹¬ì˜ë¯¼ì¡± ì£¼ì•„",Font.PLAIN,25));
         b1.setBounds(350, 510, 35, 35);
         b1.setBorder(BorderFactory.createLineBorder(new Color(0,0,0,0)));
         b2.setBorder(BorderFactory.createLineBorder(new Color(0,0,0,0)));
@@ -94,15 +92,22 @@ public class ChatClient{
         whisper.setBounds(390, 510, 80, 35);
         frame.getContentPane().add(whisper);
         messageArea.setBounds(5,30,470,500);
-        messageArea.setFont(new Font("¹è´ŞÀÇ¹ÎÁ· ÁÖ¾Æ",Font.PLAIN,15));
+        messageArea.setFont(new Font("ë°°ë‹¬ì˜ë¯¼ì¡± ì£¼ì•„",Font.PLAIN,15));
         JScrollPane scroll = new JScrollPane(messageArea);
         scroll.setBounds(15, 50, 450, 450);
         frame.getContentPane().add(scroll);
 
-         //textField¸¦ »ç¿ëÇßÀ» ¶§ ÃëÇÏ´Â ¾×¼Ç ºÎºĞÀÌ µé¾î°¥ °ÍÀÓ .-textField¿¡ ÀÔ·ÂÀ» ¹Ş¾Æ¼­ ¼­¹ö·Î º¸³½´Ù.
+         //textFieldë¥¼ ì‚¬ìš©í–ˆì„ ë•Œ ì·¨í•˜ëŠ” ì•¡ì…˜ ë¶€ë¶„ì´ ë“¤ì–´ê°ˆ ê²ƒì„ .-textFieldì— ì…ë ¥ì„ ë°›ì•„ì„œ ì„œë²„ë¡œ ë³´ë‚¸ë‹¤.
               
-       
-        b2.addActionListener(new ActionListener(){ //³ª°¡±â¹öÆ°À» ´­·¶À» ¶§ ÃëÇÏ´Â ¾×¼Ç
+        textField.addActionListener(new ActionListener() { //textFieldë¥¼ ì‚¬ìš©í–ˆì„ ë•Œ ì·¨í•˜ëŠ” ì•¡ì…˜
+            
+            public void actionPerformed(ActionEvent e) 
+            {
+               Client.out.println(textField.getText());//textFieldì— ì…ë ¥ì„ ë°›ì•„ì„œ ì„œë²„ë¡œ ë³´ë‚¸ë‹¤.
+                textField.setText("");
+            }
+        });
+        b2.addActionListener(new ActionListener(){ //ë‚˜ê°€ê¸°ë²„íŠ¼ì„ ëˆŒë €ì„ ë•Œ ì·¨í•˜ëŠ” ì•¡ì…˜
            
            public void actionPerformed(ActionEvent e)
            {
@@ -111,21 +116,21 @@ public class ChatClient{
    
         });
         
-        b1.addActionListener(new ActionListener(){ //Àü¼Û¹öÆ°À» ´­·¶À» ¶§ ÃëÇÏ´Â ¾×¼Ç
+        b1.addActionListener(new ActionListener(){ //ì „ì†¡ë²„íŠ¼ì„ ëˆŒë €ì„ ë•Œ ì·¨í•˜ëŠ” ì•¡ì…˜
            
            public void actionPerformed(ActionEvent e)
            {
-              Client.out.println(textField.getText()); //¼­¹ö·Î º¸³¿, ¼­¹ö¾ÆÁ÷ ¾È¸¸µé¾î¼­ »¡°£Áì
+              Client.out.println(textField.getText()); //ì„œë²„ë¡œ ë³´ëƒ„, ì„œë²„ì•„ì§ ì•ˆë§Œë“¤ì–´ì„œ ë¹¨ê°„ì¥´
                 textField.setText("");
            }
         });
        
-        whisper.addActionListener(new ActionListener(){ //±Ó¼Ó¸» ¹öÆ°À» ´­·¶À» ¶§ ÃëÇÏ´Â ¾×¼Ç
+        whisper.addActionListener(new ActionListener(){ //ê·“ì†ë§ ë²„íŠ¼ì„ ëˆŒë €ì„ ë•Œ ì·¨í•˜ëŠ” ì•¡ì…˜
            
             public void actionPerformed(ActionEvent e) 
              {
-               other = sendWhisper(); //sendWhisperÇÔ¼ö¸¦ È£ÃâÇØ¼­ ±Ó¼Ó¸»À» º¸³¾ »ç¶÷ÀÇ ÀÌ¸§À» ÀÔ·Â¹Ş¾Æ¼­ other¿¡ ÀúÀåÇÑ´Ù.
-                 Client.out.println(other+"@"+textField.getText()); // "±Ó¼Ó¸» ¹ŞÀ» »ç¶÷ÀÇ ÀÌ¸§@message" formatÀ¸·Î ¼­¹ö·Î º¸³½´Ù. 
+               other = sendWhisper(); //sendWhisperí•¨ìˆ˜ë¥¼ í˜¸ì¶œí•´ì„œ ê·“ì†ë§ì„ ë³´ë‚¼ ì‚¬ëŒì˜ ì´ë¦„ì„ ì…ë ¥ë°›ì•„ì„œ otherì— ì €ì¥í•œë‹¤.
+                 Client.out.println(other+"@"+textField.getText()); // "ê·“ì†ë§ ë°›ì„ ì‚¬ëŒì˜ ì´ë¦„@message" formatìœ¼ë¡œ ì„œë²„ë¡œ ë³´ë‚¸ë‹¤. 
                  textField.setText("");
                System.out.println("");
              }
@@ -135,12 +140,12 @@ public class ChatClient{
        
     String getName() {
       return JOptionPane.showInputDialog(frame, "Choose a screen name:", "Screen name selection",
-            JOptionPane.PLAIN_MESSAGE); // Å¬¶óÀÌ¾ğÆ®ÀÇ ÀÌ¸§À» ÀÔ·Â¹ŞÀ½
+            JOptionPane.PLAIN_MESSAGE); // í´ë¼ì´ì–¸íŠ¸ì˜ ì´ë¦„ì„ ì…ë ¥ë°›ìŒ
    }
 
    String sendWhisper() {
       return JOptionPane.showInputDialog(frame, "Who will you spend the WHISPER message?", "",
-            JOptionPane.PLAIN_MESSAGE); // ±Ó¼Ó¸»À» º¸³¾ »ó´ëÀÇ ÀÌ¸§À» ÀÔ·Â¹ŞÀ½
+            JOptionPane.PLAIN_MESSAGE); // ê·“ì†ë§ì„ ë³´ë‚¼ ìƒëŒ€ì˜ ì´ë¦„ì„ ì…ë ¥ë°›ìŒ
    }
    String getText()
    {
