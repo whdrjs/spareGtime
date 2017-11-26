@@ -98,10 +98,6 @@ class listFrame extends JFrame{
 		bg.add(visionRaBtn);
 		bg.add(policeRaBtn);
 		bg.add(otherRaBtn);
-		storeList.clear();
-		names.clear();
-		star.clear();
-		address.clear();
 		
 		visionRaBtn.setBounds(40, 40, 100,50);
 		visionRaBtn.setContentAreaFilled(false); 
@@ -110,12 +106,11 @@ class listFrame extends JFrame{
 				pop.setVisible(false);
 				try {
 					rawStr=new String(Client.getStoreData(type1, type2 , type3 ,"1"));
-					makeList(rawStr);
+					makeList(rawStr);//makeList가 스트링 자르고 list만들기까지다함
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				System.out.println(rawStr);
 			}
 		});
 		policeRaBtn.setBounds(150, 40, 100,50);
@@ -140,7 +135,7 @@ class listFrame extends JFrame{
 				System.out.println("버튼눌러짐");
 				try {
 					rawStr=new String(Client.getStoreData(type1, type2 , type3 ,"3"));
-					makeList(rawStr);
+					makeList(rawStr);//makeList가 스트링 자르고 list만들기까지다함
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -162,12 +157,11 @@ class listFrame extends JFrame{
 		type2=pre;
 		setSize(540,720);
 		setLocation(530, 50);
-
 		mainList =new JPanel() {
 			Image bg= new ImageIcon("img/submain.png").getImage();
 			public void paintComponent(Graphics g) {
 				g.drawImage(bg,0,0,getWidth(),getHeight(),this);
-			}};
+		}};
 		//기본값
 		try {
 			rawStr=new String(Client.getStoreData(type1, type2 , type3 ,"0"));
@@ -193,26 +187,29 @@ class listFrame extends JFrame{
 				if(((String)combo.getSelectedItem()).compareTo("Rate")==0)
 				{
 					type3="star"; //distance 를 넣어줄꺼야
-					list.removeAll();
+					try {
+						rawStr=new String(Client.getStoreData(type1, type2 , type3 ,"0"));
+						makeList(rawStr);
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}
 			}
 		});
-
 		combo.setEditable(false);
 		combo.setBounds(150, 30, 240, 40);
 		mainList.add(combo);
 
 		check=new JButton(new ImageIcon("img/select2.PNG"));
 		check.setBounds(135, 580, 270, 65);
-		//누르면 정보 보여주는거로 바뀐다
-		check.addActionListener(new ActionListener(){
+		check.addActionListener(new ActionListener(){//누르면 정보 보여주는거로 바뀐다
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println(imgName);
 				getContentPane().removeAll();
-				//여기부터는 정보받고 나오는 패널
+//여기부터는 정보받고 나오는 패널 !-액션안에 패널 넣어놓음-!
 				infoPanel =new JPanel() {
 					Image bg= new ImageIcon("img/submain.png").getImage(); 
-
 					public void paintComponent(Graphics g) {
 						g.drawImage(bg,0,0,getWidth(),getHeight(),this);
 					}
@@ -227,7 +224,6 @@ class listFrame extends JFrame{
 				img.setBounds(10, 10, 570, 435);
 
 				int idx= names.indexOf(select);
-				//System.out.println(new String(names.get(idx)));
 				info.append(names.get(idx)+"\n");
 				info.append(address.get(idx));
 				info.setBounds(10, 455, 500, 100);
@@ -242,7 +238,7 @@ class listFrame extends JFrame{
 				mateBtn.setBounds(610, 60, 295, 71);
 				mateBtn.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						new mateFrame(select);
+						new mateFrame(type2,select);
 					}
 				});
 				infoPanel.add(img);
@@ -256,6 +252,9 @@ class listFrame extends JFrame{
 				back.setFocusPainted(false); 
 				back.addActionListener(new ActionListener(){
 					public void actionPerformed(ActionEvent arg0) {
+						//정보초기화
+						info.selectAll();
+						info.replaceSelection("");
 						getContentPane().removeAll();
 						getContentPane().add(mainList);
 						revalidate();
@@ -268,6 +267,7 @@ class listFrame extends JFrame{
 				repaint();
 				setSize(960,720);
 				setLocation(370, 50);
+				//여기까지가 액션문안의 패널 설정
 			}
 		});
 		mainList.add(check);
@@ -279,6 +279,12 @@ class listFrame extends JFrame{
 		System.out.println(str);
 		String[] store=str.split("\\^");
 		String[] infoSplit;
+	//arraylist초기화
+		storeList.clear();
+		names.clear();
+		star.clear();
+		address.clear();
+	//Jlist초기화
 		mainList.remove(list);
 		mainList.revalidate();
 		mainList.repaint();
@@ -302,11 +308,6 @@ class listFrame extends JFrame{
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		mainList.add(list);
 	}
-	public static ArrayList<String> cloneList(ArrayList<String>list) {
-		ArrayList<String> clone = new ArrayList<String>(list.size());
-		for(String item: list) clone.add(new String(item));
-		return clone;
-	}
 }
 
 class mateFrame extends JFrame{
@@ -315,9 +316,11 @@ class mateFrame extends JFrame{
 	private JComboBox<String> toMain= new JComboBox<String>(); 
 	private JComboBox<String> time= new JComboBox<String>(); 
 	private JButton check;
-
-	public mateFrame(String pre)
+	String cate;
+	String whatTime;
+	public mateFrame(String cont,String name)
 	{
+
 		panel =new JPanel() {
 			Image bg= new ImageIcon("img/submain.png").getImage();
 
@@ -326,7 +329,7 @@ class mateFrame extends JFrame{
 			}
 		};
 		panel.setLayout(null);
-		label.setText(pre);
+		label.setText(cont);
 		label.setBounds(250,30,100,40);
 
 		toMain.addItem("Bakery");
@@ -336,31 +339,41 @@ class mateFrame extends JFrame{
 		toMain.addItem("Billiard");
 		toMain.addItem("Singing");
 		toMain.setBounds(210,30,180,30);
+		toMain.addActionListener(new ActionListener(){//누르면 정보 보여주는거로 바뀐다
+			public void actionPerformed(ActionEvent arg0) {
+				cate=new String((String)toMain.getSelectedItem());
+		}});
 
-		if(pre.equals("main"))
+		if(name.equals("main"))
 			panel.add(toMain);
 		else
+			{
 			panel.add(label);
+			cate=cont;
+			}
 
-		setTitle(pre);
+		setTitle(name);
 		setSize(600,400);
 		setLocation(0, 0);
 
-		time.addItem("9:00 ~ 10:00");
+		time.addItem("09:00 ~ 10:00");
 		time.addItem("10:00 ~ 11:00");
 		time.addItem("11:00 ~ 12:00");
-		time.addItem("12:00 ~ 1:00");
-		time.addItem("1:00 ~ 2:00");
-		time.addItem("2:00 ~ 3:00");
-		time.addItem("3:00 ~ 4:00");
-		time.addItem("4:00 ~ 5:00");
-		time.addItem("5:00 ~ 6:00");
-		time.addItem("6:00 ~ 7:00");
+		time.addItem("12:00 ~ 01:00");
+		time.addItem("01:00 ~ 02:00");
+		time.addItem("02:00 ~ 03:00");
+		time.addItem("03:00 ~ 04:00");
+		time.addItem("04:00 ~ 05:00");
 		time.setBounds(180, 120, 240, 30);	
+		time.addActionListener(new ActionListener(){//누르면 정보 보여주는거로 바뀐다
+			public void actionPerformed(ActionEvent arg0) {
+		//보내기 직전		
+				whatTime=new String((String)time.getSelectedItem());
+		}});
 		panel.add(time);
 
-		check=new JButton("check");
-		check.setBounds(260, 320, 80, 24);
+		check=new JButton(new ImageIcon("img/select3.PNG"));
+		check.setBounds(219, 300, 162, 41);
 		check.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
 
@@ -480,7 +493,7 @@ public class UI extends JFrame{
 		mateBtn.setBounds(573, 716, 454, 108);
 		mateBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				new mateFrame("main");
+				new mateFrame(null,"main");
 			}
 		});
 		panel.add(mateBtn);
