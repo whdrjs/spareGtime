@@ -11,7 +11,6 @@ import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 import javax.swing.ButtonGroup;
@@ -39,11 +38,32 @@ class eventFrame extends JFrame {
 		}
 	};
 	private JButton close=new JButton("close");
+	private JTextArea ad=new JTextArea();
+	String info;
+	public ArrayList<String> names=new ArrayList<String>();
 
 	public eventFrame() {
 		setTitle("Event!");
-		setSize(450,500);
+		setSize(700,500);
 		setLocation(0, 80);
+		try {
+			info=new String(Client.getStoreData("ACT", "Advertise", " ", "0"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String[] store=info.split("\\^");
+		String[] infoSplit;
+		for(int i=0;i<store.length;i++)
+		{
+			System.out.println(store[i]);
+			infoSplit=store[i].split("\\_");
+			ad.append((String)infoSplit[1]+"\n\n");
+		}
+		ad.setBounds(150, 200, 400, 300);
+		ad.setOpaque(false);
+		ad.setEditable(false);
+		contentPane.add(ad);
 		getContentPane().add(contentPane);
 		setVisible(true);
 	}
@@ -65,8 +85,6 @@ class listFrame extends JFrame{
 	public String type2;//bakery, coffee,ice_cream 인지
 	public String type3=" ";// priority (distance 아니면 star 인지 ).
 	public String rawStr;
-
-	Client client=new Client();
 
 	public ArrayList<String> storeList=new ArrayList<String>();//가게 리스트
 	//가게 정보 저장
@@ -98,7 +116,7 @@ class listFrame extends JFrame{
 		bg.add(visionRaBtn);
 		bg.add(policeRaBtn);
 		bg.add(otherRaBtn);
-		
+
 		visionRaBtn.setBounds(40, 40, 100,50);
 		visionRaBtn.setContentAreaFilled(false); 
 		visionRaBtn.addActionListener(new ActionListener() {
@@ -140,7 +158,7 @@ class listFrame extends JFrame{
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				
+
 			}
 		});
 		//추가
@@ -161,130 +179,130 @@ class listFrame extends JFrame{
 			Image bg= new ImageIcon("img/submain.png").getImage();
 			public void paintComponent(Graphics g) {
 				g.drawImage(bg,0,0,getWidth(),getHeight(),this);
-		}};
-		//기본값
-		try {
-			rawStr=new String(Client.getStoreData(type1, type2 , type3 ,"0"));
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		mainList.setLayout(null);
-		
-		mainList.add(list);
-		makeList(rawStr);//makeList가 스트링 자르고 list만들기까지다함
-
-		combo.addItem("Distance");
-		combo.addItem("Rate");
-		combo.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e)
-			{
-				if(((String)combo.getSelectedItem()).compareTo("Distance")==0)
-				{
-					type3="distance"; //distance 를 넣어줄꺼야
-					distance();
-				}
-				if(((String)combo.getSelectedItem()).compareTo("Rate")==0)
-				{
-					type3="star"; //distance 를 넣어줄꺼야
-					try {
-						rawStr=new String(Client.getStoreData(type1, type2 , type3 ,"0"));
-						makeList(rawStr);
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				}
+			}};
+			//기본값
+			try {
+				rawStr=new String(Client.getStoreData(type1, type2 , type3 ,"0"));
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
-		});
-		combo.setEditable(false);
-		combo.setBounds(150, 30, 240, 40);
-		mainList.add(combo);
+			mainList.setLayout(null);
 
-		check=new JButton(new ImageIcon("img/select2.PNG"));
-		check.setBounds(135, 580, 270, 65);
-		check.addActionListener(new ActionListener(){//누르면 정보 보여주는거로 바뀐다
-			public void actionPerformed(ActionEvent arg0) {
-				System.out.println(imgName);
-				getContentPane().removeAll();
-//여기부터는 정보받고 나오는 패널 !-액션안에 패널 넣어놓음-!
-				infoPanel =new JPanel() {
-					Image bg= new ImageIcon("img/submain.png").getImage(); 
-					public void paintComponent(Graphics g) {
-						g.drawImage(bg,0,0,getWidth(),getHeight(),this);
+			mainList.add(list);
+			makeList(rawStr);//makeList가 스트링 자르고 list만들기까지다함
+
+			combo.addItem("Distance");
+			combo.addItem("Rate");
+			combo.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e)
+				{
+					if(((String)combo.getSelectedItem()).compareTo("Distance")==0)
+					{
+						type3="distance"; //distance 를 넣어줄꺼야
+						distance();
 					}
-				};
-				infoPanel.setLayout(null);
-
-				img=new JButton(new ImageIcon(imgName));
-				img.setBackground(Color.blue);
-				img.setBorderPainted(false);
-				img.setFocusPainted(false); 
-				img.setContentAreaFilled(false); 
-				img.setBounds(10, 10, 570, 435);
-
-				int idx= names.indexOf(select);
-				info.append(names.get(idx)+"\n");
-				info.append(address.get(idx));
-				info.setBounds(10, 455, 500, 100);
-				info.setOpaque(false);
-				info.setEditable(false);
-
-				mateBtn=new JButton(new ImageIcon("img/findmate3.jpg"));
-				mateBtn.setBackground(Color.blue);
-				mateBtn.setBorderPainted(false);
-				mateBtn.setFocusPainted(false); 
-				mateBtn.setContentAreaFilled(false); 
-				mateBtn.setBounds(610, 60, 295, 71);
-				mateBtn.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						new mateFrame(type2,select);
+					if(((String)combo.getSelectedItem()).compareTo("Rate")==0)
+					{
+						type3="star"; //distance 를 넣어줄꺼야
+						try {
+							rawStr=new String(Client.getStoreData(type1, type2 , type3 ,"0"));
+							makeList(rawStr);
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
 					}
-				});
-				infoPanel.add(img);
-				infoPanel.add(info);
-				infoPanel.add(mateBtn);
+				}
+			});
+			combo.setEditable(false);
+			combo.setBounds(150, 30, 240, 40);
+			mainList.add(combo);
 
-				back=new JButton(new ImageIcon("img/캡처4.PNG"));
-				back.setBackground(Color.red);
-				back.setBounds(640, 550, 225, 56);
-				back.setBorderPainted(false);
-				back.setFocusPainted(false); 
-				back.addActionListener(new ActionListener(){
-					public void actionPerformed(ActionEvent arg0) {
-						//정보초기화
-						info.selectAll();
-						info.replaceSelection("");
-						getContentPane().removeAll();
-						getContentPane().add(mainList);
-						revalidate();
-						repaint();
-					}
-				});
-				infoPanel.add(back);
-				getContentPane().add(infoPanel);
-				revalidate();
-				repaint();
-				setSize(960,720);
-				setLocation(370, 50);
-				//여기까지가 액션문안의 패널 설정
-			}
-		});
-		mainList.add(check);
-		getContentPane().add(mainList);
-		setVisible(true);//여기까지가 맨처음 실행했을때의 swing들을 위한
+			check=new JButton(new ImageIcon("img/select2.PNG"));
+			check.setBounds(135, 580, 270, 65);
+			check.addActionListener(new ActionListener(){//누르면 정보 보여주는거로 바뀐다
+				public void actionPerformed(ActionEvent arg0) {
+					System.out.println(imgName);
+					getContentPane().removeAll();
+					//여기부터는 정보받고 나오는 패널 !-액션안에 패널 넣어놓음-!
+					infoPanel =new JPanel() {
+						Image bg= new ImageIcon("img/submain.png").getImage(); 
+						public void paintComponent(Graphics g) {
+							g.drawImage(bg,0,0,getWidth(),getHeight(),this);
+						}
+					};
+					infoPanel.setLayout(null);
+
+					img=new JButton(new ImageIcon(imgName));
+					img.setBackground(Color.blue);
+					img.setBorderPainted(false);
+					img.setFocusPainted(false); 
+					img.setContentAreaFilled(false); 
+					img.setBounds(10, 10, 570, 435);
+
+					int idx= names.indexOf(select);
+					info.append(names.get(idx)+"\n");
+					info.append(address.get(idx));
+					info.setBounds(10, 455, 500, 100);
+					info.setOpaque(false);
+					info.setEditable(false);
+
+					mateBtn=new JButton(new ImageIcon("img/findmate3.jpg"));
+					mateBtn.setBackground(Color.blue);
+					mateBtn.setBorderPainted(false);
+					mateBtn.setFocusPainted(false); 
+					mateBtn.setContentAreaFilled(false); 
+					mateBtn.setBounds(610, 60, 295, 71);
+					mateBtn.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent arg0) {
+							new mateFrame(type2,select);
+						}
+					});
+					infoPanel.add(img);
+					infoPanel.add(info);
+					infoPanel.add(mateBtn);
+
+					back=new JButton(new ImageIcon("img/캡처4.PNG"));
+					back.setBackground(Color.red);
+					back.setBounds(640, 550, 225, 56);
+					back.setBorderPainted(false);
+					back.setFocusPainted(false); 
+					back.addActionListener(new ActionListener(){
+						public void actionPerformed(ActionEvent arg0) {
+							//정보초기화
+							info.selectAll();
+							info.replaceSelection("");
+							getContentPane().removeAll();
+							getContentPane().add(mainList);
+							revalidate();
+							repaint();
+						}
+					});
+					infoPanel.add(back);
+					getContentPane().add(infoPanel);
+					revalidate();
+					repaint();
+					setSize(960,720);
+					setLocation(370, 50);
+					//여기까지가 액션문안의 패널 설정
+				}
+			});
+			mainList.add(check);
+			getContentPane().add(mainList);
+			setVisible(true);//여기까지가 맨처음 실행했을때의 swing들을 위한
 	}
 	//makeList가 스트링 자르고 list만들기까지다함
 	private void makeList (String str) {
 		System.out.println(str);
 		String[] store=str.split("\\^");
 		String[] infoSplit;
-	//arraylist초기화
+		//arraylist초기화
 		storeList.clear();
 		names.clear();
 		star.clear();
 		address.clear();
-	//Jlist초기화
+		//Jlist초기화
 		mainList.remove(list);
 		mainList.revalidate();
 		mainList.repaint();
@@ -342,15 +360,15 @@ class mateFrame extends JFrame{
 		toMain.addActionListener(new ActionListener(){//누르면 정보 보여주는거로 바뀐다
 			public void actionPerformed(ActionEvent arg0) {
 				cate=new String((String)toMain.getSelectedItem());
-		}});
+			}});
 
 		if(name.equals("main"))
 			panel.add(toMain);
 		else
-			{
+		{
 			panel.add(label);
 			cate=cont;
-			}
+		}
 
 		setTitle(name);
 		setSize(600,400);
@@ -367,9 +385,9 @@ class mateFrame extends JFrame{
 		time.setBounds(180, 120, 240, 30);	
 		time.addActionListener(new ActionListener(){//누르면 정보 보여주는거로 바뀐다
 			public void actionPerformed(ActionEvent arg0) {
-		//보내기 직전		
+				//보내기 직전		
 				whatTime=new String((String)time.getSelectedItem());
-		}});
+			}});
 		panel.add(time);
 
 		check=new JButton(new ImageIcon("img/select3.PNG"));
@@ -393,17 +411,8 @@ public class UI extends JFrame{
 	private JPanel ap=actPanel();
 	private JPanel dp=dstPanel();
 	private JPanel ep=entPanel();
-	private JPanel up=univPanel();
 
 	ImageIcon icon;
-	String type1;
-	String type2;
-	String type3;
-
-	String name;
-	public String getType1() {
-		return this.type1;
-	}
 	public UI() {
 		setTitle("Gtime");
 		setSize(1600,900);
@@ -434,12 +443,6 @@ public class UI extends JFrame{
 		else if(panelName.equals("ent")) {
 			getContentPane().removeAll();
 			getContentPane().add(ep);
-			revalidate();
-			repaint();
-		}
-		else if(panelName.equals("univ")) {
-			getContentPane().removeAll();
-			getContentPane().add(up);
 			revalidate();
 			repaint();
 		}
@@ -505,7 +508,7 @@ public class UI extends JFrame{
 		JPanel panel ;
 		JButton dessertBtn;
 		JButton entBtn;
-		JButton univBtn;
+		JButton univBtn;//univ버튼은 이벤트랑 액션 주요!
 		JButton back;
 
 		panel =new JPanel() {
@@ -556,9 +559,51 @@ public class UI extends JFrame{
 				change("ent");
 			}
 		});
-		univBtn.addActionListener(new ActionListener(){
+		univBtn.addActionListener(new ActionListener(){//누르면 새패널이 아니라 기존 패널에서 변경
 			public void actionPerformed(ActionEvent e) {
-				change("univ");
+				panel.removeAll();
+				revalidate();
+				repaint();
+				JTextArea uni=new JTextArea();
+				String info = null;
+				JButton back2;
+					try {
+						info=new String(Client.getStoreData("ACT", "Event", " ", "0"));
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+
+					String[] store=info.split("\\^");
+					String[] infoSplit;
+					for(int i=0;i<store.length;i++)
+					{
+						System.out.println(store[i]);
+						infoSplit=store[i].split("\\_");
+						uni.append((String)infoSplit[1]+" "+(String)infoSplit[3]+"\n\n");
+					}
+					uni.setBounds(500, 150, 600, 450);
+					uni.setOpaque(false);
+					uni.setEditable(false);
+					panel.add(uni);
+
+					back2=new JButton(new ImageIcon("img/캡처3.PNG"));
+					back2.setBackground(Color.red);
+					back2.setBounds(650, 730, 300, 74);
+					back2.setBorderPainted(false);
+					back2.setFocusPainted(false); 
+					back2.addActionListener(new ActionListener(){//원래패너로 돌려놓는다
+						public void actionPerformed(ActionEvent e) {
+							panel.removeAll();
+							revalidate();
+							repaint();
+							panel.add(back);
+							panel.add(dessertBtn);
+							panel.add(entBtn);
+							panel.add(univBtn);
+						}	
+					});
+					panel.add(back2);
 			}
 		});
 		back.addActionListener(new ActionListener(){
@@ -694,30 +739,5 @@ public class UI extends JFrame{
 			new listFrame(preCont);
 		}
 	}
-	public JPanel univPanel(){
-		JPanel panel=new JPanel();
-		JButton back;
-		panel.setLayout(null);
 
-		panel =new JPanel() {
-			Image bg= new ImageIcon("img/mainBG.jpg").getImage();
-
-			public void paintComponent(Graphics g) {
-				g.drawImage(bg,0,0,getWidth(),getHeight(),this);
-			}
-		};
-		back=new JButton(new ImageIcon("img/캡처3.PNG"));
-		back.setBackground(Color.red);
-		back.setBounds(650, 730, 300, 74);
-		back.setBorderPainted(false);
-		back.setFocusPainted(false); 
-		back.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e) {
-				change("main");
-			}	
-		});
-		panel.add(back);
-
-		return panel;
-	}
 }
