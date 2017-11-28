@@ -395,8 +395,10 @@ class mateFrame extends JFrame{
 		check.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) { //roomcondtion 보내기
 				//whatTime 쪼개서 시작시간만 가져오기
-				//roomInforming
-				Client.roomInforming(category,whatTime);//!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+				String []strs=whatTime.split(":");
+				System.out.println(strs[0]);
+				
+				Client.roomInforming(category,strs[0]);//!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			}
 		});
 		panel.add(check);		
