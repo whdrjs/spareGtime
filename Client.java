@@ -27,11 +27,11 @@ public class Client {
 	static DataOutputStream outToServer=null; // 서버로 데이타 보내주는 
 	//소켓을 두개 만들꺼예요
 	public static Socket dataSocket= null ; //데이타 보내고 받을때 소켓
-	public static Socket socket=null; // 채팅할때 쓰는 소켓
-
+	
 	UI userIn; // UI 변수
 	static String type1;
 	ChatClient chat;
+	static int port;
 	public Client() {
 
 	}
@@ -39,17 +39,18 @@ public class Client {
 	public void run() throws IOException {
 		// run 안에서는 채팅만 하게
 		//String serverAddress = UI.getServerAddress();	//type using getAddress method
+		/*
 		socket = new Socket("127.0.0.1", 9000); //채팅소켓을 만듬 +  port부여했음
 		in = new BufferedReader(new InputStreamReader(
 				socket.getInputStream()));	//receive from server, message.
 		out = new PrintWriter(socket.getOutputStream(), true); //send to server.
-
+*/
 		dataSocket=new Socket("127.0.0.1", 9000); //data 보내고 받을 소켓을 만듬
 		outToServer=new DataOutputStream(dataSocket.getOutputStream());
 		inFromServer = new BufferedReader(new InputStreamReader(
 				dataSocket.getInputStream()));	
-
-
+//chat 클라이언트로~
+/*
 		String name="";
 		String result;
 		
@@ -87,7 +88,7 @@ public class Client {
 	         }
 	         
 	      }
-
+*/
 
 	}
 	//UI 에서 가져오고 서버로 보내고  가게리스트를 받아오는 메소드
@@ -102,16 +103,29 @@ public class Client {
 	//	System.out.println("client"+result);
 		return result; //서버로 받은 스트링
 	}
-	public static void roomInforming(String category,String time) { //같이드실래요 버튼을 눌렀을 때 서버로 보내는 메세지
+	public static void roomInforming(String category,String time) throws IOException, InterruptedException { //같이드실래요 버튼을 눌렀을 때 서버로 보내는 메세지
 	      String type1="Roo"; // 이걸 받았을떄 서버에서 취하는 부분 추가
 	      String input=type1+" "+category+" "+time; //bakery_1
 	      System.out.println("input :"+input);
 	      out.println(input);
+	      in = new BufferedReader(new InputStreamReader(
+					dataSocket.getInputStream()));
+	      
+	      String portNum=in.readLine();
+	      System.out.println("read line 실행이 안되닝? ");
+	      port=Integer.parseInt(portNum);
+	      System.out.println("port is "+port);
+	      ChatClient chat=new ChatClient();
+	      chat.run();
+	      
 	   }
 	public static void main(String[] args) throws Exception {
 		Client client = new Client();		
 		UI userIn = new UI();				//UI 클래스 생성
 		userIn.setVisible(true);	//can be show frame
 		client.run();
+	}
+	public static int getPort() {
+		return port;
 	}
 }
