@@ -27,7 +27,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.border.*;
 import javax.swing.JList;
 
-//import spareTime.ChatClient;
+import spareTime.ChatClient;
 import spareTime.Client;
 
 class eventFrame extends JFrame {
@@ -94,6 +94,7 @@ class listFrame extends JFrame{
 
 	public String select;
 	public String imgName;
+	
 	private void distance(){
 		System.out.println("켜짐");
 		JFrame pop=new JFrame();
@@ -390,15 +391,21 @@ class mateFrame extends JFrame{
 			}});
 		panel.add(time);
 
-		check=new JButton(new ImageIcon("img/select3.PNG"));
+		check=new JButton(new ImageIcon("img/select2.png"));
 		check.setBounds(219, 300, 162, 41);
 		check.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent arg0) { //roomcondtion 보내기
+			public void actionPerformed(ActionEvent arg0) { //roomc ondtion 보내기
 				//whatTime 쪼개서 시작시간만 가져오기
 				String []strs=whatTime.split(":");
 				System.out.println(strs[0]);
 				
-				Client.roomInforming(category,strs[0]);//!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+				try {
+					Client.roomInforming(category,strs[0]);
+					
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}//!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			}
 		});
 		panel.add(check);		
@@ -745,3 +752,4 @@ public class UI extends JFrame{
 	}
 
 }
+
