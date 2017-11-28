@@ -224,7 +224,7 @@ public class start_server {
 						String input1[]=input.split(" ");
 						System.out.println(input1[1]+" "+input1[2]);
 						int port=search_room(input1[2],input1[1]);
-						System.out.println(port);
+						out.println(Integer.toString(port));
 						new ChatServer(port);
 					}
 				}
