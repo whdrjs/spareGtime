@@ -24,7 +24,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.JLabel;
-
+//쿄쿄
 public class ChatClient{
    String text="";
    String name="";
