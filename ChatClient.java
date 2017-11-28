@@ -44,7 +44,7 @@ public class ChatClient{
     public ChatClient() throws IOException,InterruptedException 
     {
        messageArea = new JTextArea(){ //message를 보여주는 창에 대한 GUI
-          //{setOpaque(false);}
+          {setOpaque(false);}
           Image bg= new ImageIcon("img/submain.png").getImage();
 
 			public void paintComponent(Graphics g) {
@@ -52,15 +52,8 @@ public class ChatClient{
 			}
        };
        
-       /*
-       panel = new JPanel(){
-          {setOpaque(false);}
-          
-       };
-       */
-       
        panel =new JPanel() {
-    	  // {setOpaque(false);}
+    	   {setOpaque(false);}
 			Image bg= new ImageIcon("img/submain.png").getImage();
 
 			public void paintComponent(Graphics g) {
@@ -71,7 +64,8 @@ public class ChatClient{
        frame.getContentPane().setBackground(new Color(79,54,29));
        //전송, 귓속말 , 나가기를 각각 버튼을 만듬
        JButton b1 = new JButton(new ImageIcon(
-                ((new ImageIcon("img/mainBG.jpg")).getImage()).getScaledInstance(35, 35, java.awt.Image.SCALE_SMOOTH))); //전송버튼
+                ((new ImageIcon("img/Sendbutton.png"
+                		+ "")).getImage()).getScaledInstance(35, 35, java.awt.Image.SCALE_SMOOTH))); //전송버튼
        JButton whisper = new JButton(new ImageIcon(
                 ((new ImageIcon("img/mainBG.jpg")).getImage()).getScaledInstance(80, 35, java.awt.Image.SCALE_SMOOTH))); //귓속말버튼
        JButton b2 = new JButton(new ImageIcon(
@@ -96,7 +90,7 @@ public class ChatClient{
         frame.getContentPane().add(textField); // textField를 생성한다.
         frame.getContentPane().add(textName);
         frame.getContentPane().add(panel);
-        textField.setFont(new Font("배달의민족 주아",Font.PLAIN,15)); //폰트 연습해볼려고 넣어봤음..
+        textField.setFont(new Font("배달의민족 주아",Font.PLAIN,15));
         textName.setFont(new Font("배달의민족 주아",Font.PLAIN,25));
         b1.setBounds(350, 510, 35, 35);
         b1.setBorder(BorderFactory.createLineBorder(new Color(0,0,0,0)));
@@ -116,16 +110,14 @@ public class ChatClient{
         JScrollPane scroll = new JScrollPane(messageArea);
         scroll.setBounds(15, 50, 450, 450);
         frame.getContentPane().add(scroll);
-        frame.setVisible(true);
-
-         //textField를 사용했을 때 취하는 액션 부분이 들어갈 것임 .-textField에 입력을 받아서 서버로 보낸다.
+        
+         //-textField에 입력을 받아서 서버로 보낸다.
               
         textField.addActionListener(new ActionListener() { //textField를 사용했을 때 취하는 액션
             
             public void actionPerformed(ActionEvent e) 
             {
-               //Client.out.println(textField.getText());//textField에 입력을 받아서 서버로 보낸다.
-            	Client.out.println(textField.getText());
+            	out.println(textField.getText());
             	textField.setText("");
             }
         });
@@ -142,7 +134,7 @@ public class ChatClient{
            
            public void actionPerformed(ActionEvent e)
            {
-                out.println(textField.getText()); //서버로 보냄, 서버아직 안만들어서 빨간쥴
+                out.println(textField.getText()); //서버로 보냄, 
                 textField.setText("");
            }
         });
@@ -225,6 +217,6 @@ public class ChatClient{
       return text;
    }
 
-    
+   
     
 } 
