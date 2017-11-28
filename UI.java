@@ -335,8 +335,8 @@ class mateFrame extends JFrame{
 	private JComboBox<String> toMain= new JComboBox<String>(); 
 	private JComboBox<String> time= new JComboBox<String>(); 
 	private JButton check;
-	String category;
-	String whatTime;
+	String category=new String("Bakery"); //초기화
+	String whatTime=new String("09:00 ~ 10:00");
 	public mateFrame(String cont,String name)
 	{
 
@@ -353,10 +353,10 @@ class mateFrame extends JFrame{
 
 		toMain.addItem("Bakery");
 		toMain.addItem("Coffee");
-		toMain.addItem("Ice-cream");
-		toMain.addItem("PC room");
+		toMain.addItem("Ice");
+		toMain.addItem("Pcroom");
 		toMain.addItem("Billiard");
-		toMain.addItem("Singing");
+		toMain.addItem("Sing");
 		toMain.setBounds(210,30,180,30);
 		toMain.addActionListener(new ActionListener(){//누르면 정보 보여주는거로 바뀐다
 			public void actionPerformed(ActionEvent arg0) {
@@ -391,7 +391,7 @@ class mateFrame extends JFrame{
 			}});
 		panel.add(time);
 
-		check=new JButton(new ImageIcon("img/select2.png"));
+		check=new JButton(new ImageIcon("img/select3.png"));
 		check.setBounds(219, 300, 162, 41);
 		check.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) { //roomc ondtion 보내기
@@ -523,10 +523,10 @@ public class UI extends JFrame{
 		JButton back;
 
 		panel =new JPanel() {
-			Image bg= new ImageIcon("img/mainBG.jpg").getImage(); // ���� �гο� ��� �ֱ�
+			Image bg= new ImageIcon("img/mainBG.jpg").getImage();
 
 			public void paintComponent(Graphics g) {
-				g.drawImage(bg,0,0,getWidth(),getHeight(),this);//�����ӿ� �°� ���� �Ǵ� �̹���
+				g.drawImage(bg,0,0,getWidth(),getHeight(),this);
 			}
 		};
 
@@ -752,4 +752,3 @@ public class UI extends JFrame{
 	}
 
 }
-
