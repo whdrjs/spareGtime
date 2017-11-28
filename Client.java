@@ -116,7 +116,10 @@ public class Client {
 	      port=Integer.parseInt(portNum);
 	      System.out.println("port is "+port);
 	      ChatClient chat=new ChatClient();
-	      chat.run();
+	      //추가
+	      chat.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	      chat.frame.setVisible(true);
+	      chat.run(); //execute run() method.
 	      
 	   }
 	public static void main(String[] args) throws Exception {
