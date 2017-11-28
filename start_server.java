@@ -1,3 +1,5 @@
+package spareTime;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -222,8 +224,9 @@ public class start_server {
 						String input1[]=input.split(" ");
 						System.out.println(input1[1]+" "+input1[2]);
 						int port=search_room(input1[2],input1[1]);
-						
+						System.out.println("2 : "+port);
 						new ChatServer(port);
+						out.println(port);
 					}
 				}
 			} catch ( Exception e) {
@@ -274,11 +277,8 @@ public class start_server {
 	}
 
 	
-	public int search_room(String time, String content)
-			throws ClassNotFoundException, SQLException {
-
+	public int search_room(String time, String content)throws ClassNotFoundException, SQLException {
 		// 방목록을 가져오는 함수
-		// 공강시간 요일 컨텐츠로 sql에서 검색해서 반환
 		
 		Connection conn = getConnection();
 		String sql = "select port from roomlist where time = ? and content = ?";// sql 쿼리
@@ -297,6 +297,7 @@ public class start_server {
 		int port;
 		res.next();
 		port=res.getInt("port");
+		System.out.println("11 : "+port);
 		return port;
 	}
 
