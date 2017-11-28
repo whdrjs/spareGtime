@@ -107,20 +107,21 @@ public class Client {
 	      String type1="Roo"; // 이걸 받았을떄 서버에서 취하는 부분 추가
 	      String input=type1+" "+category+" "+time; //bakery_1
 	      System.out.println("input :"+input);
+	      out = new PrintWriter(dataSocket.getOutputStream(), true);  //메인에서 바로 실행했을 때 필요
 	      out.println(input);
 	      in = new BufferedReader(new InputStreamReader(
 					dataSocket.getInputStream()));
-	      
-	      String portNum=in.readLine();
-	      System.out.println("read line 실행이 안되닝? ");
-	      port=Integer.parseInt(portNum);
+	      System.out.println("port 받겠다");
+	      //여기부터 실행이 안됨
+	      Integer portNum=in.read();
+	      System.out.println("read line 실행이 안되닝? "+portNum);
+	      port=portNum;
 	      System.out.println("port is "+port);
 	      ChatClient chat=new ChatClient();
 	      //추가
 	      chat.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	      chat.frame.setVisible(true);
 	      chat.run(); //execute run() method.
-	      
 	   }
 	public static void main(String[] args) throws Exception {
 		Client client = new Client();		
