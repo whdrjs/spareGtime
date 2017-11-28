@@ -62,7 +62,7 @@ public class ChatServer {
 
                 out.println("NAMEACCEPTED");
                 writers.add(out);
-
+                out.println("ENTRANCE");
                 while (true) {
                 	int i;
                     String input = in.readLine();
@@ -78,9 +78,11 @@ public class ChatServer {
                     	String reader=input.substring(1,i);
                     	Handler rd=findThread(reader);
                     	input=input.substring(i+2);
-                    	rd.out.println("MESSAGE " + name + ": " + input);
-                    	out.println("MESSAGE " + name + ": " + input);
-                    }else {
+                    	rd.out.println("WHISPER" + name + ": " + input);
+                    	out.println("WHISPER" + name + ": " + input);
+                    	continue;
+                    }
+                    else {
                     	for (PrintWriter writer : writers) {
                     		writer.println("MESSAGE " + name + ": " + input);
                     	}
@@ -88,8 +90,9 @@ public class ChatServer {
                 }
             } catch (IOException e) {
                 System.out.println(e);
-            } finally {
-
+            } 
+            finally {
+            	out.println("EXIT");
                 if (name != null) {
                     names.remove(name);
                 }
@@ -102,7 +105,6 @@ public class ChatServer {
                 } catch (IOException e) {
                 }
             }
-
         }
         public Handler findThread(String name){
         	//If client want to whisper, find client to whisper.
@@ -118,3 +120,4 @@ public class ChatServer {
 
     }
 }
+
