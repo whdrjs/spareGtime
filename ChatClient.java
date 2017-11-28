@@ -44,8 +44,12 @@ public class ChatClient{
     public ChatClient() throws IOException,InterruptedException 
     {
        messageArea = new JTextArea(){ //message를 보여주는 창에 대한 GUI
-          {setOpaque(false);}
-        
+          //{setOpaque(false);}
+          Image bg= new ImageIcon("img/submain.png").getImage();
+
+			public void paintComponent(Graphics g) {
+				g.drawImage(bg,0,0,getWidth(),getHeight(),this);		
+			}
        };
        
        /*
@@ -56,8 +60,8 @@ public class ChatClient{
        */
        
        panel =new JPanel() {
-    	   {setOpaque(false);}
-			Image bg= new ImageIcon("img/mainBG.jpg").getImage();
+    	  // {setOpaque(false);}
+			Image bg= new ImageIcon("img/submain.png").getImage();
 
 			public void paintComponent(Graphics g) {
 				g.drawImage(bg,0,0,getWidth(),getHeight(),this);		
@@ -120,8 +124,9 @@ public class ChatClient{
             
             public void actionPerformed(ActionEvent e) 
             {
-               Client.out.println(textField.getText());//textField에 입력을 받아서 서버로 보낸다.
-                textField.setText("");
+               //Client.out.println(textField.getText());//textField에 입력을 받아서 서버로 보낸다.
+            	Client.out.println(textField.getText());
+            	textField.setText("");
             }
         });
         b2.addActionListener(new ActionListener(){ //나가기버튼을 눌렀을 때 취하는 액션
@@ -137,7 +142,7 @@ public class ChatClient{
            
            public void actionPerformed(ActionEvent e)
            {
-              Client.out.println(textField.getText()); //서버로 보냄, 서버아직 안만들어서 빨간쥴
+                out.println(textField.getText()); //서버로 보냄, 서버아직 안만들어서 빨간쥴
                 textField.setText("");
            }
         });
@@ -147,7 +152,7 @@ public class ChatClient{
             public void actionPerformed(ActionEvent e) 
              {
                other = sendWhisper(); //sendWhisper함수를 호출해서 귓속말을 보낼 사람의 이름을 입력받아서 other에 저장한다.
-                 Client.out.println(other+"@"+textField.getText()); // "귓속말 받을 사람의 이름@message" format으로 서버로 보낸다. 
+                 out.println(other+"@"+textField.getText()); // "귓속말 받을 사람의 이름@message" format으로 서버로 보낸다. 
                  textField.setText("");
                System.out.println("");
              }
@@ -223,4 +228,3 @@ public class ChatClient{
     
     
 } 
-
