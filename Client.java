@@ -104,7 +104,8 @@ public class Client {
 	}
 	public static void roomInforming(String category,String time) { //같이드실래요 버튼을 눌렀을 때 서버로 보내는 메세지
 	      String type1="Roo"; // 이걸 받았을떄 서버에서 취하는 부분 추가
-	      String input=type1+category+"_"+time; //bakery_1
+	      String input=type1+" "+category+" "+time; //bakery_1
+	      System.out.println("input :"+input);
 	      out.println(input);
 	   }
 	public static void main(String[] args) throws Exception {
