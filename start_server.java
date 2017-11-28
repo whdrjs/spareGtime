@@ -95,13 +95,11 @@ public class start_server {
 
 				while (true) {
 					String input = in.readLine();
-					System.out.println(input);
 					if (input == null) {
 						return;
 					}
 					String command=input.substring(0,3);
 					//가게목록 검색
-					System.out.println(command);
 					if(command.equals("ACT")) {
 						//"ACT content distance 1"
 						//"ACT content star"
@@ -224,17 +222,11 @@ public class start_server {
 					//채팅방 입장
 					if(command.equals("Roo")) {
 						String input1[]=input.split(" ");
-						int port=search_room(input1[0],input1[1]);
+						System.out.println(input1[1]+" "+input1[2]);
+						int port=search_room(input1[2],input1[1]);
+						System.out.println(port);
 						new ChatServer(port);
 					}
-					//이벤트 
-					if(command.equals("COM")) {
-						input=input.substring(4);
-						content_info inform = new content_info();
-						inform=search_content(input);
-					}
-					//C_Server(room_num);
-
 				}
 			} catch ( Exception e) {
 				System.out.println(e);
@@ -282,67 +274,14 @@ public class start_server {
 
 		return conn;
 	}
-/*
-	public   void insert_event(String content, String name,  float star,
-			String address) throws ClassNotFoundException, SQLException {
 
-		// 이벤트를 추가할때 사용하는 함수
-		// 다른 컨텐츠를 추가할때도 사용가능
-
-		Connection conn = getConnection();
-		String sql = "insert into contents1 values(?,?,?,?)";// sql 쿼리
-		PreparedStatement pstmt = conn.prepareStatement(sql);
-
-		// 컨텐츠 String content
-		// 이름 String name
-		// 평점 float star
-		// 주소 String address
-
-		pstmt.setString(1, content);
-		pstmt.setString(2, name);
-		pstmt.setFloat(3, star);
-		pstmt.setString(4, address);
-
-		int res = pstmt.executeUpdate();
-
-		if (res > 0)
-			System.out.println("처리");
-		if (pstmt != null)
-			pstmt.close();
-		if (conn != null)
-			conn.close();
-
-	}
-
-
-	public   void delete_event(String name) throws ClassNotFoundException, SQLException {
-
-		// 기간이 지나거나 끝난 이벤트를 지우는 함수
-		// 다른 컨텐츠도 사용가능해서 가게를 지울때도 사용가능
-
-		Connection conn = getConnection();
-		String sql = "delete from contents1 where name = ?";// sql 쿼리
-		PreparedStatement pstmt = conn.prepareStatement(sql);
-
-		pstmt.setString(1, name);
-
-		int res = pstmt.executeUpdate();
-		if (res > 0)
-			System.out.println("처리");
-		if (pstmt != null)
-			pstmt.close();
-		if (conn != null)
-			conn.close();
-
-	}
-	*/
 	
 	public int search_room(String time, String content)
 			throws ClassNotFoundException, SQLException {
 
 		// 방목록을 가져오는 함수
 		// 공강시간 요일 컨텐츠로 sql에서 검색해서 반환
-		int port;
+		
 		Connection conn = getConnection();
 		String sql = "select port from roomlist where time = ? and content = ?";// sql 쿼리
 		PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -357,7 +296,8 @@ public class start_server {
 			System.out.println("정보에 맞는 방이 없습니다");
 			return 0;
 		}
-
+		int port;
+		res.next();
 		port=res.getInt("port");
 		return port;
 	}
@@ -389,7 +329,7 @@ public class start_server {
 	}
 
 	public static void main(String[] args) throws Exception {
-
 		new start_server();
 	}
 }
+
