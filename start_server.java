@@ -1,4 +1,4 @@
-package spareTime;
+
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -27,7 +27,8 @@ public class start_server {
 		ArrayList<String> name = new ArrayList<String>();
 		ArrayList<Float> star = new ArrayList<Float>();
 		ArrayList<String> address = new ArrayList<String>();
-		ArrayList<Integer> distance = new ArrayList<Integer>();		  void add(ResultSet res) throws SQLException{
+		ArrayList<Integer> distance = new ArrayList<Integer>();		
+		void add(ResultSet res) throws SQLException{
 			this.content.add(res.getString("content"));
 			this.name.add(res.getString("name"));
 			this.star.add(res.getFloat("star"));
@@ -51,41 +52,6 @@ public class start_server {
 				a=a+this.star.get(i)+"_";
 				a=a+this.address.get(i)+"_";
 				a=a+this.distance.get(i)+"^";
-			}
-			return a;
-		}
-	}
-	class room_info {// 방 목록을 반환하기 위한 클래스
-		int count = 0;
-		ArrayList<Integer> id = new ArrayList<Integer>();
-		ArrayList<String> name = new ArrayList<String>();
-		ArrayList<Integer> maximum = new ArrayList<Integer>();
-		ArrayList<String> spare_time = new ArrayList<String>();
-		ArrayList<String> content = new ArrayList<String>();
-		void add(ResultSet res) throws SQLException{
-			this.id.add(res.getInt("ID"));
-			this.name.add(res.getString("name"));
-			this.maximum.add(res.getInt("maximum"));
-			this.spare_time.add(res.getString("spare_time"));
-			this.content.add(res.getString("content"));
-			this.count++;
-		}
-		void add(room_info a,int i){
-			this.id.add(a.id.get(i));
-			this.name.add(a.name.get(i));
-			this.maximum.add(a.maximum.get(i));
-			this.spare_time.add(a.spare_time.get(i));
-			this.content.add(a.content.get(i));
-			this.count++;
-		}
-		String output() {
-			String a="";
-			for(int i=0;i<count;i++) {
-				a=a+this.id.get(i)+" ";
-				a=a+this.name.get(i)+" ";
-				a=a+this.maximum.get(i)+" ";
-				a=a+this.spare_time.get(i)+" ";
-				a=a+this.content.get(i)+"^";
 			}
 			return a;
 		}
@@ -254,44 +220,11 @@ public class start_server {
 							out.println(a);
 						}
 					}
-					//가게정보 검색
-					/* if(command=="STO") {
-	                    	input=input.substring(4);
-	                    	String a[];
-	                    	a=search_store(input);
-	                    	String b="";
-	                    	for(int i=0;i<a.length;i++) {
-	                    		b=b+a[i];
-	                    	}
-	                    	out.println(b);
-	                    }*/
-					//채팅방 검색
-					if(command.equals("SCH")) {
-						String input1=input.substring(4,16);
-						String input2=input.substring(16);
-						room_info room =search_room(input1,input2);
-						String a=room.output();
-						out.println(a);
-
-					}
-					//채팅방 생성
-					if(command.equals("MAK")) {
-						input=input.substring(4);
-						String input1[]=input.split(" ");
-						int int_input1=Integer.valueOf(input1[0]);
-						int int_input2=Integer.valueOf(input1[2]);
-						insert_room(int_input1,input1[1],int_input2,input1[3],input1[4]);
-					}
-					//채팅방 삭제
-					if(command.equals("DEL")) {
-						input=input.substring(4);
-						int int_input=Integer.valueOf(input);
-						delete_room(int_input);
-					}
+					
 					//채팅방 입장
-					if(command.equals("COM")) {
-						input=input.substring(4);
-						int port=enter_room();
+					if(command.equals("Roo")) {
+						String input1[]=input.split(" ");
+						int port=search_room(input1[0],input1[1]);
 						new ChatServer(port);
 					}
 					//이벤트 
@@ -349,36 +282,7 @@ public class start_server {
 
 		return conn;
 	}
-
-	public   void insert_room(int ID, String name, int maximum, String spare_time, String content)
-			throws ClassNotFoundException, SQLException {
-		// 사용자가 방을 만들었을 때 방의 정보를 sql에 저장하는 함수
-		Connection conn = getConnection();
-		String sql = "insert into roomlist values(?,?,?,?,?,?)";// sql 쿼리
-		PreparedStatement pstmt = conn.prepareStatement(sql);
-
-		// 방번호 int id
-		// 방이름 String name
-		// 최대인원 int maximum
-		// 공강시간 String spare_time
-		// 컨텐츠 String content
-
-		pstmt.setInt(1, ID);
-		pstmt.setString(2, name);
-		pstmt.setInt(3, maximum);
-		pstmt.setString(4, spare_time);
-		pstmt.setString(5, content);
-
-		int res = pstmt.executeUpdate();
-
-		if (res > 0)
-			System.out.println("처리");
-		if (pstmt != null)
-			pstmt.close();
-		if (conn != null)
-			conn.close();
-	}
-
+/*
 	public   void insert_event(String content, String name,  float star,
 			String address) throws ClassNotFoundException, SQLException {
 
@@ -410,25 +314,6 @@ public class start_server {
 
 	}
 
-	public   void delete_room(int ID) throws ClassNotFoundException, SQLException {
-
-		// 방에 인원이 다나갔을때 방을 삭제하는 함수
-		// 방에 인원이 다나갔는지 확인하는 기능추가(메인에서)
-
-		Connection conn = getConnection();
-		String sql = "delete from roomlist where ID = ?";// sql 쿼리
-		PreparedStatement pstmt = conn.prepareStatement(sql);
-
-		pstmt.setInt(1, ID);
-
-		int res = pstmt.executeUpdate();
-		if (res > 0)
-			System.out.println("처리");
-		if (pstmt != null)
-			pstmt.close();
-		if (conn != null)
-			conn.close();
-	}
 
 	public   void delete_event(String name) throws ClassNotFoundException, SQLException {
 
@@ -450,64 +335,31 @@ public class start_server {
 			conn.close();
 
 	}
-	public   int enter_room() throws ClassNotFoundException, SQLException{
-		int port;
-		Connection conn = getConnection();
-		String sql = "select ID from roomlist";// sql 쿼리
-		PreparedStatement pstmt = conn.prepareStatement(sql);
-		ResultSet res = pstmt.executeQuery();
-		int id[] = null,i=0,j,k,min=0,temp;
-		while (res.next()) {
-			id[i]=res.getInt("ID");
-			i++;
-		}
-		for(j=0;j<i;j++) {
-			for(k=j;k<i;k++) {
-				if(id[j]>id[k]) {
-					temp=id[j];
-					id[j]=id[k];
-					id[k]=temp;
-				}
-			}
-			if(j>0&&(id[j]!=id[j-1]+1)) {
-				min=j;
-				break;
-			}
-		}
-		port=id[min];
-		return port;
-	}
-	public   room_info search_room(String spare_time, String content)
+	*/
+	
+	public int search_room(String time, String content)
 			throws ClassNotFoundException, SQLException {
 
 		// 방목록을 가져오는 함수
 		// 공강시간 요일 컨텐츠로 sql에서 검색해서 반환
-
+		int port;
 		Connection conn = getConnection();
-		room_info inform = new room_info();
-		String sql = "select ID,name from roomlist where spare_time = ? and content = ?";// sql 쿼리
+		String sql = "select port from roomlist where time = ? and content = ?";// sql 쿼리
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 
-		pstmt.setString(1, spare_time);
+		pstmt.setString(1, time);
 		pstmt.setString(2, content);
 
 		ResultSet res = pstmt.executeQuery();
 		if (res != null) {
 			System.out.println("탐색완료");
 		} else {
-			inform.name.add("정보에 맞는 방이 없습니다");
-			return inform;
+			System.out.println("정보에 맞는 방이 없습니다");
+			return 0;
 		}
 
-		while (res.next()) {
-			inform.add(res);
-		}
-
-		if (pstmt != null)
-			pstmt.close();
-		if (conn != null)
-			conn.close();
-		return inform;
+		port=res.getInt("port");
+		return port;
 	}
 
 	public   content_info search_content(String content) throws ClassNotFoundException, SQLException {
@@ -535,33 +387,6 @@ public class start_server {
 			conn.close();
 		return inform;
 	}
-	/*public   String[] search_store(String name) throws ClassNotFoundException, SQLException {
-		// 카테고리에서 컨텐츠를 찾아오는 함수
-		// 매뉴에서 컨텐츠를 보여줄때 사용
-		Connection conn = getConnection();
-		String sql = "select star,address,latitude,longitude from contents where name = ?";// sql 쿼리
-		PreparedStatement pstmt = conn.prepareStatement(sql);
-		pstmt.setString(1, name);
-		String store[] = null;
-		// 지도 주소 평점 
-		int count = 0;
-		ResultSet res = pstmt.executeQuery();
-		if (res != null)
-			System.out.println("탐색완료");
-		else {
-			store[0] = "정보에 맞는 컨텐츠가 없습니다";
-			return store;
-		}
-		while (res.next()) {
-			store[count] = res.getString("address")+" "+res.getString("star")+" "+res.getString("latitude")+" "+res.getString("longitude");
-			count++;
-		}
-		if (pstmt != null)
-			pstmt.close();
-		if (conn != null)
-			conn.close();
-		return store;
-	}*/
 
 	public static void main(String[] args) throws Exception {
 
