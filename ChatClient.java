@@ -190,11 +190,6 @@ public class ChatClient extends Thread {
                   out.println(name); //서버로 이름을 보내줌
                } else if (result.startsWith("NAMEACCEPTED")) { //서버로 부터 읽어온 값이 NAMEACCEPT로 시작하면
                   textField.setEditable(true); //textField가 수정가능하게 바꿈
-               } else if (result.startsWith("ENTRANCE")) {  //서버로 부터 읽어온 값이 ENTRANCE로 시작하면
-                  textName.setEditable(false); //이제 textField 수정못하게 바꿈
-                  text = result.substring(8); // ENTRANCE 뒤부터 메세지이기 때문에 
-                  messageArea.append("<" +text+ ">" + "님이 입장하셨습니다.\n"); //messageArea에 메세지를 보여줌
-                  
                } else if (result.startsWith("WHISPER")) {   //서버로 부터 읽어온 값이 WHISPER로 시작하면
                   text = result.substring(7); // WHISPER 뒤부터 메세지이기 때문에 
                   messageArea.append(text);//messageArea에 메세지를 보여줌
@@ -202,12 +197,7 @@ public class ChatClient extends Thread {
                  System.out.println(""+result);
             	  text = result.substring(8); // MESSAGE 뒤부터 메세지이기 때문에 
                   messageArea.append(text+"\n"); //messageArea에 메세지를 보여줌
-               } else if (result.startsWith("EXIT")) {
-                  
-                  text = result.substring(4); // EXIT 뒤부터 이름이기 때문에 
-                  messageArea.append("<" +text+ ">" + "님이 나가셨습니다.\n"); //messageArea에 메세지를 보여줌
-               }
-               
+               }               
             }
 
          
@@ -237,6 +227,4 @@ public class ChatClient extends Thread {
       return text;
    }
 
-    
-    
 } 
