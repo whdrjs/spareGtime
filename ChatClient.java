@@ -9,7 +9,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.Socket;
 import java.net.*;
 
 import javax.swing.AbstractAction;
@@ -27,45 +26,51 @@ import javax.swing.KeyStroke;
 import javax.swing.JLabel;
 import spareTime.Client;
 //쿄쿄
-public class ChatClient{
+public class ChatClient extends Thread {
    String text="";
    String name="";
     JFrame frame = new JFrame("SpareGtime 채팅창");
     JTextField textField = new JTextField();
     JTextField textName = new JTextField();
-    JTextArea messageArea;
+    JTextArea messageArea= new JTextArea();
     JPanel panel;
     
-    public static BufferedReader in;	// 채팅할때 쓰는 
-	public static PrintWriter out;       // 채팅할때 쓸거
+    public static BufferedReader in;   // 채팅할때 쓰는 
+   public static PrintWriter out;       // 채팅할때 쓸거
     String other="";
     public static Socket socket=null; // 채팅할때 쓰는 소켓
 
     public ChatClient() throws IOException,InterruptedException 
     {
-       messageArea = new JTextArea(){ //message를 보여주는 창에 대한 GUI
-          {setOpaque(false);}
-          Image bg= new ImageIcon("img/submain.png").getImage();
+        Image bg= new ImageIcon("img/submain.png").getImage();
+       messageArea = new JTextArea(){
+           { setOpaque( false ) ; }
+           public void paintComponent(Graphics g){
+               g.drawImage(bg,0,0,null);       //이미지 그리기
+               super.paintComponent(g);
+           }
+       };       
 
-			public void paintComponent(Graphics g) {
-				g.drawImage(bg,0,0,getWidth(),getHeight(),this);		
-			}
+       /*
+       panel = new JPanel(){
+          {setOpaque(false);}
+          
        };
+       */
        
        panel =new JPanel() {
-    	   {setOpaque(false);}
-			Image bg= new ImageIcon("img/submain.png").getImage();
+         // {setOpaque(false);}
+         Image bg= new ImageIcon("img/submain.png").getImage();
 
-			public void paintComponent(Graphics g) {
-				g.drawImage(bg,0,0,getWidth(),getHeight(),this);		
-			}
-		};
-		
+         public void paintComponent(Graphics g) {
+            g.drawImage(bg,0,0,getWidth(),getHeight(),this);      
+         }
+      };
+      
        frame.getContentPane().setBackground(new Color(79,54,29));
        //전송, 귓속말 , 나가기를 각각 버튼을 만듬
        JButton b1 = new JButton(new ImageIcon(
-                ((new ImageIcon("img/Sendbutton.png"
-                		+ "")).getImage()).getScaledInstance(35, 35, java.awt.Image.SCALE_SMOOTH))); //전송버튼
+                ((new ImageIcon("img/mainBG.jpg")).getImage()).getScaledInstance(35, 35, java.awt.Image.SCALE_SMOOTH))); //전송버튼
        JButton whisper = new JButton(new ImageIcon(
                 ((new ImageIcon("img/mainBG.jpg")).getImage()).getScaledInstance(80, 35, java.awt.Image.SCALE_SMOOTH))); //귓속말버튼
        JButton b2 = new JButton(new ImageIcon(
@@ -90,7 +95,7 @@ public class ChatClient{
         frame.getContentPane().add(textField); // textField를 생성한다.
         frame.getContentPane().add(textName);
         frame.getContentPane().add(panel);
-        textField.setFont(new Font("배달의민족 주아",Font.PLAIN,15));
+        textField.setFont(new Font("배달의민족 주아",Font.PLAIN,15)); //폰트 연습해볼려고 넣어봤음..
         textName.setFont(new Font("배달의민족 주아",Font.PLAIN,25));
         b1.setBounds(350, 510, 35, 35);
         b1.setBorder(BorderFactory.createLineBorder(new Color(0,0,0,0)));
@@ -110,15 +115,17 @@ public class ChatClient{
         JScrollPane scroll = new JScrollPane(messageArea);
         scroll.setBounds(15, 50, 450, 450);
         frame.getContentPane().add(scroll);
-        
-         //-textField에 입력을 받아서 서버로 보낸다.
+        frame.setVisible(true);
+
+         //textField를 사용했을 때 취하는 액션 부분이 들어갈 것임 .-textField에 입력을 받아서 서버로 보낸다.
               
         textField.addActionListener(new ActionListener() { //textField를 사용했을 때 취하는 액션
             
             public void actionPerformed(ActionEvent e) 
             {
-            	out.println(textField.getText());
-            	textField.setText("");
+               //Client.out.println(textField.getText());//textField에 입력을 받아서 서버로 보낸다.
+               Client.out.println(textField.getText());
+               textField.setText("");
             }
         });
         b2.addActionListener(new ActionListener(){ //나가기버튼을 눌렀을 때 취하는 액션
@@ -134,7 +141,7 @@ public class ChatClient{
            
            public void actionPerformed(ActionEvent e)
            {
-                out.println(textField.getText()); //서버로 보냄, 
+                out.println(textField.getText()); //서버로 보냄, 서버아직 안만들어서 빨간쥴
                 textField.setText("");
            }
         });
@@ -150,60 +157,73 @@ public class ChatClient{
              }
         });
     }
-    public void run() throws IOException {
-		// run 안에서는 채팅만 하게
-		//String serverAddress = UI.getServerAddress();	//type using getAddress method
-    	
-		int port=Client .getPort();
-		System.out.println("port : "+port);
-		socket = new Socket("127.0.0.1", port); //채팅소켓을 만듬 +  port부여했음
-		in = new BufferedReader(new InputStreamReader(
-				socket.getInputStream()));	//receive from server, message.
-		out = new PrintWriter(socket.getOutputStream(), true); //send to server.
-
-		
-		String name="";
-		String result;
-		
-		 while (true) {
-	         result = in.readLine(); //서버로 부터 데이터 읽어옴
-	         //chatting
-	         if(result.equals("SUBMITNAME")){ //서버로 부터 읽어온 값이 SUBMITNAME이면
-	            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
-	            frame.setVisible(true); //Chatclient에서 만든 GUI를 보여줌
-	            name = getName(); //이름을 입력받음
-	            if(name.equals("")){
-	            	JOptionPane.showMessageDialog(null, "Please input your name!", "No name",
-							JOptionPane.WARNING_MESSAGE);
-	            	name = getName();
-	            }
-	            textName.setText(name); //이름을 창에 보여줌
-	            out.println(name); //서버로 이름을 보내줌
-	         } else if (result.startsWith("NAMEACCEPTED")) { //서버로 부터 읽어온 값이 NAMEACCEPT로 시작하면
-	            textField.setEditable(true); //textField가 수정가능하게 바꿈
-	         } else if (result.startsWith("ENTRANCE")) {  //서버로 부터 읽어온 값이 ENTRANCE로 시작하면
-	            textName.setEditable(false); //이제 textField 수정못하게 바꿈
-	            text = result.substring(8); // ENTRANCE 뒤부터 메세지이기 때문에 
-	            messageArea.append("<" +text+ ">" + "님이 입장하셨습니다.\n"); //messageArea에 메세지를 보여줌
-	            
-	         } else if (result.startsWith("WHISPER")) {   //서버로 부터 읽어온 값이 WHISPER로 시작하면
-	            text = result.substring(7); // WHISPER 뒤부터 메세지이기 때문에 
-	            messageArea.append(text);//messageArea에 메세지를 보여줌
-	         } else if (result.startsWith("MESSAGE")) {//서버로 부터 읽어온 값이 MESSAGE로 시작하면
-	            text = result.substring(8); // MESSAGE 뒤부터 메세지이기 때문에 
-	            messageArea.append(text+"\n"); //messageArea에 메세지를 보여줌
-	         } else if (result.startsWith("EXIT")) {
-	            
-	            text = result.substring(4); // EXIT 뒤부터 이름이기 때문에 
-	            messageArea.append("<" +text+ ">" + "님이 나가셨습니다.\n"); //messageArea에 메세지를 보여줌
-	         }
-	         
-	      }
-
-
-	}
+    
+    public void run() {
+      // run 안에서는 채팅만 하게
+      //String serverAddress = UI.getServerAddress();   //type using getAddress method
        
-    String getName() {
+      int port=Client .getPort();
+      System.out.println("port : "+port);
+      try {
+         socket = new Socket("127.0.0.1", port);
+         in = new BufferedReader(new InputStreamReader(
+               socket.getInputStream()));   //receive from server, message.
+         out = new PrintWriter(socket.getOutputStream(), true); //send to server.
+         
+
+         String name="";
+         String result;
+         
+          while (true) {
+               result = in.readLine(); //서버로 부터 데이터 읽어옴
+               //chatting
+               if(result.equals("SUBMITNAME")){ //서버로 부터 읽어온 값이 SUBMITNAME이면
+                  frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
+                  frame.setVisible(true); //Chatclient에서 만든 GUI를 보여줌
+                  name = getName2(); //이름을 입력받음
+                  if(name.equals("")){
+                     JOptionPane.showMessageDialog(null, "Please input your name!", "No name",
+                        JOptionPane.WARNING_MESSAGE);
+                     name = getName();
+                  }
+                  textName.setText(name); //이름을 창에 보여줌
+                  out.println(name); //서버로 이름을 보내줌
+               } else if (result.startsWith("NAMEACCEPTED")) { //서버로 부터 읽어온 값이 NAMEACCEPT로 시작하면
+                  textField.setEditable(true); //textField가 수정가능하게 바꿈
+               } else if (result.startsWith("ENTRANCE")) {  //서버로 부터 읽어온 값이 ENTRANCE로 시작하면
+                  textName.setEditable(false); //이제 textField 수정못하게 바꿈
+                  text = result.substring(8); // ENTRANCE 뒤부터 메세지이기 때문에 
+                  messageArea.append("<" +text+ ">" + "님이 입장하셨습니다.\n"); //messageArea에 메세지를 보여줌
+                  
+               } else if (result.startsWith("WHISPER")) {   //서버로 부터 읽어온 값이 WHISPER로 시작하면
+                  text = result.substring(7); // WHISPER 뒤부터 메세지이기 때문에 
+                  messageArea.append(text);//messageArea에 메세지를 보여줌
+               } else if (result.startsWith("MESSAGE")) {//서버로 부터 읽어온 값이 MESSAGE로 시작하면
+                 System.out.println(""+result);
+            	  text = result.substring(8); // MESSAGE 뒤부터 메세지이기 때문에 
+                  messageArea.append(text+"\n"); //messageArea에 메세지를 보여줌
+               } else if (result.startsWith("EXIT")) {
+                  
+                  text = result.substring(4); // EXIT 뒤부터 이름이기 때문에 
+                  messageArea.append("<" +text+ ">" + "님이 나가셨습니다.\n"); //messageArea에 메세지를 보여줌
+               }
+               
+            }
+
+         
+      } catch (UnknownHostException e) {
+         // TODO Auto-generated catch block
+         e.printStackTrace();
+      } catch (IOException e) {
+         // TODO Auto-generated catch block
+         e.printStackTrace();
+      } //채팅소켓을 만듬 +  port부여했음
+
+      
+
+   }
+       
+    String getName2() {
       return JOptionPane.showInputDialog(frame, "Choose a screen name:", "Screen name selection",
             JOptionPane.PLAIN_MESSAGE); // 클라이언트의 이름을 입력받음
    }
@@ -217,6 +237,6 @@ public class ChatClient{
       return text;
    }
 
-   
+    
     
 } 
