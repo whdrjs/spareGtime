@@ -1,5 +1,4 @@
 package spareTime;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -223,10 +222,10 @@ public class start_server {
 					if(command.equals("Roo")) {
 						String input1[]=input.split(" ");
 						System.out.println(input1[1]+" "+input1[2]);
-						int port=search_room(input1[2],input1[1]);
-						System.out.println("2 : "+port);
-						new ChatServer(port);
-						out.println(port);
+						int port[]=search_room(input1[2],input1[1]);
+						out.println(port[0]);
+						if(port[1]==0)
+							new ChatServer(port[0]);
 					}
 				}
 			} catch ( Exception e) {
@@ -277,11 +276,14 @@ public class start_server {
 	}
 
 	
-	public int search_room(String time, String content)throws ClassNotFoundException, SQLException {
+	public int[] search_room(String time, String content)
+			throws ClassNotFoundException, SQLException {
+
 		// 방목록을 가져오는 함수
+		// 공강시간 요일 컨텐츠로 sql에서 검색해서 반환
 		
 		Connection conn = getConnection();
-		String sql = "select port from roomlist where time = ? and content = ?";// sql 쿼리
+		String sql = "select port,open from roomlist where time = ? and content = ?";// sql 쿼리
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 
 		pstmt.setString(1, time);
@@ -292,16 +294,16 @@ public class start_server {
 			System.out.println("탐색완료");
 		} else {
 			System.out.println("정보에 맞는 방이 없습니다");
-			return 0;
+			return null;
 		}
-		int port;
+		int port[] = new int[2];
 		res.next();
-		port=res.getInt("port");
-		System.out.println("11 : "+port);
+		port[0]=res.getInt("port");
+		port[1]=res.getInt("open");
 		return port;
 	}
 
-	public   content_info search_content(String content) throws ClassNotFoundException, SQLException {
+	public content_info search_content(String content) throws ClassNotFoundException, SQLException {
 
 		// 카테고리에서 컨텐츠를 찾아오는 함수
 		// 매뉴에서 컨텐츠를 보여줄때 사용
