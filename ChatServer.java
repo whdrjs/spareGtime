@@ -55,26 +55,26 @@ public class ChatServer {
                     synchronized (names) {
                         if (!names.contains(name)) {
                             names.add(name);
+                            for (PrintWriter writer : writers) {								//if new user come into server,the other users(original users)-
+								writer.println("MESSAGE "+"<System> " + name + " in to room"); // - receive to server message that new user into server.
+							}
                             break;
                         }
                     }
                 }
-
                 out.println("NAMEACCEPTED");
                 writers.add(out);
-                out.println("ENTRANCE");
+
                 while (true) {
                 	int i;
                     String input = in.readLine();
                     if (input == null) {
+                    	System.out.println("1");
                         return;
                     }
-                    if(input.charAt(0)=='<') {
-                    	for(i=0;i<input.length();i++) {
-                    		if(input.charAt(i)=='/'&&input.charAt(i+1)=='>') {
-                    			break;
-                    		}
-                    	}
+                    else if (input.startsWith("<")&&input.contains("/>")) {
+                    	System.out.println("2");
+                    	i=input.indexOf("/>");
                     	String reader=input.substring(1,i);
                     	Handler rd=findThread(reader);
                     	input=input.substring(i+2);
@@ -83,6 +83,7 @@ public class ChatServer {
                     	continue;
                     }
                     else {
+                    	System.out.println(""+input);
                     	for (PrintWriter writer : writers) {
                     		writer.println("MESSAGE " + name + ": " + input);
                     	}
@@ -92,7 +93,9 @@ public class ChatServer {
                 System.out.println(e);
             } 
             finally {
-            	out.println("EXIT");
+            	for (PrintWriter writer : writers) {									//if user out to server, server send to message that who out the server-
+					writer.println("MESSAGE "+"<System> " + name + " out to the room");	
+            	}
                 if (name != null) {
                     names.remove(name);
                 }
@@ -120,4 +123,3 @@ public class ChatServer {
 
     }
 }
-
