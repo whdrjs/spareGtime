@@ -285,7 +285,7 @@ public class start_server {
 
 		Connection conn = getConnection();
 		ArrayList<content_info>inform = new ArrayList<content_info>();
-		content_info a=new content_info();
+		
 		String sql = "select * from contents where content = ?";// sql 쿼리
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, content);
@@ -295,20 +295,17 @@ public class start_server {
 			System.out.println("탐색완료");
 		int i=0;
 		while (res.next()) {
+			content_info a=new content_info();
 			a.add(res);
 			inform.add(a);
 			inform.set(i, a);
-			System.out.println(inform);
-			System.out.println(inform.get(i).content+" "+inform.get(i).name+" "+inform.get(i).star+" "+inform.get(i).address+" "+inform.get(i).distance);
 			i++;
 		}
 		if (pstmt != null)
 			pstmt.close();
 		if (conn != null)
 			conn.close();
-		for(i=0;i<inform.size();i++) {
-			System.out.println(inform.get(i).content+" "+inform.get(i).name+" "+inform.get(i).star+" "+inform.get(i).address+" "+inform.get(i).distance);
-		}
+		
 		return inform;
 	}
 
