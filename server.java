@@ -67,14 +67,14 @@ public class server {
 					String command=input.substring(0,3);
 					//search store name
 					if(command.equals("ACT")) {
-						//command example.
+						//command example
 						//"ACT content distance 1"
 						//"ACT content star"
 						String input1[]=input.split(" ");
 						ArrayList<content_info> inform = new ArrayList<content_info>();
 						inform = search_content(input1[1]);
 						if(input1[2].equals("distance")){
-							//return 4 stores sort by distance 
+							//return 4 stores sort by distance. 
 							//each store has number to bokjeong from gachon subway station n.
 							//user select own location a, sort by |a-n| and rank. 
 							int i,j;
@@ -143,7 +143,7 @@ public class server {
 							out.println(a);
 						}
 						else if(input1[2].equals("star")){
-						//return 4 stores sort by star 
+						//return 4 stores sort by star.
 							int i,j;
 							ArrayList<content_info> rank = new ArrayList<content_info>();
 							int min[]={0,1,2,3};
@@ -159,7 +159,7 @@ public class server {
 								}
 							}
 							int m1=0,m2=0;
-							//if equal star, low distance is more priority
+							//if equal star, low distance is more priority.
 							for(i=0;i<4;i++){
 								if(inform.get(min[i]).distance>inform.get(min[m1]).distance){
 									m1=i;
@@ -201,7 +201,7 @@ public class server {
 					
 					//enter chatting room.
 					//if chatting room's port open already, just enter.
-					//else make new port about chatting room
+					//else make new port about chatting room.
 					if(command.equals("Roo")) {
 						String input1[]=input.split(" ");
 						System.out.println(input1[1]+" "+input1[2]);
@@ -244,7 +244,7 @@ public class server {
 	public   Scanner in = new Scanner(System.in);
 
 	public   Connection getConnection() throws ClassNotFoundException, SQLException {
-		// connect SQL database
+		// connect SQL database.
 		String url = "jdbc:mysql://localhost:3306/sparegtime";// 경로
 		String user = "root";// ID
 		String pass = "1234";// password
@@ -261,7 +261,7 @@ public class server {
 	public int[] search_room(String time, String content)
 			throws ClassNotFoundException, SQLException {
 		//parameter - time, content
-		//get information of room (port num)
+		//get information of room (port num).
 		//return - port number
 		
 		Connection conn = getConnection();
@@ -287,7 +287,7 @@ public class server {
 	public ArrayList<content_info> search_content(String content) throws ClassNotFoundException, SQLException {
 
 		// parameter content
-		// search content information (name,distance,star,address)
+		// search content information (name,distance,star,address).
 		// return information list
 		Connection conn = getConnection();
 		ArrayList<content_info>inform = new ArrayList<content_info>();
