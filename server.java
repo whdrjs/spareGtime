@@ -205,10 +205,9 @@ public class server {
 					if(command.equals("Roo")) {
 						String input1[]=input.split(" ");
 						System.out.println(input1[1]+" "+input1[2]);
-						int port[]=search_room(input1[2],input1[1]);
-						out.println(port[0]);
-						if(port[1]==0)
-							new ChatServer(port[0]);
+						int port=search_room(input1[2],input1[1]);
+						out.println(port);
+						new ChatServer(port);
 					}
 				}
 			} catch ( Exception e) {
@@ -261,12 +260,12 @@ public class server {
 	
 	public int[] search_room(String time, String content)
 			throws ClassNotFoundException, SQLException {
-
-		// 방목록을 가져오는 함수
-		// 공강시간 요일 컨텐츠로 sql에서 검색해서 반환
+		//parameter - time, content
+		//get information of room (port num)
+		//return - port number
 		
 		Connection conn = getConnection();
-		String sql = "select port,open from roomlist where time = ? and content = ?";// sql 쿼리
+		String sql = "select port from roomlist where time = ? and content = ?";// sql 쿼리
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 
 		pstmt.setString(1, time);
@@ -279,18 +278,17 @@ public class server {
 			System.out.println("정보에 맞는 방이 없습니다");
 			return null;
 		}
-		int port[] = new int[2];
+		int port;
 		res.next();
-		port[0]=res.getInt("port");
-		port[1]=res.getInt("open");
+		port=res.getInt("port");
 		return port;
 	}
 
 	public ArrayList<content_info> search_content(String content) throws ClassNotFoundException, SQLException {
 
-		// 카테고리에서 컨텐츠를 찾아오는 함수
-		// 매뉴에서 컨텐츠를 보여줄때 사용
-
+		// parameter content
+		// search content information (name,distance,star,address)
+		// return information list
 		Connection conn = getConnection();
 		ArrayList<content_info>inform = new ArrayList<content_info>();
 		
@@ -318,6 +316,7 @@ public class server {
 	}
 
 	public static void main(String[] args) throws Exception {
+		//start server
 		new server();
 	}
 }
