@@ -14,17 +14,18 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashSet;
 import java.util.Vector;
-//
+//server receive message, search data from SQL, send result to client.
 public class server {
 	private   final int PORT = 9000;
 	private   HashSet<String> names = new HashSet<String>();
 	private   HashSet<PrintWriter> writers = new HashSet<PrintWriter>();
 	Vector<Handler> vc;
 
-	public start_server() throws Exception {
+	public server() throws Exception {
 		System.out.println("The server is running.");
 		ServerSocket listener = new ServerSocket(PORT);
-		vc = new Vector<Handler>();
+		//plus user handler stack
+ 		vc = new Vector<Handler>();
 		try {
 			while (true) {
 				Handler hd = new Handler(listener.accept());
@@ -35,12 +36,12 @@ public class server {
 			listener.close();
 		}
 	}
-
+	
 	public void removeClient(Handler hd) {
 		// Remove client to vector.
 		vc.remove(hd);
 	}
-
+	//handler connect with client.
 	private class Handler extends Thread {
 		private String name;
 		private Socket socket;
@@ -64,33 +65,36 @@ public class server {
 						return;
 					}
 					String command=input.substring(0,3);
-					//가게목록 검색
+					//search store name
 					if(command.equals("ACT")) {
+						//command example.
 						//"ACT content distance 1"
 						//"ACT content star"
 						String input1[]=input.split(" ");
 						ArrayList<content_info> inform = new ArrayList<content_info>();
 						inform = search_content(input1[1]);
 						if(input1[2].equals("distance")){
-							//거리순
+							//return 4 stores sort by distance 
+							//each store has number to bokjeong from gachon subway station n.
+							//user select own location a, sort by |a-n| and rank. 
 							int i,j;
 							ArrayList<content_info> rank = new ArrayList<content_info>();
 							switch (input1[3]){
-							case "1": //비타 7
+							case "1": //vision tower 7
 								for(i=0;i<inform.size();i++){
 									inform.get(i).distance=inform.get(i).distance-7;
 									if(inform.get(i).distance<0)
 										inform.get(i).distance=inform.get(i).distance*-1;
 								}
 								break;
-							case "2": //복정파출소 20
+							case "2": //police station 20
 								for(i=0;i<inform.size();i++){
 									inform.get(i).distance=inform.get(i).distance-20;
 									if(inform.get(i).distance<0)
 										inform.get(i).distance=inform.get(i).distance*-1;
 								}
 								break;
-							case "3": //동서울대 27
+							case "3": //dong seoul univercity 27
 								for(i=0;i<inform.size();i++){
 									inform.get(i).distance=inform.get(i).distance-27;
 									if(inform.get(i).distance<0)
@@ -139,6 +143,7 @@ public class server {
 							out.println(a);
 						}
 						else if(input1[2].equals("star")){
+						//return 4 stores sort by star 
 							int i,j;
 							ArrayList<content_info> rank = new ArrayList<content_info>();
 							int min[]={0,1,2,3};
@@ -154,6 +159,7 @@ public class server {
 								}
 							}
 							int m1=0,m2=0;
+							//if equal star, low distance is more priority
 							for(i=0;i<4;i++){
 								if(inform.get(min[i]).distance>inform.get(min[m1]).distance){
 									m1=i;
@@ -193,7 +199,9 @@ public class server {
 						}
 					}
 					
-					//채팅방 입장
+					//enter chatting room.
+					//if chatting room's port open already, just enter.
+					//else make new port about chatting room
 					if(command.equals("Roo")) {
 						String input1[]=input.split(" ");
 						System.out.println(input1[1]+" "+input1[2]);
@@ -237,7 +245,7 @@ public class server {
 	public   Scanner in = new Scanner(System.in);
 
 	public   Connection getConnection() throws ClassNotFoundException, SQLException {
-		// sql 데이터베이스에 연결
+		// connect SQL database
 		String url = "jdbc:mysql://localhost:3306/sparegtime";// 경로
 		String user = "root";// ID
 		String pass = "1234";// password
