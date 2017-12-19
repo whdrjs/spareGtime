@@ -14,8 +14,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashSet;
 import java.util.Vector;
-
-public class start_server {
+//
+public class server {
 	private   final int PORT = 9000;
 	private   HashSet<String> names = new HashSet<String>();
 	private   HashSet<PrintWriter> writers = new HashSet<PrintWriter>();
@@ -310,6 +310,6 @@ public class start_server {
 	}
 
 	public static void main(String[] args) throws Exception {
-		new start_server();
+		new server();
 	}
 }
