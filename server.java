@@ -12,13 +12,10 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.HashSet;
 import java.util.Vector;
 //server receive message, search data from SQL, send result to client.
 public class server {
 	private   final int PORT = 9000;
-	private   HashSet<String> names = new HashSet<String>();
-	private   HashSet<PrintWriter> writers = new HashSet<PrintWriter>();
 	Vector<Handler> vc;
 
 	public server() throws Exception {
@@ -43,7 +40,6 @@ public class server {
 	}
 	//handler connect with client.
 	private class Handler extends Thread {
-		private String name;
 		private Socket socket;
 		private BufferedReader in;
 		private PrintWriter out;
@@ -203,6 +199,8 @@ public class server {
 					//if chatting room's port open already, just enter.
 					//else make new port about chatting room.
 					if(command.equals("Roo")) {
+						//command example
+						//"Roo content time"						
 						String input1[]=input.split(" ");
 						System.out.println(input1[1]+" "+input1[2]);
 						int port=search_room(input1[2],input1[1]);
@@ -216,13 +214,6 @@ public class server {
 			} catch ( Exception e) {
 				System.out.println(e);
 			} finally {
-
-				if (name != null) {
-					names.remove(name);
-				}
-				if (out != null) {
-					writers.remove(out);
-				}
 				removeClient(this);
 				try {
 					socket.close();
@@ -230,16 +221,6 @@ public class server {
 				}
 			}
 
-		}
-
-		public Handler findThread(String name) {
-			Handler hd = null;
-			for (int i = 0; i < vc.size(); i++) {
-				hd = vc.get(i);
-				if (hd.name.equals(name))
-					break;
-			}
-			return hd;
 		}
 	}
 
