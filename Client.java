@@ -1,9 +1,6 @@
 package spareTime;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.BufferedReader;
-import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -11,12 +8,6 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.Socket;
 import java.net.UnknownHostException;
-
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-
-import spareTime.ChatClient;
-import spareTime.UI;
 
 public class Client {
 
