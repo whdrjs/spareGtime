@@ -51,7 +51,7 @@ class eventFrame extends JFrame {
 		ad.setBounds(150, 200, 400, 300);// layout
 		ad.setOpaque(false); // transparent
 		ad.setEditable(false); // NOT EDIT
-		ad.setFont(new Font("바탕",Font.BOLD ,30));
+		ad.setFont(new Font("배달의민족 주아",Font.PLAIN,30));
 		contentPane.add(ad); // add textfield to panel
 		getContentPane().add(contentPane); // add panel to frame
 		setVisible(true);
