@@ -17,6 +17,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
@@ -214,20 +215,19 @@ class listFrame extends JFrame {
 				};
 				infoPanel.setLayout(null);
 
-				// layout of map image
+				// layout of map image, show store information use popup(joption)
 				img = new JButton(new ImageIcon(imgName));
 				img.setBackground(Color.blue);
 				img.setBorderPainted(false);
 				img.setFocusPainted(false);
 				img.setContentAreaFilled(false);
 				img.setBounds(10, 10, 570, 435);
-				// show store information use textarea
 				int idx = names.indexOf(select);
-				info.append(names.get(idx) + "\n");
-				info.append(address.get(idx));
-				info.setBounds(10, 455, 500, 100);
-				info.setOpaque(false);
-				info.setEditable(false);
+				img.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						 JOptionPane.showMessageDialog(null,""+names.get(idx) + "\n"+address.get(idx)+"\nrate : "+star.get(idx));
+					}
+				});
 				// start matching, before user input that wants time
 				mateBtn = new JButton(new ImageIcon("img/findmate3.jpg"));
 				mateBtn.setBackground(Color.blue);
