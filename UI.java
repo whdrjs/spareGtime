@@ -5,6 +5,7 @@ package spareTime;
  */
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -224,14 +225,15 @@ public class UI extends JFrame{
                   infoSplit=store[i].split("\\_");
                   uni.append((String)infoSplit[1]+" "+(String)infoSplit[3]+"\n\n");
                }
-               uni.setBounds(500, 150, 600, 450);
+               uni.setBounds(150, 150, 800, 600);
                uni.setOpaque(false);
                uni.setEditable(false);
+               uni.setFont(new Font("배달의민족 주아",Font.PLAIN,30));
                panel.add(uni);
 
                back2=new JButton(new ImageIcon("img/캡처3.PNG"));
                back2.setBackground(Color.red);
-               back2.setBounds(650, 730, 300, 74);
+               back2.setBounds(350, 500, 300, 74);
                back2.setBorderPainted(false);
                back2.setFocusPainted(false); 
                back2.addActionListener(new ActionListener(){//change to previous panel
