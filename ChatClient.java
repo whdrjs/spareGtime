@@ -34,14 +34,15 @@ public class ChatClient extends Thread {
     JTextField textName = new JTextField();
     JTextArea messageArea= new JTextArea();
     JPanel panel;
-    
+    Client client = new Client();  
     public static BufferedReader in;   // 채팅할때 쓰는 
    public static PrintWriter out;       // 채팅할때 쓸거
     String other="";
     public static Socket socket=null; // 채팅할때 쓰는 소켓
-
-    public ChatClient() throws IOException,InterruptedException 
+    int port;
+    public ChatClient(int p) throws IOException,InterruptedException 
     {
+    	port=p;
         Image bg= new ImageIcon("img/submain.png").getImage();
        messageArea = new JTextArea(){
            { setOpaque( false ) ; }
@@ -124,7 +125,7 @@ public class ChatClient extends Thread {
             public void actionPerformed(ActionEvent e) 
             {
                //Client.out.println(textField.getText());//textField에 입력을 받아서 서버로 보낸다.
-               Client.out.println(textField.getText());
+               client.out.println(textField.getText());
                textField.setText("");
             }
         });
@@ -161,8 +162,6 @@ public class ChatClient extends Thread {
     public void run() {
       // run 안에서는 채팅만 하게
       //String serverAddress = UI.getServerAddress();   //type using getAddress method
-       
-      int port=Client .getPort();
       System.out.println("port : "+port);
       try {
          socket = new Socket("127.0.0.1", port);

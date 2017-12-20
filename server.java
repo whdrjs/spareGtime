@@ -206,7 +206,10 @@ public class server {
 						String input1[]=input.split(" ");
 						System.out.println(input1[1]+" "+input1[2]);
 						int port=search_room(input1[2],input1[1]);
-						out.println(port);
+						if(port==-1)
+							out.println("information is wrong");
+						else
+							out.println(port);
 						new ChatServer(port);
 					}
 				}
@@ -258,7 +261,7 @@ public class server {
 	}
 
 	
-	public int[] search_room(String time, String content)
+	public int search_room(String time, String content)
 			throws ClassNotFoundException, SQLException {
 		//parameter - time, content
 		//get information of room (port num).
@@ -276,7 +279,7 @@ public class server {
 			System.out.println("탐색완료");
 		} else {
 			System.out.println("정보에 맞는 방이 없습니다");
-			return null;
+			return -1;
 		}
 		int port;
 		res.next();
