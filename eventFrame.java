@@ -1,5 +1,6 @@
 package spareTime;
 
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.io.IOException;
@@ -42,6 +43,7 @@ class eventFrame extends JFrame {
 		}
 		String[] store = info.split("\\^");// split one sentence information to each advertise
 		String[] infoSplit; // each advertises are splited to more partial inform
+		ad.append("\n\n");
 		for (int i = 0; i < store.length; i++) {
 			infoSplit = store[i].split("\\_"); // store (above notes)
 			ad.append((String) infoSplit[1] + "\n\n"); // show for text field
@@ -49,6 +51,7 @@ class eventFrame extends JFrame {
 		ad.setBounds(150, 200, 400, 300);// layout
 		ad.setOpaque(false); // transparent
 		ad.setEditable(false); // NOT EDIT
+		ad.setFont(new Font("바탕",Font.BOLD ,30));
 		contentPane.add(ad); // add textfield to panel
 		getContentPane().add(contentPane); // add panel to frame
 		setVisible(true);
