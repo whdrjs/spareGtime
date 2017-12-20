@@ -8,7 +8,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashSet;
 import java.util.Vector;
-
+//ChatServer connect with ChatClient and make talk clients each other.
 public class ChatServer {
    
     private static HashSet<String> names = new HashSet<String>();
@@ -47,6 +47,7 @@ public class ChatServer {
                     socket.getInputStream()));
                 out = new PrintWriter(socket.getOutputStream(), true);
                 while (true) {
+                	//get user name from client.
                     out.println("SUBMITNAME");
                     name = in.readLine();
                     if (name == null) {
@@ -69,10 +70,12 @@ public class ChatServer {
                 	int i;
                     String input = in.readLine();
                     if (input == null) {
+                    	//if input message something wrong, client exit chatting room.
                     	System.out.println("1");
                         return;
                     }
                     else if (input.startsWith("<")&&input.contains("/>")) {
+                    	//if client send to sever use whisper function to other client, send message that client
                     	System.out.println("2");
                     	i=input.indexOf("/>");
                     	String reader=input.substring(1,i);
@@ -83,6 +86,7 @@ public class ChatServer {
                     	continue;
                     }
                     else {
+                    	//normally server send message to all client in the room.
                     	System.out.println(""+input);
                     	for (PrintWriter writer : writers) {
                     		writer.println("MESSAGE " + name + ": " + input);
@@ -118,8 +122,5 @@ public class ChatServer {
         	   }
         	   return hd;
         }
-    }
-    public static void main(String[] args) throws Exception {
-
     }
 }
