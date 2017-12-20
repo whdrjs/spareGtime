@@ -90,8 +90,4 @@ public class Client {
 		UI userIn = new UI(); // UI 클래스 생성
 		userIn.setVisible(true); // can be show frame
 	}
-
-	public int getPort() {
-		return port;
-	}
 }
